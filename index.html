@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#060b14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sanchez Finance">
+<title>SANCHEZ // FINANCE</title>
+<link id="pwa-manifest" rel="manifest">
+<link id="pwa-icon" rel="icon" type="image/svg+xml">
+<link id="apple-icon" rel="apple-touch-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Design tokens and dark theme palette */
+:root{
+  --bg:#060b14;
+  --panel:#0e1828;
+  --panel2:#132136;
+  --field:#08101d;
+  --field-hover:#0b1627;
+  --line:#2b4162;
+  --line-soft:#1e304a;
+  --txt:#f2f8ff;
+  --muted:#95acc8;
+  --cyan:#55e6ff;
+  --green:#b7ff76;
+  --red:#ff789e;
+  --violet:#a99aff;
+}
+*{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse at 85% -5%, rgba(22, 78, 114, 0.45) 0, transparent 42%),
+    radial-gradient(ellipse at -5% 50%, rgba(49, 36, 115, 0.35) 0, transparent 38%),
+    var(--bg);
+  color:var(--txt);
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+  font-size:15px;
+  line-height:1.45;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:auto;padding:28px 18px 48px}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin-bottom:32px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--line-soft);
+}
+.head-controls{
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.brand{
+  font-weight:900;
+  letter-spacing:2.2px;
+  font-size:20px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.brand b{color:var(--cyan)}
+.tag{
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+h1{
+  font-size:clamp(28px,5vw,44px);
+  line-height:1.08;
+  margin:8px 0 10px;
+  font-weight:900;
+  letter-spacing:-0.02em;
+}
+.cyan{color:var(--cyan)}
+.intro{color:var(--muted);margin:0 0 28px;font-size:15px}
+
+/* Centered form controls with 1.5px borders and overflow protection */
+input,select,textarea{
+  display:block;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  background:var(--field);
+  color:var(--txt);
+  border:1.5px solid var(--line);
+  border-radius:11px;
+  padding:0 16px;
+  font:inherit;
+  font-size:14px;
+  font-weight:600;
+  line-height:normal;
+  letter-spacing:0.01em;
+  text-align:center;
+  text-align-last:center;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.03);
+  transition:border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+input[type="month"] {
+  position: relative;
+}
+
+input[type="month"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}
+
+input,select{
+  height:48px;
+}
+input::placeholder,textarea::placeholder{
+  color:#607796;
+  font-weight:400;
+  text-align:center;
+  opacity:1;
+}
+input:hover:not(:disabled),select:hover:not(:disabled),textarea:hover:not(:disabled){
+  background:var(--field-hover);
+  border-color:#446594;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  background:#0b1729;
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3.5px rgba(85,230,255,0.18), inset 0 1px 3px rgba(0,0,0,0.3);
+}
+input:disabled,select:disabled{
+  opacity:.68;
+  background:#070d17;
+  border-color:var(--line-soft);
+  cursor:not-allowed;
+}
+select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  padding-left:16px;
+  padding-right:16px;
+  background-image:none;
+}
+select::-ms-expand{
+  display:none;
+}
+select option{
+  background:#0e1828;
+  color:var(--txt);
+  text-align:center;
+}
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}
+input[type=date]::-webkit-calendar-picker-indicator,
+input[type=month]::-webkit-calendar-picker-indicator{
+  margin-right:6px;
+  cursor:pointer;
+}
+input[type=date]::-webkit-date-and-time-value,
+input[type=month]::-webkit-date-and-time-value{
+  text-align:center;
+  margin:0 auto;
+}
+
+/* Quitar apariencia nativa y flechas internas en móviles (Android / iOS) */
+input[type="date"],
+input[type="month"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+}
+
+/* Ocultar indicador de calendario o flechas WebKit */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Ocultar flechas arriba/abajo (spinners) y botones internos en Chromium/Android */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-outer-spin-button,
+input[type="date"]::-webkit-clear-button,
+input[type="month"]::-webkit-inner-spin-button,
+input[type="month"]::-webkit-outer-spin-button,
+input[type="month"]::-webkit-clear-button {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: none !important;
+  margin: 0;
+}
+
+input[type=number]{
+  font-variant-numeric:tabular-nums;
+}
+label{
+  display:block;
+  color:#a8bed8;
+  font-size:11px;
+  letter-spacing:.85px;
+  margin-bottom:7px;
+  text-transform:uppercase;
+  font-weight:700;
+  text-align:center;
+}
+
+/* Grid and card layout */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{
+  background:linear-gradient(155deg,rgba(20,36,58,0.94),rgba(11,21,36,0.98));
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  min-width:0;
+  box-shadow:0 18px 42px rgba(0,0,0,0.36), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.stat{grid-column:span 4;padding:20px}
+.main{grid-column:span 7}
+.side{grid-column:span 5}
+.full{grid-column:1/-1}
+
+.stat .k{
+  font-size:10px;
+  letter-spacing:1.6px;
+  color:var(--muted);
+  text-transform:uppercase;
+  font-weight:700;
+}
+.stat .v{
+  font-size:clamp(21px,3vw,29px);
+  font-weight:900;
+  margin-top:8px;
+  overflow-wrap:anywhere;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-0.01em;
+}
+.green{color:var(--green)}.pink{color:var(--red)}.purple{color:var(--violet)}
+
+.cardtop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line-soft);
+}
+h2{font-size:16px;margin:0;font-weight:800;letter-spacing:-0.01em}
+.mini{font-size:10px;color:var(--muted);letter-spacing:1.2px;font-weight:700;text-transform:uppercase}
+
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{min-width:0}
+.field.span-full{grid-column:1/-1}
+
+/* Buttons and action states */
+button{
+  border:0;
+  border-radius:11px;
+  padding:13px 18px;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0.8px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:transform .1s ease, filter .2s ease, background-color .2s ease, border-color .2s ease;
+}
+.primary{
+  background:linear-gradient(100deg,var(--cyan),#a0ffe9);
+  color:#05111c;
+  box-shadow:0 6px 20px rgba(85,230,255,0.22);
+}
+.primary:hover{filter:brightness(1.06)}
+.secondary{
+  background:#182a43;
+  color:var(--txt);
+  border:1.5px solid var(--line);
+}
+.secondary:hover{background:#213857;border-color:#446594}
+.btn-install{
+  height:48px;
+  padding:0 16px;
+  background:rgba(85,230,255,0.12);
+  color:var(--cyan);
+  border:1.5px solid rgba(85,230,255,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.btn-install:hover{
+  background:rgba(85,230,255,0.22);
+  border-color:var(--cyan);
+}
+button:active{transform:scale(.98)}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+/* Backup and export toolbar */
+.data-actions{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px;
+  background:rgba(7,14,25,0.65);
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  flex-wrap:wrap;
+}
+.btn-tool{
+  padding:8px 12px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.7px;
+  border-radius:8px;
+  background:transparent;
+  color:var(--muted);
+  border:1px solid transparent;
+  line-height:1.2;
+}
+.btn-tool:hover{
+  color:var(--txt);
+  background:#15253c;
+  border-color:var(--line);
+}
+.btn-tool.export-csv{
+  color:var(--cyan);
+  background:rgba(85,230,255,0.08);
+  border-color:rgba(85,230,255,0.25);
+}
+.btn-tool.export-csv:hover{
+  background:rgba(85,230,255,0.16);
+  border-color:var(--cyan);
+}
+
+.actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+.feedback{font-size:12px;color:var(--green);min-height:18px;font-weight:600}
+.feedback.error{color:var(--red)}
+
+/* Progress bar and balance display */
+.progress{
+  height:10px;
+  border-radius:20px;
+  background:#070f1b;
+  border:1px solid var(--line);
+  overflow:hidden;
+  margin:14px 0 8px;
+}
+.bar{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--green));
+  border-radius:20px;
+  transition:width .35s ease;
+}
+.meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;font-weight:600}
+.balance{font-size:34px;font-weight:900;margin:12px 0;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+
+/* Movement history list */
+.entries{display:flex;flex-direction:column}
+.entry{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line-soft);
+}
+.entry:last-child{border:0;padding-bottom:2px}
+.entry small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.entry strong{font-size:14px}
+.entryright{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.entryright strong{font-variant-numeric:tabular-nums}
+.btn-del{
+  padding:8px 11px;
+  background:rgba(255,120,158,.1);
+  color:var(--red);
+  border:1px solid rgba(255,120,158,.35);
+  font-size:10px;
+  border-radius:8px;
+}
+.btn-del:hover{background:rgba(255,120,158,.22)}
+.btn-del.confirming{
+  background:var(--red);
+  color:#060b14;
+  border-color:var(--red);
+}
+.empty{
+  padding:26px 16px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  background:rgba(7,14,25,0.45);
+  border:1px dashed var(--line);
+  border-radius:12px;
+}
+
+/* Footer */
+footer{
+  margin-top:38px;
+  padding-top:22px;
+  border-top:1px solid var(--line-soft);
+  text-align:center;
+}
+.author{
+  margin-top:10px;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:var(--cyan);
+  text-transform:uppercase;
+}
+
+/* Responsive layout rules */
+@media(max-width:760px){
+  .stat{grid-column:span 4}
+  .main,.side{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .stat{grid-column:1/-1}
+}
+@media(max-width:480px){
+  .wrap{padding:18px 12px 36px}
+  header{align-items:stretch;flex-direction:column}
+  .head-controls{width:100%}
+  .head-controls > div{flex:1}
+  .btn-install{width:100%}
+  .cardtop{align-items:flex-start;flex-direction:column}
+  .data-actions{width:100%;justify-content:space-between}
+  .btn-tool{flex:1 1 auto;padding:8px 8px;font-size:9.5px;letter-spacing:0.4px}
+  .fields{grid-template-columns:1fr}
+  .card{padding:16px}
+  .entry{align-items:flex-start;flex-direction:column}
+  .entryright{width:100%;justify-content:space-between;margin-top:4px}
+  .stat{padding:15px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div>
+  <div class="brand">BRAND <b>// FINANCE</b></div>
+  <div class="tag">PERSONAL FINANCE SYSTEM</div>
+ </div>
+ <div class="head-controls">
+  <button type="button" class="btn-install" id="installAppBtn">📲 INSTALAR APP</button>
+  <div style="min-width:190px">
+   <label for="month">Periodo</label>
+   <input id="month" type="month">
+  </div>
+ </div>
+</header>
+
+<div class="tag cyan">CONTROL FINANCIERO · PANEL PRINCIPAL</div>
+<h1>Tu dinero.<br><span class="cyan">Bajo tú control.</span></h1>
+<p class="intro">Registra cada movimiento y toma mejores decisiones.</p>
+
+<section class="grid">
+ <div class="card stat"><div class="k">01 / Ingresos</div><div class="v cyan" id="incomeTotal">S/ 0.00</div></div>
+ <div class="card stat"><div class="k">02 / Gastos</div><div class="v pink" id="expenseTotal">S/ 0.00</div></div>
+ <div class="card stat"><div class="k">03 / Disponible</div><div class="v green" id="balanceTotal">S/ 0.00</div></div>
+
+ <div class="card main">
+  <div class="cardtop"><h2>Registrar movimiento</h2><span class="mini">NUEVA OPERACIÓN</span></div>
+  <div class="fields">
+   <div class="field">
+    <label for="type">Tipo</label>
+    <select id="type">
+     <option value="income">Ingreso</option>
+      <option value="expense">Gasto</option>
+    </select>
+   </div>
+   <div class="field">
+    <label for="amount">MONTO</label>
+    <input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/150.00">
+   </div>
+   <div class="field">
+    <label for="date">Fecha</label>
+    <input id="date" type="date">
+   </div>
+   <div class="field">
+    <label for="need">Tipo de consumo</label>
+    <select id="need">
+     <option value="Necesario">Necesario</option>
+     <option value="Deseo">Deseo</option>
+     <option value="Planificado">Planificado</option>
+     <option value="Imprevisto">Imprevisto</option>
+    </select>
+   </div>
+   <div class="field span-full">
+    <label for="description">Descripción</label>
+    <input id="description" type="text" maxlength="80" placeholder="Sueldo, comida, transporte">
+   </div>
+  </div>
+  <div class="actions">
+   <button type="button" class="primary" id="add">＋ GUARDAR MOVIMIENTO</button>
+   <span id="status" class="feedback" role="status" aria-live="polite"></span>
+  </div>
+ </div>
+
+ <div class="card side">
+  <div class="cardtop"><h2>Balance del periodo</h2><span class="mini">RESUMEN</span></div>
+  <div class="mini">SALDO ACTUAL</div>
+  <div class="balance green" id="bigBalance">S/ 0.00</div>
+  <div class="progress"><div class="bar" id="spendBar"></div></div>
+  <div class="meta"><span>Gastos / ingresos</span><span id="spendPct">0%</span></div>
+  <p class="mini" id="balanceMessage" style="margin-top:14px">Agrega tus primeros movimientos.</p>
+ </div>
+
+ <div class="card full">
+  <div class="cardtop">
+   <h2>Historial de movimientos</h2>
+   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <span id="exportStatus" class="feedback" role="status" aria-live="polite"></span>
+    <div class="data-actions" role="group" aria-label="Gestión de datos">
+     <button type="button" class="btn-tool" id="backupJson" title="Descargar copia de seguridad JSON">↓ RESPALDO JSON</button>
+     <button type="button" class="btn-tool" id="restoreJsonBtn" title="Restaurar desde archivo JSON">↑ RESTAURAR</button>
+     <button type="button" class="btn-tool export-csv" id="export" title="Exportar movimientos del mes a CSV">↓ EXPORTAR CSV</button>
+    </div>
+    <input type="file" id="restoreJsonFile" accept=".json,application/json" style="display:none">
+   </div>
+  </div>
+  <div class="entries" id="list"><div class="empty">No hay movimientos en este mes.</div></div>
+ </div>
+</section>
+
+<footer>
+ <div class="tag">BRAND // FINANCE</div>
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* Configures SVG app icon, dynamic PWA web manifest, service worker, and install prompt */
+(function setupPWA(){
+ try{
+  var svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
+   + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+   + '<stop offset="0%" stop-color="#0e1828"/><stop offset="100%" stop-color="#060b14"/>'
+   + '</linearGradient></defs>'
+   + '<rect width="512" height="512" rx="112" fill="url(#g)"/>'
+   + '<rect x="16" y="16" width="480" height="480" rx="98" fill="none" stroke="#2b4162" stroke-width="12"/>'
+   + '<text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" '
+   + 'font-family="Inter,system-ui,sans-serif" font-weight="900" font-size="185" fill="#55e6ff">S//F</text>'
+   + '</svg>';
+  var iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgIcon);
+
+  var iconLink = document.getElementById("pwa-icon");
+  var appleLink = document.getElementById("apple-icon");
+  if(iconLink) iconLink.href = iconUrl;
+  if(appleLink) appleLink.href = iconUrl;
+
+  var manifestObj = {
+   name: "SANCHEZ // FINANCE",
+   short_name: "Sanchez Finance",
+   description: "Control financiero personal",
+   start_url: location.href,
+   scope: "./",
+   display: "standalone",
+   orientation: "portrait-primary",
+   background_color: "#060b14",
+   theme_color: "#060b14",
+   icons: [
+    { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+    { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+   ]
+  };
+  var manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: "application/manifest+json" });
+  var manifestLink = document.getElementById("pwa-manifest");
+  if(manifestLink) manifestLink.href = URL.createObjectURL(manifestBlob);
+
+  if("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")){
+   var swCode = [
+    "const CACHE='sanchez-finance-v1';",
+    "self.addEventListener('install',e=>{self.skipWaiting();});",
+    "self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());});",
+    "self.addEventListener('fetch',e=>{",
+    "  if(e.request.method!=='GET')return;",
+    "  e.respondWith(caches.open(CACHE).then(cache=>",
+    "    fetch(e.request).then(res=>{if(res&&res.status===200)cache.put(e.request,res.clone());return res;})",
+    "    .catch(()=>cache.match(e.request))",
+    "  ));",
+    "});"
+   ].join("\n");
+   var swBlob = new Blob([swCode], { type: "application/javascript" });
+   navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(function(){});
+  }
+
+  var deferredPrompt = null;
+  var installBtn = document.getElementById("installAppBtn");
+  window.addEventListener("beforeinstallprompt", function(e){
+   e.preventDefault();
+   deferredPrompt = e;
+   if(installBtn) installBtn.style.display = "inline-flex";
+  });
+  if(installBtn){
+   installBtn.addEventListener("click", function(){
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(){
+     deferredPrompt = null;
+     installBtn.style.display = "none";
+    });
+   });
+  }
+  window.addEventListener("appinstalled", function(){
+   if(installBtn) installBtn.style.display = "none";
+  });
+ }catch(err){}
+})();
+
+var $ = function(id){ return document.getElementById(id); };
+var dateNow = new Date();
+var today = dateNow.getFullYear() + "-" + String(dateNow.getMonth() + 1).padStart(2, "0") + "-" + String(dateNow.getDate()).padStart(2, "0");
+var monthNow = today.slice(0, 7);
+var storageKey = "sanchez_finance_v1";
+var dbName = "SanchezFinanceDB";
+var storeName = "appState";
+var data = { entries: [], selectedMonth: monthNow };
+var timers = {};
+
+/* Displays temporary status feedback without using browser alert/confirm */
+function notify(id, message, isError){
+ var el = $(id);
+ if(!el) return;
+ el.textContent = message;
+ el.className = isError ? "feedback error" : "feedback";
+ clearTimeout(timers[id]);
+ timers[id] = setTimeout(function(){ el.textContent = ""; }, 3500);
+}
+
+/* Normalizes and validates movement records */
+function normalizeEntries(list){
+ if(!Array.isArray(list)) return [];
+ return list.map(function(e){
+  return {
+   id: String(e.id || (Date.now() + "_" + Math.random().toString(36).slice(2, 8))),
+   type: e.type === "income" ? "income" : "expense",
+   amount: Math.round((Number(e.amount) || 0) * 100) / 100,
+   description: String(e.description || ""),
+   date: String(e.date || today),
+   need: String(e.need || e.necessity || e.kind || "Necesario")
+  };
+ }).filter(function(e){ return Number.isFinite(e.amount) && e.amount > 0; });
+}
+
+/* Parses serialized or object state safely */
+function parseState(raw){
+ if(!raw) return null;
+ try{
+  var obj = typeof raw === "string" ? JSON.parse(raw) : raw;
+  if(obj && Array.isArray(obj.entries)){
+   return {
+    entries: normalizeEntries(obj.entries),
+    selectedMonth: typeof obj.selectedMonth === "string" && /^\d{4}-\d{2}$/.test(obj.selectedMonth) ? obj.selectedMonth : "",
+    updatedAt: Number(obj.updatedAt) || 0
+   };
+  }
+ }catch(err){}
+ return null;
+}
+
+/* Synchronously loads state from localStorage, sessionStorage, window.name, or legacy keys */
+function loadSync(){
+ var candidates = [];
+ try{
+  var ls = parseState(localStorage.getItem(storageKey));
+  if(ls) candidates.push(ls);
+ }catch(err){}
+
+ try{
+  var ss = parseState(sessionStorage.getItem(storageKey));
+  if(ss) candidates.push(ss);
+ }catch(err){}
+
+ try{
+  if(typeof window.name === "string" && window.name.indexOf("__SANCHEZ_FINANCE__:") === 0){
+   var wn = parseState(window.name.slice("__SANCHEZ_FINANCE__:".length));
+   if(wn) candidates.push(wn);
+  }
+ }catch(err){}
+
+ if(!candidates.length){
+  var legacyKeys = ["kakeibo_neo_fixed_v4", "kakeibo_neo_fixed_v3", "kakeibo_neo_data_v2", "kakeibo_web_v1"];
+  for(var i = 0; i < legacyKeys.length; i++){
+   try{
+    var leg = parseState(localStorage.getItem(legacyKeys[i]));
+    if(leg && leg.entries.length){
+     candidates.push(leg);
+     break;
+    }
+   }catch(err){}
+  }
+ }
+
+ if(candidates.length){
+  candidates.sort(function(a, b){
+   return (b.updatedAt - a.updatedAt) || (b.entries.length - a.entries.length);
+  });
+  var best = candidates[0];
+  data.entries = best.entries;
+  if(best.selectedMonth) data.selectedMonth = best.selectedMonth;
+ }
+}
+
+/* Opens IndexedDB database for asynchronous persistence */
+function openIDB(callback){
+ if(typeof indexedDB === "undefined") return;
+ try{
+  var req = indexedDB.open(dbName, 1);
+  req.onupgradeneeded = function(ev){
+   var db = ev.target.result;
+   if(!db.objectStoreNames.contains(storeName)){
+    db.createObjectStore(storeName);
+   }
+  };
+  req.onsuccess = function(ev){
+   callback(ev.target.result);
+  };
+ }catch(err){}
+}
+
+/* Saves state payload into IndexedDB */
+function saveIDB(payload){
+ openIDB(function(db){
+  try{
+   var tx = db.transaction(storeName, "readwrite");
+   tx.objectStore(storeName).put(payload, storageKey);
+  }catch(err){}
+ });
+}
+
+/* Loads state from IndexedDB and reconciles newer entries if present */
+function loadIDB(){
+ openIDB(function(db){
+  try{
+   var tx = db.transaction(storeName, "readonly");
+   var req = tx.objectStore(storeName).get(storageKey);
+   req.onsuccess = function(){
+    var idbState = parseState(req.result);
+    if(!idbState) return;
+    if(idbState.entries.length > 0 && (data.entries.length === 0 || idbState.updatedAt > (data.updatedAt || 0))){
+     data.entries = idbState.entries;
+     if(idbState.selectedMonth){
+      data.selectedMonth = idbState.selectedMonth;
+      $("month").value = data.selectedMonth;
+     }
+     render();
+     persist(true);
+    }
+   };
+  }catch(err){}
+ });
+}
+
+/* Persists current state across localStorage, sessionStorage, window.name, and IndexedDB */
+function persist(skipIDB){
+ data.selectedMonth = activeMonth();
+ data.updatedAt = Date.now();
+ var serialized = JSON.stringify({
+  entries: data.entries,
+  selectedMonth: data.selectedMonth,
+  updatedAt: data.updatedAt
+ });
+
+ var savedAny = false;
+
+ try{
+  localStorage.setItem(storageKey, serialized);
+  if(localStorage.getItem(storageKey) === serialized) savedAny = true;
+ }catch(err){}
+
+ try{
+  sessionStorage.setItem(storageKey, serialized);
+  if(sessionStorage.getItem(storageKey) === serialized) savedAny = true;
+ }catch(err){}
+
+ try{
+  window.name = "__SANCHEZ_FINANCE__:" + serialized;
+  if(window.name.indexOf("__SANCHEZ_FINANCE__:") === 0) savedAny = true;
+ }catch(err){}
+
+ if(!skipIDB){
+  saveIDB({
+   entries: data.entries,
+   selectedMonth: data.selectedMonth,
+   updatedAt: data.updatedAt
+  });
+ }
+
+ return savedAny;
+}
+
+/* Formats numeric currency in Peruvian Soles */
+function money(n){
+ return "S/ " + Number(n || 0).toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+/* Escapes HTML special characters for safe rendering */
+function safe(s){
+ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+  return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+ });
+}
+
+function activeMonth(){
+ return $("month").value || data.selectedMonth || monthNow;
+}
+
+function monthEntries(){
+ var m = activeMonth();
+ return data.entries.filter(function(e){ return String(e.date).slice(0, 7) === m; });
+}
+
+/* Computes monthly income, expense, and available balance */
+function calculate(){
+ var a = monthEntries(), income = 0, expense = 0;
+ a.forEach(function(e){
+  if(e.type === "income") income += Number(e.amount) || 0;
+  else expense += Number(e.amount) || 0;
+ });
+ return { income: income, expense: expense, balance: income - expense };
+}
+
+/* Updates default consumption type when toggling between expense and income */
+function syncFormType(){
+ var isIncome = $("type").value === "income";
+ $("need").value = isIncome ? "Planificado" : "Necesario";
+}
+
+/* Renders summary cards, balance progress bar, and movement history */
+function render(){
+ var t = calculate();
+
+ $("incomeTotal").textContent = money(t.income);
+ $("expenseTotal").textContent = money(t.expense);
+ $("balanceTotal").textContent = money(t.balance);
+ $("bigBalance").textContent = money(t.balance);
+ $("balanceTotal").className = "v " + (t.balance < 0 ? "pink" : "green");
+ $("bigBalance").className = "balance " + (t.balance < 0 ? "pink" : "green");
+
+ var spend = t.income > 0 ? Math.min(100, (t.expense / t.income) * 100) : (t.expense > 0 ? 100 : 0);
+ $("spendBar").style.width = spend + "%";
+ $("spendPct").textContent = Math.round(spend) + "%";
+ $("balanceMessage").textContent = t.balance < 0
+  ? "⚠ Tus gastos superan tus ingresos en este periodo."
+  : (t.income > 0 ? "✓ Tu saldo está actualizado y bajo control." : "Agrega tus primeros movimientos.");
+
+ var entries = monthEntries().slice().sort(function(a, b){
+  return String(b.date).localeCompare(String(a.date)) || String(b.id).localeCompare(String(a.id));
+ });
+
+ var html = "";
+ entries.forEach(function(e){
+  var label = e.description || (e.type === "income" ? "Ingreso" : "Gasto");
+  html += '<div class="entry">'
+   + '<div><strong>' + safe(label) + '</strong>'
+   + '<small>' + safe(e.date) + ' · ' + (e.type === "income" ? "Ingreso" : "Gasto") + ' · ' + safe(e.need || "") + '</small></div>'
+   + '<div class="entryright">'
+   + '<strong class="' + (e.type === "income" ? "green" : "pink") + '">' + (e.type === "income" ? "+" : "−") + ' ' + money(e.amount) + '</strong>'
+   + '<button type="button" class="btn-del" data-remove="' + safe(e.id) + '">BORRAR</button>'
+   + '</div></div>';
+ });
+ $("list").innerHTML = html || '<div class="empty">No hay movimientos en este mes.</div>';
+}
+
+/* Validates and saves a new movement */
+function addMovement(){
+ var amountField = $("amount");
+ var dateField = $("date");
+ var amount = parseFloat(amountField.value);
+ var date = dateField.value;
+ var type = $("type").value;
+
+ if(!amountField.value.trim() || !Number.isFinite(amount) || amount <= 0){
+  notify("status", "⚠ Escribe un importe válido mayor que cero.", true);
+  amountField.focus();
+  return;
+ }
+ if(!date){
+  notify("status", "⚠ Selecciona la fecha del movimiento.", true);
+  dateField.focus();
+  return;
+ }
+
+ var entry = {
+  id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
+  type: type,
+  amount: Math.round(amount * 100) / 100,
+  description: $("description").value.trim(),
+  date: date,
+  need: $("need").value
+ };
+
+ data.entries.push(entry);
+ $("month").value = date.slice(0, 7);
+ persist();
+ amountField.value = "";
+ $("description").value = "";
+ render();
+ notify("status", "✓ Movimiento guardado correctamente.");
+}
+
+/* Initial load and synchronization */
+loadSync();
+$("month").value = data.selectedMonth || monthNow;
+$("date").value = today;
+syncFormType();
+persist(true);
+loadIDB();
+
+/* Event listeners */
+$("type").addEventListener("change", syncFormType);
+$("add").addEventListener("click", addMovement);
+
+["amount", "date", "type", "description", "need"].forEach(function(id){
+ $(id).addEventListener("keydown", function(event){
+  if(event.key === "Enter"){
+   event.preventDefault();
+   addMovement();
+  }
+ });
+});
+
+$("month").addEventListener("change", function(){
+ persist();
+ render();
+});
+
+window.addEventListener("pagehide", function(){ persist(true); });
+window.addEventListener("beforeunload", function(){ persist(true); });
+
+/* Two-step delete confirmation */
+$("list").addEventListener("click", function(event){
+ var btn = event.target.closest("[data-remove]");
+ if(!btn) return;
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿CONFIRMAR?";
+  setTimeout(function(){
+   if(btn && btn.parentNode){
+    btn.classList.remove("confirming");
+    btn.textContent = "BORRAR";
+   }
+  }, 3000);
+  return;
+ }
+
+ var id = btn.getAttribute("data-remove");
+ data.entries = data.entries.filter(function(e){ return String(e.id) !== String(id); });
+ persist();
+ render();
+ notify("status", "✓ Movimiento eliminado.");
+});
+
+/* Exports active period movements to UTF-8 CSV */
+$("export").addEventListener("click", function(){
+ var current = monthEntries();
+ if(!current.length){
+  notify("exportStatus", "⚠ No hay datos en este mes para exportar.", true);
+  return;
+ }
+ var rows = [["Fecha", "Tipo", "Descripción", "Tipo de consumo", "Importe (S/)"]];
+ current.forEach(function(e){
+  rows.push([
+   e.date,
+   e.type === "income" ? "Ingreso" : "Gasto",
+   e.description || (e.type === "income" ? "Ingreso" : "Gasto"),
+   e.need,
+   e.amount.toFixed(2)
+  ]);
+ });
+ var csv = rows.map(function(row){
+  return row.map(function(v){
+   return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
+  }).join(";");
+ }).join("\r\n");
+
+ var blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+ var url = URL.createObjectURL(blob);
+ var a = document.createElement("a");
+ a.href = url;
+ a.download = "sanchez-finance-" + activeMonth() + ".csv";
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+ notify("exportStatus", "✓ CSV descargado.");
+});
+
+/* Downloads full backup JSON */
+$("backupJson").addEventListener("click", function(){
+ if(!data.entries.length){
+  notify("exportStatus", "⚠ No hay movimientos para respaldar.", true);
+  return;
+ }
+ var backupPayload = JSON.stringify({
+  app: "SANCHEZ // FINANCE",
+  exportedAt: new Date().toISOString(),
+  selectedMonth: activeMonth(),
+  entries: data.entries
+ }, null, 2);
+ var blob = new Blob([backupPayload], { type: "application/json;charset=utf-8" });
+ var url = URL.createObjectURL(blob);
+ var a = document.createElement("a");
+ a.href = url;
+ a.download = "sanchez-finance-respaldo-" + today + ".json";
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+ notify("exportStatus", "✓ Respaldo JSON guardado.");
+});
+
+/* Triggers file picker to restore from JSON backup */
+$("restoreJsonBtn").addEventListener("click", function(){
+ $("restoreJsonFile").click();
+});
+
+$("restoreJsonFile").addEventListener("change", function(event){
+ var file = event.target.files && event.target.files[0];
+ if(!file) return;
+ var reader = new FileReader();
+ reader.onload = function(e){
+  var parsed = parseState(e.target.result);
+  if(!parsed || !parsed.entries.length){
+   notify("exportStatus", "⚠ El archivo JSON no contiene movimientos válidos.", true);
+   $("restoreJsonFile").value = "";
+   return;
+  }
+  data.entries = parsed.entries;
+  if(parsed.selectedMonth){
+   data.selectedMonth = parsed.selectedMonth;
+   $("month").value = data.selectedMonth;
+  }
+  persist();
+  render();
+  $("restoreJsonFile").value = "";
+  notify("exportStatus", "✓ " + data.entries.length + " movimientos restaurados.");
+ };
+ reader.onerror = function(){
+  notify("exportStatus", "⚠ No se pudo leer el archivo.", true);
+  $("restoreJsonFile").value = "";
+ };
+ reader.readAsText(file);
+});
+
+render();
+})();
+</script>
+</body>
+</html>
