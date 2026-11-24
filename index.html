@@ -16,7 +16,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* Design tokens and dark theme palette */
 :root{
   --bg:#060b14;
   --panel:#0e1828;
@@ -63,6 +62,12 @@ header{
   gap:12px;
   flex-wrap:wrap;
 }
+.currency-box{min-width:118px}
+.currency-box select{
+  letter-spacing:0.6px;
+  font-weight:800;
+  color:var(--cyan);
+}
 .brand{
   font-weight:900;
   letter-spacing:2.2px;
@@ -89,7 +94,6 @@ h1{
 .cyan{color:var(--cyan)}
 .intro{color:var(--muted);margin:0 0 28px;font-size:15px}
 
-/* Centered form controls with 1.5px borders and overflow protection */
 input,select,textarea{
   display:block;
   width:100%;
@@ -113,27 +117,36 @@ input,select,textarea{
   box-shadow:inset 0 2px 4px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.03);
   transition:border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
 }
-
-input[type="month"] {
-  position: relative;
+input[type="month"],input[type="date"]{
+  position:relative;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
 }
-
-input[type="month"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: auto;
-  height: auto;
-  color: transparent;
-  background: transparent;
-  cursor: pointer;
+input[type="month"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator{
+  display:none !important;
+  -webkit-appearance:none !important;
+  opacity:0;
+  pointer-events:none;
 }
-
-input,select{
-  height:48px;
+input[type="month"]::-webkit-inner-spin-button,
+input[type="month"]::-webkit-outer-spin-button,
+input[type="month"]::-webkit-clear-button,
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-outer-spin-button,
+input[type="date"]::-webkit-clear-button{
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  display:none !important;
+  margin:0;
 }
+input[type="date"]::-webkit-date-and-time-value,
+input[type="month"]::-webkit-date-and-time-value{
+  text-align:center;
+  margin:0 auto;
+}
+input,select{height:48px}
 input::placeholder,textarea::placeholder{
   color:#607796;
   font-weight:400;
@@ -150,12 +163,6 @@ input:focus,select:focus,textarea:focus{
   border-color:var(--cyan);
   box-shadow:0 0 0 3.5px rgba(85,230,255,0.18), inset 0 1px 3px rgba(0,0,0,0.3);
 }
-input:disabled,select:disabled{
-  opacity:.68;
-  background:#070d17;
-  border-color:var(--line-soft);
-  cursor:not-allowed;
-}
 select{
   appearance:none;
   -webkit-appearance:none;
@@ -164,75 +171,13 @@ select{
   padding-right:16px;
   background-image:none;
 }
-select::-ms-expand{
-  display:none;
-}
+select::-ms-expand{display:none}
 select option{
   background:#0e1828;
   color:var(--txt);
   text-align:center;
 }
-input[type="date"] {
-  position: relative;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: auto;
-  height: auto;
-  color: transparent;
-  background: transparent;
-  cursor: pointer;
-}
-input[type=date]::-webkit-calendar-picker-indicator,
-input[type=month]::-webkit-calendar-picker-indicator{
-  margin-right:6px;
-  cursor:pointer;
-}
-input[type=date]::-webkit-date-and-time-value,
-input[type=month]::-webkit-date-and-time-value{
-  text-align:center;
-  margin:0 auto;
-}
-
-/* Quitar apariencia nativa y flechas internas en móviles (Android / iOS) */
-input[type="date"],
-input[type="month"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  position: relative;
-}
-
-/* Ocultar indicador de calendario o flechas WebKit */
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="month"]::-webkit-calendar-picker-indicator {
-  display: none !important;
-  -webkit-appearance: none !important;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Ocultar flechas arriba/abajo (spinners) y botones internos en Chromium/Android */
-input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-outer-spin-button,
-input[type="date"]::-webkit-clear-button,
-input[type="month"]::-webkit-inner-spin-button,
-input[type="month"]::-webkit-outer-spin-button,
-input[type="month"]::-webkit-clear-button {
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  display: none !important;
-  margin: 0;
-}
-
-input[type=number]{
-  font-variant-numeric:tabular-nums;
-}
+input[type=number]{font-variant-numeric:tabular-nums}
 label{
   display:block;
   color:#a8bed8;
@@ -244,7 +189,6 @@ label{
   text-align:center;
 }
 
-/* Grid and card layout */
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
 .card{
   background:linear-gradient(155deg,rgba(20,36,58,0.94),rgba(11,21,36,0.98));
@@ -299,7 +243,6 @@ h2{font-size:16px;margin:0;font-weight:800;letter-spacing:-0.01em}
 .field{min-width:0}
 .field.span-full{grid-column:1/-1}
 
-/* Buttons and action states */
 button{
   border:0;
   border-radius:11px;
@@ -329,10 +272,7 @@ button{
   color:var(--red);
   border:1.5px solid rgba(255,120,158,0.35);
 }
-.danger-soft:hover{
-  background:rgba(255,120,158,0.2);
-  border-color:var(--red);
-}
+.danger-soft:hover{background:rgba(255,120,158,0.2);border-color:var(--red)}
 .btn-install{
   height:48px;
   padding:0 16px;
@@ -344,14 +284,10 @@ button{
   justify-content:center;
   gap:6px;
 }
-.btn-install:hover{
-  background:rgba(85,230,255,0.22);
-  border-color:var(--cyan);
-}
+.btn-install:hover{background:rgba(85,230,255,0.22);border-color:var(--cyan)}
 button:active{transform:scale(.98)}
 button:disabled{opacity:.5;cursor:not-allowed}
 
-/* Backup and export toolbar */
 .data-actions{
   display:inline-flex;
   align-items:center;
@@ -374,22 +310,14 @@ button:disabled{opacity:.5;cursor:not-allowed}
   border:1px solid transparent;
   line-height:1.2;
 }
-.btn-tool:hover{
-  color:var(--txt);
-  background:#15253c;
-  border-color:var(--line);
-}
+.btn-tool:hover{color:var(--txt);background:#15253c;border-color:var(--line)}
 .btn-tool.export-csv{
   color:var(--cyan);
   background:rgba(85,230,255,0.08);
   border-color:rgba(85,230,255,0.25);
 }
-.btn-tool.export-csv:hover{
-  background:rgba(85,230,255,0.16);
-  border-color:var(--cyan);
-}
+.btn-tool.export-csv:hover{background:rgba(85,230,255,0.16);border-color:var(--cyan)}
 
-/* Minimalist clear / delete controls */
 .btn-clear-min{
   padding:6px 12px;
   font-size:10px;
@@ -403,16 +331,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
   white-space:nowrap;
   flex-shrink:0;
 }
-.btn-clear-min:hover{
-  color:var(--red);
-  background:rgba(255,120,158,0.1);
-  border-color:rgba(255,120,158,0.35);
-}
-.btn-clear-min.confirming{
-  color:var(--red);
-  background:rgba(255,120,158,0.2);
-  border-color:rgba(255,120,158,0.7);
-}
+.btn-clear-min:hover{color:var(--red);background:rgba(255,120,158,0.1);border-color:rgba(255,120,158,0.35)}
+.btn-clear-min.confirming{color:var(--red);background:rgba(255,120,158,0.2);border-color:rgba(255,120,158,0.7)}
 .month-clear-wrap{
   display:flex;
   justify-content:center;
@@ -426,7 +346,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .feedback{font-size:12px;color:var(--green);min-height:18px;font-weight:600}
 .feedback.error{color:var(--red)}
 
-/* Progress bar and balance display */
 .progress{
   height:10px;
   border-radius:20px;
@@ -445,7 +364,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;font-weight:600}
 .balance{font-size:34px;font-weight:900;margin:12px 0;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
 
-/* Compact breakdown by consumption type */
 .need-summary{
   margin-top:16px;
   padding-top:14px;
@@ -463,12 +381,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
   color:var(--muted);
   font-weight:600;
 }
-.need-item strong{
-  color:var(--txt);
-  font-variant-numeric:tabular-nums;
-}
+.need-item strong{color:var(--txt);font-variant-numeric:tabular-nums}
 
-/* History filter bar */
 .filter-bar{
   display:grid;
   grid-template-columns:1fr 190px;
@@ -476,141 +390,14 @@ button:disabled{opacity:.5;cursor:not-allowed}
   margin-bottom:12px;
 }
 
-/* Recurring monthly movements */
-.rec-split{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-  align-items:start;
-}
-.rec-split > div{
-  min-width:0;
-  max-width:100%;
-}
-.rec-summary-bar{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-  margin-bottom:14px;
-  padding:12px;
-  background:rgba(7,14,25,0.55);
-  border:1px solid var(--line-soft);
-  border-radius:12px;
-}
-.rec-pill{
-  text-align:center;
-  min-width:0;
-}
-.rec-pill span{
-  display:block;
-  font-size:10px;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  color:var(--muted);
-  font-weight:700;
-}
-.rec-pill strong{
-  display:block;
-  font-size:14px;
-  margin-top:3px;
-  font-variant-numeric:tabular-nums;
-  overflow-wrap:anywhere;
-}
-.rec-list{
-  max-height:270px;
-  overflow-y:auto;
-  overflow-x:hidden;
-  border-top:1px solid var(--line-soft);
-}
-.rec-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:11px 0;
-  border-bottom:1px solid var(--line-soft);
-  min-width:0;
-}
-.rec-row:last-child{border:0}
-.rec-row.paused{opacity:0.55}
-.rec-info{
-  flex:1 1 auto;
-  min-width:0;
-}
-.rec-info strong{
-  display:block;
-  font-size:13.5px;
-  overflow-wrap:anywhere;
-}
-.rec-info small{
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
-}
-.rec-actions{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  flex-shrink:0;
-}
-.rec-actions strong{
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
-  font-size:13.5px;
-}
-.btn-rec-mini{
-  padding:5px 8px;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:0.3px;
-  border-radius:7px;
-  background:rgba(85,230,255,0.09);
-  color:var(--cyan);
-  border:1px solid rgba(85,230,255,0.28);
-  line-height:1.1;
-  white-space:nowrap;
-}
-.btn-rec-mini:hover{
-  background:rgba(85,230,255,0.18);
-  border-color:var(--cyan);
-}
-.btn-rec-mini.is-paused{
-  background:rgba(149,172,200,0.08);
-  color:var(--muted);
-  border-color:rgba(149,172,200,0.25);
-}
-.badge-rec{
-  display:inline-block;
-  margin-left:6px;
-  padding:1px 6px;
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:0.7px;
-  text-transform:uppercase;
-  border-radius:5px;
-  background:rgba(85,230,255,0.12);
-  color:var(--cyan);
-  border:1px solid rgba(85,230,255,0.28);
-  vertical-align:middle;
-}
-
-/* Free-contribution savings goal helpers */
 .goal-split{
   display:grid;
   grid-template-columns:1.15fr 0.85fr;
   gap:18px;
   align-items:start;
 }
-.goal-split > div{
-  min-width:0;
-  max-width:100%;
-}
-.goal-term-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
+.goal-split > div{min-width:0;max-width:100%}
+.goal-term-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .goal-stats{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -629,11 +416,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   font-weight:600;
   min-width:0;
 }
-.goal-stat-item strong{
-  color:var(--txt);
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
-}
+.goal-stat-item strong{color:var(--txt);font-variant-numeric:tabular-nums;white-space:nowrap}
 .goal-log{
   margin-top:14px;
   max-height:210px;
@@ -653,24 +436,11 @@ button:disabled{opacity:.5;cursor:not-allowed}
   min-width:0;
   max-width:100%;
 }
-.goal-log-row > div:first-child{
-  flex:1 1 auto;
-  min-width:0;
-}
-.goal-log-row > div:first-child strong{
-  display:block;
-  overflow-wrap:anywhere;
-  line-height:1.3;
-}
+.goal-log-row > div:first-child{flex:1 1 auto;min-width:0}
+.goal-log-row > div:first-child strong{display:block;overflow-wrap:anywhere;line-height:1.3}
 .goal-log-row:last-child{border:0}
-.goal-log-row small{
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:2px;
-}
+.goal-log-row small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
 
-/* Movement history list */
 .entries{display:flex;flex-direction:column;max-width:100%}
 .entry{
   display:flex;
@@ -681,28 +451,14 @@ button:disabled{opacity:.5;cursor:not-allowed}
   border-bottom:1px solid var(--line-soft);
   min-width:0;
 }
-.entry > div:first-child{
-  min-width:0;
-  flex:1 1 auto;
-}
-.entry > div:first-child strong{
-  overflow-wrap:anywhere;
-}
+.entry > div:first-child{min-width:0;flex:1 1 auto}
+.entry > div:first-child strong{overflow-wrap:anywhere}
 .entry:last-child{border:0;padding-bottom:2px}
 .entry small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
 .entry strong{font-size:14px}
-.entryright{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-shrink:0;
-}
-.entryright strong{
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
-}
+.entryright{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.entryright strong{font-variant-numeric:tabular-nums;white-space:nowrap}
 
-/* Minimalist row delete icon button */
 .btn-del{
   padding:6px 9px;
   min-width:28px;
@@ -717,10 +473,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   flex-shrink:0;
   white-space:nowrap;
 }
-.btn-del:hover{
-  background:rgba(255,120,158,0.18);
-  border-color:rgba(255,120,158,0.5);
-}
+.btn-del:hover{background:rgba(255,120,158,0.18);border-color:rgba(255,120,158,0.5)}
 .btn-del.confirming{
   padding:6px 10px;
   font-size:10px;
@@ -739,7 +492,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
   border-radius:12px;
 }
 
-/* Footer */
 footer{
   margin-top:38px;
   padding-top:22px;
@@ -747,22 +499,22 @@ footer{
   text-align:center;
 }
 
-/* Responsive layout rules */
 @media(max-width:760px){
   .stat{grid-column:span 4}
   .main,.side{grid-column:1/-1}
-  .goal-split,.rec-split{grid-template-columns:1fr}
+  .goal-split{grid-template-columns:1fr}
 }
 @media(max-width:560px){
   .stat{grid-column:1/-1}
   .filter-bar{grid-template-columns:1fr}
-  .goal-stats,.rec-summary-bar{grid-template-columns:1fr}
+  .goal-stats{grid-template-columns:1fr}
 }
 @media(max-width:480px){
   .wrap{padding:18px 12px 36px}
   header{align-items:stretch;flex-direction:column}
   .head-controls{width:100%}
   .head-controls > div{flex:1}
+  .currency-box{min-width:110px}
   .btn-install{width:100%}
   .cardtop{align-items:flex-start;flex-direction:column}
   .cardtop-actions{width:100%;justify-content:space-between}
@@ -787,6 +539,15 @@ footer{
  </div>
  <div class="head-controls">
   <button type="button" class="btn-install" id="installAppBtn">📲 INSTALAR APP</button>
+  <div class="currency-box">
+   <label for="currency">Moneda</label>
+   <select id="currency" aria-label="Seleccionar moneda">
+    <option value="PEN">S/ · PEN</option>
+    <option value="COP">$ · COP</option>
+    <option value="USD">$ · USD</option>
+    <option value="EUR">€ · EUR</option>
+   </select>
+  </div>
   <div style="min-width:190px">
    <label for="month">Periodo</label>
    <input id="month" type="month">
@@ -804,7 +565,7 @@ footer{
  <div class="card stat"><div class="k">03 / Disponible</div><div class="v green" id="balanceTotal">S/ 0.00</div></div>
 
  <div class="card main">
-  <div class="cardtop"><h2>Registrar movimiento</h2><span class="mini">NUEVA OPERACIÓN</span></div>
+  <div class="cardtop"><h2>Registrar movimiento</h2><span class="mini" id="fxStatusLabel">NUEVA OPERACIÓN</span></div>
   <div class="fields">
    <div class="field">
     <label for="type">Tipo</label>
@@ -814,8 +575,8 @@ footer{
     </select>
    </div>
    <div class="field">
-    <label for="amount">MONTO</label>
-    <input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/150.00">
+    <label for="amount" id="amountLabel">MONTO (S/)</label>
+    <input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/ 150.00">
    </div>
    <div class="field" id="dateField">
     <label for="date">Fecha</label>
@@ -854,66 +615,6 @@ footer{
 
  <div class="card full">
   <div class="cardtop">
-   <h2>Movimientos recurrentes</h2>
-   <div class="cardtop-actions">
-    <span class="mini" id="recCountBadge">0 PLANTILLAS</span>
-    <button type="button" class="btn-clear-min" id="applyRecurringMonthBtn" title="Aplicar ahora todos los recurrentes activos al periodo seleccionado">↻ Aplicar al periodo</button>
-   </div>
-  </div>
-  <div class="rec-split">
-   <div>
-    <div class="fields">
-     <div class="field">
-      <label for="recType">Tipo</label>
-      <select id="recType">
-       <option value="income">Ingreso fijo</option>
-       <option value="expense">Gasto fijo</option>
-      </select>
-     </div>
-     <div class="field">
-      <label for="recAmount">Monto fijo</label>
-      <input id="recAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/1200.00">
-     </div>
-     <div class="field" id="recDayField">
-      <label for="recDay">Día del mes (1 - 31)</label>
-      <input id="recDay" type="number" min="1" max="31" step="1" inputmode="numeric" value="1" placeholder="Ej. 15">
-     </div>
-     <div class="field" id="recNeedField">
-      <label for="recNeed">Tipo de consumo</label>
-      <select id="recNeed">
-       <option value="Necesario">Necesario</option>
-       <option value="Planificado">Planificado</option>
-       <option value="Deseo">Deseo</option>
-       <option value="Meta">Meta</option>
-       <option value="Imprevisto">Imprevisto</option>
-      </select>
-     </div>
-     <div class="field span-full">
-      <label for="recDescription">Descripción</label>
-      <input id="recDescription" type="text" maxlength="80" placeholder="Ej. Sueldo, alquiler, internet, gimnasio">
-     </div>
-    </div>
-    <div class="actions">
-     <button type="button" class="primary" id="addRecurring">＋ GUARDAR RECURRENTE</button>
-     <span id="recStatus" class="feedback" role="status" aria-live="polite"></span>
-    </div>
-   </div>
-
-   <div>
-    <div class="rec-summary-bar">
-     <div class="rec-pill"><span>Ingresos fijos</span><strong class="cyan" id="recFixedIncome">S/ 0.00</strong></div>
-     <div class="rec-pill"><span>Gastos fijos</span><strong class="pink" id="recFixedExpense">S/ 0.00</strong></div>
-     <div class="rec-pill"><span>Flujo fijo neto</span><strong class="green" id="recFixedNet">S/ 0.00</strong></div>
-    </div>
-    <div class="rec-list" id="recurringList">
-     <div class="empty">Configura ingresos fijos (sueldo, honorarios) o gastos fijos mensuales para repetirlos automáticamente cada periodo.</div>
-    </div>
-   </div>
-  </div>
- </div>
-
- <div class="card full">
-  <div class="cardtop">
    <h2>Meta de ahorro</h2>
    <div class="cardtop-actions">
     <span class="mini" id="goalBadge">APORTE LIBRE</span>
@@ -930,7 +631,7 @@ footer{
      </div>
      <div class="field">
       <label for="goalTarget">Monto objetivo</label>
-      <input id="goalTarget" type="number" min="1" step="0.01" inputmode="decimal" placeholder="S/5.000.00">
+      <input id="goalTarget" type="number" min="1" step="0.01" inputmode="decimal" placeholder="S/ 5,000.00">
      </div>
      <div class="field span-full">
       <label for="goalTermValue">Plazo elegido</label>
@@ -951,7 +652,7 @@ footer{
     <div class="fields" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
      <div class="field">
       <label for="goalContribAmount">Monto de aporte / retiro</label>
-      <input id="goalContribAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/100.00">
+      <input id="goalContribAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/ 100.00">
      </div>
      <div class="field">
       <label for="goalContribNote">Nota (opcional)</label>
@@ -1019,7 +720,6 @@ footer{
 (function(){
 "use strict";
 
-/* Generates PNG icons via Canvas, injects valid Chrome PWA Manifest, and handles install prompt */
 (function setupPWA(){
  try{
   function createPngIcon(size){
@@ -1128,6 +828,53 @@ var storageKey = "sanchez_finance_v1";
 var dbName = "SanchezFinanceDB";
 var storeName = "appState";
 
+/* Valor de 1 unidad de cada moneda expresado en USD como pivote interno */
+var DEFAULT_USD_PER_UNIT = {
+ USD: 1,
+ PEN: 0.27,
+ EUR: 1.09684,
+ COP: 0.000266
+};
+
+var CURRENCIES = {
+ PEN: {
+  code: "PEN",
+  symbol: "S/",
+  locale: "es-PE",
+  decimals: 2,
+  step: "0.01",
+  min: "0.01",
+  placeholders: { amount: "S/ 150.00", target: "S/ 5,000.00", contrib: "S/ 100.00" }
+ },
+ COP: {
+  code: "COP",
+  symbol: "$",
+  locale: "es-CO",
+  decimals: 0,
+  step: "1",
+  min: "1",
+  placeholders: { amount: "$ 50.000", target: "$ 5.000.000", contrib: "$ 100.000" }
+ },
+ USD: {
+  code: "USD",
+  symbol: "$",
+  locale: "en-US",
+  decimals: 2,
+  step: "0.01",
+  min: "0.01",
+  placeholders: { amount: "$ 150.00", target: "$ 5,000.00", contrib: "$ 100.00" }
+ },
+ EUR: {
+  code: "EUR",
+  symbol: "€",
+  locale: "es-ES",
+  decimals: 2,
+  step: "0.01",
+  min: "0.01",
+  placeholders: { amount: "€ 150,00", target: "€ 5.000,00", contrib: "€ 100,00" }
+ }
+};
+
 function defaultGoal(){
  return {
   name: "",
@@ -1140,10 +887,118 @@ function defaultGoal(){
  };
 }
 
-var data = { entries: [], selectedMonth: monthNow, goal: defaultGoal(), recurring: [] };
+var data = {
+ entries: [],
+ selectedMonth: monthNow,
+ currency: "PEN",
+ usdPerUnit: Object.assign({}, DEFAULT_USD_PER_UNIT),
+ goal: defaultGoal()
+};
 var timers = {};
+var fxFetchInFlight = false;
 
-/* Displays temporary status feedback without using browser alert/confirm */
+function normalizeRates(raw){
+ var out = Object.assign({}, DEFAULT_USD_PER_UNIT);
+ if(!raw || typeof raw !== "object") return out;
+ ["PEN", "COP", "USD", "EUR"].forEach(function(code){
+  var v = Number(raw[code]);
+  if(Number.isFinite(v) && v > 0) out[code] = v;
+ });
+ return out;
+}
+
+function getConversionFactor(fromCode, toCode){
+ if(!fromCode || !toCode || fromCode === toCode) return 1;
+ var rates = normalizeRates(data.usdPerUnit);
+ var fromUsd = rates[fromCode] || DEFAULT_USD_PER_UNIT[fromCode] || 1;
+ var toUsd = rates[toCode] || DEFAULT_USD_PER_UNIT[toCode] || 1;
+ return fromUsd / toUsd;
+}
+
+function roundForCurrency(amount, code){
+ var cur = CURRENCIES[code] || CURRENCIES.PEN;
+ var factor = Math.pow(10, cur.decimals);
+ return Math.round((Number(amount) || 0) * factor) / factor;
+}
+
+/* Convierte al instante todos los movimientos y la meta de ahorro al cambiar de moneda */
+function convertAllAmounts(fromCode, toCode){
+ var ratio = getConversionFactor(fromCode, toCode);
+ if(Math.abs(ratio - 1) < 1e-12) return;
+
+ data.entries = data.entries.map(function(e){
+  var converted = roundForCurrency((Number(e.amount) || 0) * ratio, toCode);
+  return Object.assign({}, e, {
+   amount: converted > 0 ? converted : (Number(e.amount) || 0) * ratio
+  });
+ });
+
+ var g = normalizeGoal(data.goal);
+ g.target = roundForCurrency(g.target * ratio, toCode);
+ g.saved = roundForCurrency(g.saved * ratio, toCode);
+ g.contributions = g.contributions.map(function(c){
+  var cAmt = roundForCurrency((Number(c.amount) || 0) * ratio, toCode);
+  return Object.assign({}, c, {
+   amount: cAmt > 0 ? cAmt : (Number(c.amount) || 0) * ratio
+  });
+ });
+ data.goal = g;
+}
+
+/* Consulta tasas en vivo desde open.er-api.com y reajusta si cambia la tasa */
+function refreshLiveRates(onDone){
+ if(fxFetchInFlight || typeof fetch !== "function"){
+  if(typeof onDone === "function") onDone();
+  return;
+ }
+ fxFetchInFlight = true;
+ fetch("https://open.er-api.com/v6/latest/USD")
+  .then(function(res){ return res.ok ? res.json() : null; })
+  .then(function(json){
+   if(json && json.rates){
+    var nextRates = Object.assign({}, data.usdPerUnit);
+    ["PEN", "COP", "USD", "EUR"].forEach(function(code){
+     var perUsd = Number(json.rates[code]);
+     if(Number.isFinite(perUsd) && perUsd > 0){
+      nextRates[code] = 1 / perUsd;
+     }
+    });
+    data.usdPerUnit = normalizeRates(nextRates);
+    persist();
+   }
+  })
+  .catch(function(){})
+  .finally(function(){
+   fxFetchInFlight = false;
+   if(typeof onDone === "function") onDone();
+  });
+}
+
+function activeCurrency(){
+ var code = ($("currency") && $("currency").value) || data.currency || "PEN";
+ return CURRENCIES[code] ? CURRENCIES[code] : CURRENCIES.PEN;
+}
+
+function syncCurrencyUI(){
+ var cur = activeCurrency();
+ if($("currency")) $("currency").value = cur.code;
+ if($("amountLabel")) $("amountLabel").textContent = "MONTO (" + cur.symbol + ")";
+ if($("amount")){
+  $("amount").placeholder = cur.placeholders.amount;
+  $("amount").step = cur.step;
+  $("amount").min = cur.min;
+ }
+ if($("goalTarget")){
+  $("goalTarget").placeholder = cur.placeholders.target;
+  $("goalTarget").step = cur.step;
+ }
+ if($("goalContribAmount")){
+  $("goalContribAmount").placeholder = cur.placeholders.contrib;
+  $("goalContribAmount").step = cur.step;
+  $("goalContribAmount").min = cur.min;
+ }
+}
+
 function notify(id, message, isError){
  var el = $(id);
  if(!el) return;
@@ -1153,7 +1008,6 @@ function notify(id, message, isError){
  timers[id] = setTimeout(function(){ el.textContent = ""; }, 3500);
 }
 
-/* Normalizes and validates movement records */
 function normalizeEntries(list){
  if(!Array.isArray(list)) return [];
  return list.map(function(e){
@@ -1164,13 +1018,11 @@ function normalizeEntries(list){
    amount: Math.round((Number(e.amount) || 0) * 100) / 100,
    description: String(e.description || ""),
    date: String(e.date || today),
-   need: isInc ? "" : String(e.need || e.necessity || e.kind || "Necesario"),
-   recurringId: e.recurringId ? String(e.recurringId) : ""
+   need: isInc ? "" : String(e.need || e.necessity || e.kind || "Necesario")
   };
  }).filter(function(e){ return Number.isFinite(e.amount) && e.amount > 0; });
 }
 
-/* Normalizes free-contribution savings goal object */
 function normalizeGoal(rawGoal){
  var base = defaultGoal();
  if(!rawGoal || typeof rawGoal !== "object") return base;
@@ -1199,87 +1051,6 @@ function normalizeGoal(rawGoal){
  };
 }
 
-/* Normalizes recurring monthly movement templates */
-function normalizeRecurring(list){
- if(!Array.isArray(list)) return [];
- return list.map(function(r){
-  var isInc = r.type === "income";
-  var day = Math.max(1, Math.min(31, Math.round(Number(r.day) || 1)));
-  return {
-   id: String(r.id || ("rec_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8))),
-   type: isInc ? "income" : "expense",
-   amount: Math.round((Number(r.amount) || 0) * 100) / 100,
-   description: String(r.description || "").slice(0, 80),
-   day: day,
-   need: isInc ? "" : String(r.need || "Necesario"),
-   active: r.active !== false,
-   startMonth: /^\d{4}-\d{2}$/.test(String(r.startMonth || "")) ? String(r.startMonth) : monthNow,
-   skippedMonths: Array.isArray(r.skippedMonths) ? r.skippedMonths.filter(function(m){ return /^\d{4}-\d{2}$/.test(String(m)); }) : []
-  };
- }).filter(function(r){ return Number.isFinite(r.amount) && r.amount > 0; });
-}
-
-/* Builds a valid YYYY-MM-DD date clamping day to the last day of the given month */
-function buildMonthDate(ym, day){
- var parts = String(ym || monthNow).split("-").map(Number);
- var y = parts[0] || dateNow.getFullYear();
- var m = parts[1] || (dateNow.getMonth() + 1);
- var maxDay = new Date(y, m, 0).getDate();
- var safeDay = Math.max(1, Math.min(maxDay, Math.round(Number(day) || 1)));
- return String(y).padStart(4, "0") + "-" + String(m).padStart(2, "0") + "-" + String(safeDay).padStart(2, "0");
-}
-
-/* Materializes active recurring templates into the target month if not yet generated or manually skipped */
-function ensureRecurringForMonth(ym, forceIncludeSkipped){
- var targetMonth = /^\d{4}-\d{2}$/.test(String(ym || "")) ? String(ym) : activeMonth();
- data.recurring = normalizeRecurring(data.recurring);
- var added = 0;
-
- data.recurring.forEach(function(rec){
-  if(!rec.active) return;
-  if(!forceIncludeSkipped && rec.startMonth && targetMonth < rec.startMonth) return;
-  if(!forceIncludeSkipped && rec.skippedMonths.indexOf(targetMonth) !== -1) return;
-
-  if(forceIncludeSkipped && rec.skippedMonths.indexOf(targetMonth) !== -1){
-   rec.skippedMonths = rec.skippedMonths.filter(function(m){ return m !== targetMonth; });
-  }
-
-  var exists = data.entries.some(function(e){
-   return String(e.recurringId || "") === rec.id && String(e.date).slice(0, 7) === targetMonth;
-  });
-  if(exists) return;
-
-  var entryDate = buildMonthDate(targetMonth, rec.day);
-  var newEntry = {
-   id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
-   type: rec.type,
-   amount: rec.amount,
-   description: rec.description || (rec.type === "income" ? "Ingreso fijo" : "Gasto fijo"),
-   date: entryDate,
-   need: rec.type === "income" ? "" : (rec.need || "Necesario"),
-   recurringId: rec.id
-  };
-  data.entries.push(newEntry);
-  added++;
-
-  if(rec.type === "expense" && rec.need === "Meta"){
-   var g = normalizeGoal(data.goal);
-   g.saved = Math.round((g.saved + rec.amount) * 100) / 100;
-   g.contributions.push({
-    id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
-    kind: "deposit",
-    amount: rec.amount,
-    note: (rec.description || "Gasto fijo") + " (" + targetMonth + ")",
-    date: entryDate
-   });
-   data.goal = g;
-  }
- });
-
- return added;
-}
-
-/* Parses serialized or object state safely */
 function parseState(raw){
  if(!raw) return null;
  try{
@@ -1288,8 +1059,9 @@ function parseState(raw){
    return {
     entries: normalizeEntries(obj.entries),
     selectedMonth: typeof obj.selectedMonth === "string" && /^\d{4}-\d{2}$/.test(obj.selectedMonth) ? obj.selectedMonth : "",
+    currency: CURRENCIES[obj.currency] ? obj.currency : "PEN",
+    usdPerUnit: normalizeRates(obj.usdPerUnit),
     goal: normalizeGoal(obj.goal),
-    recurring: normalizeRecurring(obj.recurring),
     updatedAt: Number(obj.updatedAt) || 0
    };
   }
@@ -1297,7 +1069,6 @@ function parseState(raw){
  return null;
 }
 
-/* Synchronously loads state from localStorage, sessionStorage, window.name, or legacy keys */
 function loadSync(){
  var candidates = [];
  try{
@@ -1337,12 +1108,12 @@ function loadSync(){
   var best = candidates[0];
   data.entries = best.entries;
   data.goal = best.goal || defaultGoal();
-  data.recurring = normalizeRecurring(best.recurring);
+  data.usdPerUnit = normalizeRates(best.usdPerUnit);
+  if(best.currency && CURRENCIES[best.currency]) data.currency = best.currency;
   if(best.selectedMonth) data.selectedMonth = best.selectedMonth;
  }
 }
 
-/* Opens IndexedDB database for asynchronous persistence */
 function openIDB(callback){
  if(typeof indexedDB === "undefined") return;
  try{
@@ -1359,7 +1130,6 @@ function openIDB(callback){
  }catch(err){}
 }
 
-/* Saves state payload into IndexedDB */
 function saveIDB(payload){
  openIDB(function(db){
   try{
@@ -1369,7 +1139,6 @@ function saveIDB(payload){
  });
 }
 
-/* Loads state from IndexedDB and reconciles newer entries if present */
 function loadIDB(){
  openIDB(function(db){
   try{
@@ -1378,15 +1147,18 @@ function loadIDB(){
    req.onsuccess = function(){
     var idbState = parseState(req.result);
     if(!idbState) return;
-    if((idbState.entries.length > 0 || (idbState.recurring && idbState.recurring.length > 0) || (idbState.goal && idbState.goal.target > 0)) && (data.entries.length === 0 || idbState.updatedAt > (data.updatedAt || 0))){
+    if((idbState.entries.length > 0 || (idbState.goal && idbState.goal.target > 0)) && (data.entries.length === 0 || idbState.updatedAt > (data.updatedAt || 0))){
      data.entries = idbState.entries;
      data.goal = normalizeGoal(idbState.goal);
-     data.recurring = normalizeRecurring(idbState.recurring);
+     data.usdPerUnit = normalizeRates(idbState.usdPerUnit);
+     if(idbState.currency && CURRENCIES[idbState.currency]){
+      data.currency = idbState.currency;
+     }
      if(idbState.selectedMonth){
       data.selectedMonth = idbState.selectedMonth;
       $("month").value = data.selectedMonth;
      }
-     ensureRecurringForMonth(activeMonth(), false);
+     syncCurrencyUI();
      syncGoalInputs();
      render();
      persist(true);
@@ -1396,15 +1168,17 @@ function loadIDB(){
  });
 }
 
-/* Persists current state across localStorage, sessionStorage, window.name, and IndexedDB */
 function persist(skipIDB){
  data.selectedMonth = activeMonth();
+ data.currency = activeCurrency().code;
+ data.usdPerUnit = normalizeRates(data.usdPerUnit);
  data.updatedAt = Date.now();
  var serialized = JSON.stringify({
   entries: data.entries,
   selectedMonth: data.selectedMonth,
+  currency: data.currency,
+  usdPerUnit: data.usdPerUnit,
   goal: data.goal,
-  recurring: data.recurring,
   updatedAt: data.updatedAt
  });
 
@@ -1429,8 +1203,9 @@ function persist(skipIDB){
   saveIDB({
    entries: data.entries,
    selectedMonth: data.selectedMonth,
+   currency: data.currency,
+   usdPerUnit: data.usdPerUnit,
    goal: data.goal,
-   recurring: data.recurring,
    updatedAt: data.updatedAt
   });
  }
@@ -1438,12 +1213,14 @@ function persist(skipIDB){
  return savedAny;
 }
 
-/* Formats numeric currency in Peruvian Soles */
 function money(n){
- return "S/ " + Number(n || 0).toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+ var cur = activeCurrency();
+ return cur.symbol + " " + Number(n || 0).toLocaleString(cur.locale, {
+  minimumFractionDigits: cur.decimals,
+  maximumFractionDigits: cur.decimals
+ });
 }
 
-/* Escapes HTML special characters for safe rendering */
 function safe(s){
  return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
   return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -1459,7 +1236,6 @@ function monthEntries(){
  return data.entries.filter(function(e){ return String(e.date).slice(0, 7) === m; });
 }
 
-/* Filters month entries by active search query and movement type */
 function filteredMonthEntries(){
  var q = ($("searchFilter") ? $("searchFilter").value : "").trim().toLowerCase();
  var tf = $("typeFilter") ? $("typeFilter").value : "all";
@@ -1473,7 +1249,6 @@ function filteredMonthEntries(){
  });
 }
 
-/* Computes monthly income, expense, and available balance */
 function calculate(){
  var a = monthEntries(), income = 0, expense = 0;
  a.forEach(function(e){
@@ -1483,7 +1258,6 @@ function calculate(){
  return { income: income, expense: expense, balance: income - expense };
 }
 
-/* Renders breakdown totals by consumption type for expenses in the active period */
 function renderNeedSummary(entries){
  var box = $("needSummary");
  if(!box) return;
@@ -1499,7 +1273,6 @@ function renderNeedSummary(entries){
  }).join("");
 }
 
-/* Populates goal configuration inputs from stored goal */
 function syncGoalInputs(){
  var g = data.goal || defaultGoal();
  $("goalName").value = g.name || "";
@@ -1508,7 +1281,6 @@ function syncGoalInputs(){
  $("goalTermUnit").value = g.termUnit || "months";
 }
 
-/* Computes total months and remaining months from goal start date */
 function getGoalMonthsInfo(g){
  var totalMonths = g.termUnit === "years" ? (g.termValue * 12) : g.termValue;
  var startParts = String(g.startDate || today).split("-").map(Number);
@@ -1523,7 +1295,6 @@ function getGoalMonthsInfo(g){
  return { totalMonths: totalMonths, remainingMonths: remainingMonths };
 }
 
-/* Recomputes total goal saved balance from contribution entries */
 function recalculateGoalSaved(g){
  var sum = 0;
  g.contributions.forEach(function(c){
@@ -1533,7 +1304,6 @@ function recalculateGoalSaved(g){
  g.saved = Math.max(0, Math.round(sum * 100) / 100);
 }
 
-/* Renders free-contribution savings goal progress, remaining time, and log */
 function renderGoal(){
  var g = normalizeGoal(data.goal);
  data.goal = g;
@@ -1554,7 +1324,7 @@ function renderGoal(){
 
  if(!hasTarget){
   $("goalTimeLeftLabel").textContent = "—";
-  $("goalRefMonthlyLabel").textContent = "S/ 0.00";
+  $("goalRefMonthlyLabel").textContent = money(0);
   $("goalTotalTermLabel").textContent = "—";
  }else{
   $("goalTimeLeftLabel").textContent = termInfo.remainingMonths + (termInfo.remainingMonths === 1 ? " mes" : " meses");
@@ -1583,109 +1353,6 @@ function renderGoal(){
  }).join("");
 }
 
-/* Shows consumption type only for recurring expenses */
-function syncRecurringFormType(){
- var isIncome = $("recType").value === "income";
- var needField = $("recNeedField");
- var dayField = $("recDayField");
- if(isIncome){
-  needField.style.display = "none";
-  dayField.classList.add("span-full");
- }else{
-  needField.style.display = "";
-  dayField.classList.remove("span-full");
-  if(!$("recNeed").value) $("recNeed").value = "Necesario";
- }
-}
-
-/* Renders recurring templates list and fixed monthly summary */
-function renderRecurring(){
- data.recurring = normalizeRecurring(data.recurring);
- var list = data.recurring;
- var incSum = 0, expSum = 0;
-
- list.forEach(function(r){
-  if(!r.active) return;
-  if(r.type === "income") incSum += r.amount;
-  else expSum += r.amount;
- });
-
- var net = incSum - expSum;
- $("recCountBadge").textContent = list.length + (list.length === 1 ? " PLANTILLA" : " PLANTILLAS");
- $("recFixedIncome").textContent = money(incSum);
- $("recFixedExpense").textContent = money(expSum);
- $("recFixedNet").textContent = money(net);
- $("recFixedNet").className = net < 0 ? "pink" : "green";
-
- var container = $("recurringList");
- if(!list.length){
-  container.innerHTML = '<div class="empty">Configura ingresos fijos (sueldo, honorarios) o gastos fijos mensuales para repetirlos automáticamente cada periodo.</div>';
-  return;
- }
-
- var sorted = list.slice().sort(function(a, b){
-  return (a.day - b.day) || String(a.description).localeCompare(String(b.description));
- });
-
- container.innerHTML = sorted.map(function(r){
-  var isInc = r.type === "income";
-  var title = r.description || (isInc ? "Ingreso fijo" : "Gasto fijo");
-  var statusTxt = r.active ? "Activo" : "Pausado";
-  var sub = "Día " + r.day + " de cada mes · " + (isInc ? "Ingreso fijo" : ("Gasto fijo" + (r.need ? " · " + safe(r.need) : ""))) + " · " + statusTxt;
-  return '<div class="rec-row' + (r.active ? "" : " paused") + '">'
-   + '<div class="rec-info"><strong>' + safe(title) + '</strong><small>' + sub + '</small></div>'
-   + '<div class="rec-actions">'
-   + '<strong class="' + (isInc ? "green" : "pink") + '">' + (isInc ? "+" : "−") + ' ' + money(r.amount) + '</strong>'
-   + '<button type="button" class="btn-rec-mini' + (r.active ? "" : " is-paused") + '" data-rec-toggle="' + safe(r.id) + '" title="' + (r.active ? "Pausar repetición mensual" : "Reactivar repetición mensual") + '">' + (r.active ? "Pausar" : "Activar") + '</button>'
-   + '<button type="button" class="btn-del" data-rec-remove="' + safe(r.id) + '" title="Eliminar plantilla recurrente" aria-label="Eliminar plantilla">✕</button>'
-   + '</div></div>';
- }).join("");
-}
-
-/* Validates and creates a new recurring monthly movement template */
-function addRecurringTemplate(){
- var amountField = $("recAmount");
- var dayField = $("recDay");
- var amount = parseFloat(amountField.value);
- var day = parseInt(dayField.value, 10);
- var type = $("recType").value === "income" ? "income" : "expense";
- var need = type === "income" ? "" : $("recNeed").value;
- var desc = $("recDescription").value.trim();
-
- if(!amountField.value.trim() || !Number.isFinite(amount) || amount <= 0){
-  notify("recStatus", "⚠ Escribe un monto fijo válido mayor que cero.", true);
-  amountField.focus();
-  return;
- }
- if(!Number.isFinite(day) || day < 1 || day > 31){
-  notify("recStatus", "⚠ El día del mes debe estar entre 1 y 31.", true);
-  dayField.focus();
-  return;
- }
-
- var curMonth = activeMonth();
- var rec = {
-  id: "rec_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
-  type: type,
-  amount: Math.round(amount * 100) / 100,
-  description: desc || (type === "income" ? "Ingreso fijo" : "Gasto fijo"),
-  day: day,
-  need: need,
-  active: true,
-  startMonth: curMonth,
-  skippedMonths: []
- };
-
- data.recurring.push(rec);
- ensureRecurringForMonth(curMonth, false);
- persist();
- amountField.value = "";
- $("recDescription").value = "";
- render();
- notify("recStatus", "✓ Recurrente guardado y aplicado a " + curMonth + ".");
-}
-
-/* Shows consumption type only for expenses and hides it for incomes */
 function syncFormType(){
  var isIncome = $("type").value === "income";
  var needField = $("needField");
@@ -1701,8 +1368,8 @@ function syncFormType(){
  }
 }
 
-/* Renders summary cards, balance progress bar, consumption breakdown, goal, and movement history */
 function render(){
+ syncCurrencyUI();
  var allMonth = monthEntries();
  var t = calculate();
 
@@ -1721,7 +1388,6 @@ function render(){
   : (t.income > 0 ? "✓ Tu saldo está actualizado y bajo control." : "Agrega tus primeros movimientos.");
 
  renderNeedSummary(allMonth);
- renderRecurring();
  renderGoal();
 
  var entries = filteredMonthEntries().slice().sort(function(a, b){
@@ -1731,12 +1397,11 @@ function render(){
  var html = "";
  entries.forEach(function(e){
   var label = e.description || (e.type === "income" ? "Ingreso" : "Gasto");
-  var recBadge = e.recurringId ? '<span class="badge-rec">Recurrente</span>' : '';
   var metaInfo = e.type === "income"
    ? (safe(e.date) + ' · Ingreso')
    : (safe(e.date) + ' · Gasto' + (e.need ? ' · ' + safe(e.need) : ''));
   html += '<div class="entry">'
-   + '<div><strong>' + safe(label) + recBadge + '</strong>'
+   + '<div><strong>' + safe(label) + '</strong>'
    + '<small>' + metaInfo + '</small></div>'
    + '<div class="entryright">'
    + '<strong class="' + (e.type === "income" ? "green" : "pink") + '">' + (e.type === "income" ? "+" : "−") + ' ' + money(e.amount) + '</strong>'
@@ -1746,7 +1411,6 @@ function render(){
  $("list").innerHTML = html || '<div class="empty">' + (allMonth.length ? "No hay movimientos que coincidan con el filtro." : "No hay movimientos en este mes.") + '</div>';
 }
 
-/* Validates and saves a new movement */
 function addMovement(){
  var amountField = $("amount");
  var dateField = $("date");
@@ -1767,7 +1431,7 @@ function addMovement(){
   return;
  }
 
- var roundedAmount = Math.round(amount * 100) / 100;
+ var roundedAmount = roundForCurrency(amount, activeCurrency().code);
  var entry = {
   id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
   type: type,
@@ -1781,7 +1445,7 @@ function addMovement(){
 
  if(type === "expense" && need === "Meta"){
   var g = normalizeGoal(data.goal);
-  g.saved = Math.round((g.saved + roundedAmount) * 100) / 100;
+  g.saved = roundForCurrency(g.saved + roundedAmount, activeCurrency().code);
   g.contributions.push({
    id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
    kind: "deposit",
@@ -1800,7 +1464,6 @@ function addMovement(){
  notify("status", type === "expense" && need === "Meta" ? "✓ Movimiento guardado y sumado a la meta." : "✓ Movimiento guardado correctamente.");
 }
 
-/* Saves savings goal configuration without resetting accumulated savings */
 function saveGoalConfig(){
  var target = parseFloat($("goalTarget").value);
  var termVal = parseInt($("goalTermValue").value, 10);
@@ -1822,7 +1485,7 @@ function saveGoalConfig(){
  var termChanged = prev.termValue !== termVal || prev.termUnit !== termUnit;
  data.goal = {
   name: name,
-  target: Math.round(target * 100) / 100,
+  target: roundForCurrency(target, activeCurrency().code),
   termValue: termVal,
   termUnit: termUnit,
   startDate: (prev.target > 0 && !termChanged) ? prev.startDate : today,
@@ -1835,7 +1498,6 @@ function saveGoalConfig(){
  notify("goalConfigStatus", "✓ Meta guardada.");
 }
 
-/* Registers a voluntary deposit or withdrawal on the savings goal */
 function applyGoalContribution(kind){
  var amtField = $("goalContribAmount");
  var amt = parseFloat(amtField.value);
@@ -1847,7 +1509,8 @@ function applyGoalContribution(kind){
   return;
  }
 
- var rounded = Math.round(amt * 100) / 100;
+ var curCode = activeCurrency().code;
+ var rounded = roundForCurrency(amt, curCode);
  var g = normalizeGoal(data.goal);
 
  if(kind === "withdraw"){
@@ -1855,9 +1518,9 @@ function applyGoalContribution(kind){
    notify("goalContribStatus", "⚠ El retiro supera lo ahorrado en la meta.", true);
    return;
   }
-  g.saved = Math.round((g.saved - rounded) * 100) / 100;
+  g.saved = roundForCurrency(g.saved - rounded, curCode);
  }else{
-  g.saved = Math.round((g.saved + rounded) * 100) / 100;
+  g.saved = roundForCurrency(g.saved + rounded, curCode);
  }
 
  g.contributions.push({
@@ -1876,18 +1539,35 @@ function applyGoalContribution(kind){
  notify("goalContribStatus", kind === "withdraw" ? "✓ Retiro registrado." : "✓ Aporte sumado a la meta.");
 }
 
-/* Initial load and synchronization */
 loadSync();
+$("currency").value = data.currency || "PEN";
 $("month").value = data.selectedMonth || monthNow;
 $("date").value = today;
-ensureRecurringForMonth(activeMonth(), false);
+syncCurrencyUI();
 syncFormType();
-syncRecurringFormType();
 syncGoalInputs();
 persist(true);
 loadIDB();
+refreshLiveRates(function(){ render(); });
 
-/* Event listeners */
+/* Al cambiar de moneda, obtiene tasas actualizadas y convierte todos los montos al instante */
+$("currency").addEventListener("change", function(){
+ var prevCode = data.currency || "PEN";
+ var nextCode = $("currency").value;
+ if(prevCode === nextCode) return;
+
+ if($("fxStatusLabel")) $("fxStatusLabel").textContent = "CONVIRTIENDO...";
+ refreshLiveRates(function(){
+  convertAllAmounts(prevCode, nextCode);
+  data.currency = nextCode;
+  syncGoalInputs();
+  persist();
+  render();
+  if($("fxStatusLabel")) $("fxStatusLabel").textContent = "NUEVA OPERACIÓN";
+  notify("status", "✓ Convertido de " + prevCode + " a " + nextCode + ".");
+ });
+});
+
 $("type").addEventListener("change", syncFormType);
 $("add").addEventListener("click", addMovement);
 $("saveGoalConfig").addEventListener("click", saveGoalConfig);
@@ -1916,12 +1596,8 @@ if($("goalContribAmount")){
 });
 
 $("month").addEventListener("change", function(){
- var addedRec = ensureRecurringForMonth(activeMonth(), false);
  persist();
  render();
- if(addedRec > 0){
-  notify("status", "↻ " + addedRec + (addedRec === 1 ? " movimiento recurrente aplicado." : " movimientos recurrentes aplicados."));
- }
 });
 
 $("searchFilter").addEventListener("input", render);
@@ -1930,7 +1606,6 @@ $("typeFilter").addEventListener("change", render);
 window.addEventListener("pagehide", function(){ persist(true); });
 window.addEventListener("beforeunload", function(){ persist(true); });
 
-/* Resets any pending delete confirmation on Escape */
 document.addEventListener("keydown", function(event){
  if(event.key === "Escape"){
   var pending = document.querySelectorAll(".btn-del.confirming");
@@ -1961,7 +1636,6 @@ document.addEventListener("keydown", function(event){
  }
 });
 
-/* Two-step delete confirmation for individual goal contributions */
 $("goalLog").addEventListener("click", function(event){
  var btn = event.target.closest("[data-goal-remove]");
  if(!btn) return;
@@ -1988,7 +1662,6 @@ $("goalLog").addEventListener("click", function(event){
  notify("goalContribStatus", "✓ Registro eliminado.");
 });
 
-/* Two-step clear all goal history */
 $("clearGoalLogBtn").addEventListener("click", function(){
  var btn = $("clearGoalLogBtn");
  var g = normalizeGoal(data.goal);
@@ -2019,7 +1692,6 @@ $("clearGoalLogBtn").addEventListener("click", function(){
  notify("goalContribStatus", "✓ Historial de meta limpiado.");
 });
 
-/* Two-step complete deletion of the savings goal */
 $("deleteGoalBtn").addEventListener("click", function(){
  var btn = $("deleteGoalBtn");
  var g = normalizeGoal(data.goal);
@@ -2049,7 +1721,6 @@ $("deleteGoalBtn").addEventListener("click", function(){
  notify("goalConfigStatus", "✓ Meta eliminada por completo.");
 });
 
-/* Two-step clear all movements in the active month */
 $("clearMonthEntriesBtn").addEventListener("click", function(){
  var btn = $("clearMonthEntriesBtn");
  var currentMonth = activeMonth();
@@ -2073,21 +1744,12 @@ $("clearMonthEntriesBtn").addEventListener("click", function(){
 
  btn.classList.remove("confirming");
  btn.textContent = "🗑️ Limpiar mes actual";
- data.entries.forEach(function(e){
-  if(String(e.date).slice(0, 7) === currentMonth && e.recurringId){
-   var recTmpl = data.recurring.find(function(r){ return String(r.id) === String(e.recurringId); });
-   if(recTmpl && recTmpl.skippedMonths.indexOf(currentMonth) === -1){
-    recTmpl.skippedMonths.push(currentMonth);
-   }
-  }
- });
  data.entries = data.entries.filter(function(e){ return String(e.date).slice(0, 7) !== currentMonth; });
  persist();
  render();
  notify("exportStatus", "✓ " + count + " movimientos eliminados del mes.");
 });
 
-/* Two-step clear ALL movements across all months */
 $("clearAllEntriesBtn").addEventListener("click", function(){
  var btn = $("clearAllEntriesBtn");
  var totalCount = data.entries.length;
@@ -2116,7 +1778,6 @@ $("clearAllEntriesBtn").addEventListener("click", function(){
  notify("exportStatus", "✓ Todo el historial (" + totalCount + " movimientos) fue eliminado.");
 });
 
-/* Two-step delete confirmation for individual movements */
 $("list").addEventListener("click", function(event){
  var btn = event.target.closest("[data-remove]");
  if(!btn) return;
@@ -2134,35 +1795,27 @@ $("list").addEventListener("click", function(event){
  }
 
  var id = btn.getAttribute("data-remove");
- var targetEntry = data.entries.find(function(e){ return String(e.id) === String(id); });
- if(targetEntry && targetEntry.recurringId){
-  var entryYm = String(targetEntry.date).slice(0, 7);
-  var recTmpl = data.recurring.find(function(r){ return String(r.id) === String(targetEntry.recurringId); });
-  if(recTmpl && recTmpl.skippedMonths.indexOf(entryYm) === -1){
-   recTmpl.skippedMonths.push(entryYm);
-  }
- }
  data.entries = data.entries.filter(function(e){ return String(e.id) !== String(id); });
  persist();
  render();
  notify("status", "✓ Movimiento eliminado.");
 });
 
-/* Exports filtered or active period movements to UTF-8 CSV */
 $("export").addEventListener("click", function(){
  var current = filteredMonthEntries();
  if(!current.length){
   notify("exportStatus", "⚠ No hay datos para exportar con este filtro.", true);
   return;
  }
- var rows = [["Fecha", "Tipo", "Descripción", "Tipo de consumo", "Importe (S/)"]];
+ var cur = activeCurrency();
+ var rows = [["Fecha", "Tipo", "Descripción", "Tipo de consumo", "Importe (" + cur.code + ")"]];
  current.forEach(function(e){
   rows.push([
    e.date,
    e.type === "income" ? "Ingreso" : "Gasto",
    e.description || (e.type === "income" ? "Ingreso" : "Gasto"),
    e.type === "income" ? "" : e.need,
-   e.amount.toFixed(2)
+   Number(e.amount || 0).toFixed(cur.decimals)
   ]);
  });
  var csv = rows.map(function(row){
@@ -2183,9 +1836,8 @@ $("export").addEventListener("click", function(){
  notify("exportStatus", "✓ CSV descargado.");
 });
 
-/* Downloads full backup JSON */
 $("backupJson").addEventListener("click", function(){
- if(!data.entries.length && !data.recurring.length && (!data.goal || (!data.goal.target && !data.goal.saved))){
+ if(!data.entries.length && (!data.goal || (!data.goal.target && !data.goal.saved))){
   notify("exportStatus", "⚠ No hay datos para respaldar.", true);
   return;
  }
@@ -2193,9 +1845,10 @@ $("backupJson").addEventListener("click", function(){
   app: "BRAND // FINANCE",
   exportedAt: new Date().toISOString(),
   selectedMonth: activeMonth(),
+  currency: activeCurrency().code,
+  usdPerUnit: data.usdPerUnit,
   entries: data.entries,
-  goal: data.goal,
-  recurring: data.recurring
+  goal: data.goal
  }, null, 2);
  var blob = new Blob([backupPayload], { type: "application/json;charset=utf-8" });
  var url = URL.createObjectURL(blob);
@@ -2209,7 +1862,6 @@ $("backupJson").addEventListener("click", function(){
  notify("exportStatus", "✓ Respaldo JSON guardado.");
 });
 
-/* Triggers file picker to restore from JSON backup */
 $("restoreJsonBtn").addEventListener("click", function(){
  $("restoreJsonFile").click();
 });
@@ -2220,7 +1872,7 @@ $("restoreJsonFile").addEventListener("change", function(event){
  var reader = new FileReader();
  reader.onload = function(e){
   var parsed = parseState(e.target.result);
-  if(!parsed || (!parsed.entries.length && !parsed.recurring.length && (!parsed.goal || !parsed.goal.target))){
+  if(!parsed || (!parsed.entries.length && (!parsed.goal || !parsed.goal.target))){
    notify("exportStatus", "⚠ El archivo JSON no contiene datos válidos.", true);
    $("restoreJsonFile").value = "";
    return;
@@ -2256,21 +1908,14 @@ $("restoreJsonFile").addEventListener("change", function(event){
    }
    syncGoalInputs();
   }
-  if(Array.isArray(parsed.recurring) && parsed.recurring.length){
-   var seenRec = {};
-   data.recurring.forEach(function(r){ seenRec[String(r.id)] = true; });
-   parsed.recurring.forEach(function(r){
-    if(!seenRec[String(r.id)]){
-     data.recurring.push(r);
-     seenRec[String(r.id)] = true;
-    }
-   });
+  if(parsed.currency && CURRENCIES[parsed.currency]){
+   data.currency = parsed.currency;
+   $("currency").value = data.currency;
   }
   if(parsed.selectedMonth){
    data.selectedMonth = parsed.selectedMonth;
    $("month").value = data.selectedMonth;
   }
-  ensureRecurringForMonth(activeMonth(), false);
   persist();
   render();
   $("restoreJsonFile").value = "";
@@ -2281,77 +1926,6 @@ $("restoreJsonFile").addEventListener("change", function(event){
   $("restoreJsonFile").value = "";
  };
  reader.readAsText(file);
-});
-
-$("recType").addEventListener("change", syncRecurringFormType);
-$("addRecurring").addEventListener("click", addRecurringTemplate);
-
-["recAmount", "recDay", "recType", "recDescription", "recNeed"].forEach(function(id){
- var el = $(id);
- if(el){
-  el.addEventListener("keydown", function(event){
-   if(event.key === "Enter"){
-    event.preventDefault();
-    addRecurringTemplate();
-   }
-  });
- }
-});
-
-$("applyRecurringMonthBtn").addEventListener("click", function(){
- var curMonth = activeMonth();
- var activeTemplates = data.recurring.filter(function(r){ return r.active; });
- if(!activeTemplates.length){
-  notify("recStatus", "⚠ No tienes plantillas recurrentes activas.", true);
-  return;
- }
- var added = ensureRecurringForMonth(curMonth, true);
- persist();
- render();
- if(added > 0){
-  notify("recStatus", "✓ " + added + (added === 1 ? " movimiento aplicado a " : " movimientos aplicados a ") + curMonth + ".");
- }else{
-  notify("recStatus", "✓ Todos los recurrentes activos ya estaban registrados en " + curMonth + ".");
- }
-});
-
-$("recurringList").addEventListener("click", function(event){
- var toggleBtn = event.target.closest("[data-rec-toggle]");
- if(toggleBtn){
-  var tid = toggleBtn.getAttribute("data-rec-toggle");
-  var item = data.recurring.find(function(r){ return String(r.id) === String(tid); });
-  if(item){
-   item.active = !item.active;
-   if(item.active){
-    ensureRecurringForMonth(activeMonth(), false);
-   }
-   persist();
-   render();
-   notify("recStatus", item.active ? "✓ Recurrente activado." : "✓ Recurrente pausado.");
-  }
-  return;
- }
-
- var delBtn = event.target.closest("[data-rec-remove]");
- if(!delBtn) return;
-
- if(!delBtn.classList.contains("confirming")){
-  delBtn.classList.add("confirming");
-  delBtn.textContent = "¿Borrar?";
-  setTimeout(function(){
-   if(delBtn && delBtn.parentNode){
-    delBtn.classList.remove("confirming");
-    delBtn.textContent = "✕";
-   }
-  }, 3000);
-  return;
- }
-
- var rid = delBtn.getAttribute("data-rec-remove");
- data.recurring = data.recurring.filter(function(r){ return String(r.id) !== String(rid); });
- persist();
- render();
- notify("recStatus", "✓ Plantilla recurrente eliminada.");
 });
 
 render();
