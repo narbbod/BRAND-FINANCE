@@ -464,76 +464,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   margin-bottom:12px;
 }
 
-/* Touch carousel for savings goals */
-.goals-carousel-wrap{
-  position:relative;
-  width:100%;
-  max-width:100%;
-}
-.goals-carousel{
-  display:flex;
-  gap:14px;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  padding-bottom:6px;
-}
-.goals-carousel::-webkit-scrollbar{
-  display:none;
-}
-.goal-slide{
-  flex:0 0 100%;
-  width:100%;
-  max-width:100%;
-  scroll-snap-align:start;
-  scroll-snap-stop:always;
-  background:rgba(7,14,25,0.52);
-  border:1px solid var(--line-soft);
-  border-radius:16px;
-  padding:18px;
-}
-.goal-slide.is-active{
-  border-color:rgba(169,154,255,0.45);
-}
-.goal-slide-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-  margin-bottom:10px;
-  padding-bottom:10px;
-  border-bottom:1px solid var(--line-soft);
-  flex-wrap:wrap;
-}
-.goal-slide-actions{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  flex-wrap:wrap;
-}
-.goal-dots{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  margin-top:12px;
-  flex-wrap:wrap;
-}
-.goal-dot{
-  width:8px;
-  height:8px;
-  padding:0;
-  border-radius:999px;
-  background:rgba(149,172,200,0.28);
-  border:0;
-  transition:width .2s ease, background-color .2s ease;
-}
-.goal-dot.active{
-  width:22px;
-  background:var(--violet);
-}
-
+/* Free-contribution savings goal helpers */
 .goal-split{
   display:grid;
   grid-template-columns:1.15fr 0.85fr;
@@ -574,7 +505,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 }
 .goal-log{
   margin-top:14px;
-  max-height:200px;
+  max-height:210px;
   overflow-y:auto;
   overflow-x:hidden;
   border-top:1px solid var(--line-soft);
@@ -720,7 +651,6 @@ footer{
   .btn-clear-min{padding:6px 9px;font-size:9.5px;letter-spacing:0.4px}
   .fields{grid-template-columns:1fr}
   .card{padding:15px}
-  .goal-slide{padding:14px}
   .balance{font-size:28px}
   .entry{align-items:center;flex-direction:row;gap:8px}
   .entryright{width:auto;justify-content:flex-end;margin-top:0;gap:6px}
@@ -804,15 +734,70 @@ footer{
 
  <div class="card full">
   <div class="cardtop">
-   <h2>Metas de ahorro libre</h2>
+   <h2>Meta de ahorro libre</h2>
    <div class="cardtop-actions">
-    <span class="mini" id="goalCounterBadge">1 META</span>
-    <button type="button" class="btn-clear-min" id="addGoalBtn" title="Crear una nueva meta en el carrusel">＋ Nueva meta</button>
+    <span class="mini" id="goalBadge">APORTE LIBRE</span>
+    <button type="button" class="btn-clear-min" id="clearGoalLogBtn" title="Vaciar historial de la meta">Limpiar</button>
+    <button type="button" class="btn-clear-min" id="deleteGoalBtn" title="Eliminar meta por completo">Eliminar meta</button>
    </div>
   </div>
-  <div class="goals-carousel-wrap">
-   <div class="goals-carousel" id="goalsCarousel" aria-label="Carrusel de metas de ahorro libre"></div>
-   <div class="goal-dots" id="goalDots" aria-label="Indicador de metas"></div>
+  <div class="goal-split">
+   <div>
+    <div class="fields">
+     <div class="field">
+      <label for="goalName">Nombre de la meta</label>
+      <input id="goalName" type="text" maxlength="50" placeholder="Ej. Moto, viaje, fondo">
+     </div>
+     <div class="field">
+      <label for="goalTarget">Monto objetivo (S/)</label>
+      <input id="goalTarget" type="number" min="1" step="0.01" inputmode="decimal" placeholder="5000.00">
+     </div>
+     <div class="field span-full">
+      <label for="goalTermValue">Plazo elegido</label>
+      <div class="goal-term-row">
+       <input id="goalTermValue" type="number" min="1" max="120" step="1" inputmode="numeric" placeholder="Cantidad (ej. 12)">
+       <select id="goalTermUnit" aria-label="Unidad de plazo">
+        <option value="months">Meses</option>
+        <option value="years">Años</option>
+       </select>
+      </div>
+     </div>
+    </div>
+    <div class="actions">
+     <button type="button" class="secondary" id="saveGoalConfig">GUARDAR META</button>
+     <span id="goalConfigStatus" class="feedback" role="status" aria-live="polite"></span>
+    </div>
+
+    <div class="fields" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
+     <div class="field">
+      <label for="goalContribAmount">Aporte o retiro libre (S/)</label>
+      <input id="goalContribAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="Ej. 100.00">
+     </div>
+     <div class="field">
+      <label for="goalContribNote">Nota (opcional)</label>
+      <input id="goalContribNote" type="text" maxlength="50" placeholder="Sobrante de la semana...">
+     </div>
+    </div>
+    <div class="actions">
+     <button type="button" class="primary" id="depositGoal">＋ APORTAR LIBREMENTE</button>
+     <button type="button" class="secondary" id="withdrawGoal">− RETIRAR</button>
+     <span id="goalContribStatus" class="feedback" role="status" aria-live="polite"></span>
+    </div>
+   </div>
+
+   <div>
+    <div class="mini" id="goalTitleDisplay">SIN META CONFIGURADA</div>
+    <div class="balance purple" id="goalSavedDisplay">S/ 0.00</div>
+    <div class="progress"><div class="bar" id="goalBar"></div></div>
+    <div class="meta"><span id="goalTargetLabel">Objetivo: S/ 0.00</span><span id="goalPctLabel">0%</span></div>
+    <div class="goal-stats">
+     <div class="goal-stat-item"><span>Falta por reunir</span><strong id="goalRemainingLabel">S/ 0.00</strong></div>
+     <div class="goal-stat-item"><span>Tiempo restante</span><strong id="goalTimeLeftLabel">—</strong></div>
+     <div class="goal-stat-item"><span>Ref. mensual restante</span><strong id="goalRefMonthlyLabel">S/ 0.00</strong></div>
+     <div class="goal-stat-item"><span>Plazo total</span><strong id="goalTotalTermLabel">—</strong></div>
+    </div>
+    <div class="goal-log" id="goalLog"><div class="empty">Aún no registras aportes libres.</div></div>
+   </div>
   </div>
  </div>
 
@@ -962,40 +947,22 @@ var storageKey = "sanchez_finance_v1";
 var dbName = "SanchezFinanceDB";
 var storeName = "appState";
 
-function createGoal(overrides){
- var o = (overrides && typeof overrides === "object") ? overrides : {};
+function defaultGoal(){
  return {
-  id: String(o.id || ("goal_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7))),
-  name: String(o.name || "").slice(0, 50),
-  target: Math.max(0, Math.round((Number(o.target) || 0) * 100) / 100),
-  termValue: Math.max(1, Math.min(120, Math.round(Number(o.termValue) || 12))),
-  termUnit: o.termUnit === "years" ? "years" : "months",
-  startDate: /^\d{4}-\d{2}-\d{2}$/.test(String(o.startDate || "")) ? String(o.startDate) : today,
-  saved: Math.max(0, Math.round((Number(o.saved) || 0) * 100) / 100),
-  contributions: Array.isArray(o.contributions) ? o.contributions.map(function(c){
-   return {
-    id: String(c.id || (Date.now() + "_" + Math.random().toString(36).slice(2, 8))),
-    kind: c.kind === "withdraw" ? "withdraw" : "deposit",
-    amount: Math.round((Number(c.amount) || 0) * 100) / 100,
-    note: String(c.note || ""),
-    date: String(c.date || today)
-   };
-  }).filter(function(c){ return Number.isFinite(c.amount) && c.amount > 0; }) : []
+  name: "",
+  target: 0,
+  termValue: 12,
+  termUnit: "months",
+  startDate: today,
+  saved: 0,
+  contributions: []
  };
 }
 
-var data = {
- entries: [],
- selectedMonth: monthNow,
- goals: [createGoal()],
- activeGoalId: ""
-};
-data.activeGoalId = data.goals[0].id;
-
+var data = { entries: [], selectedMonth: monthNow, goal: defaultGoal() };
 var timers = {};
-var goalNotices = {};
-var scrollSnapTimer = null;
 
+/* Displays temporary status feedback without using browser alert/confirm */
 function notify(id, message, isError){
  var el = $(id);
  if(!el) return;
@@ -1005,16 +972,7 @@ function notify(id, message, isError){
  timers[id] = setTimeout(function(){ el.textContent = ""; }, 3500);
 }
 
-function setGoalNotice(goalId, message, isError){
- goalNotices[goalId] = { text: message, error: !!isError };
- renderGoalsCarousel();
- clearTimeout(timers["goal_" + goalId]);
- timers["goal_" + goalId] = setTimeout(function(){
-  delete goalNotices[goalId];
-  renderGoalsCarousel();
- }, 3500);
-}
-
+/* Normalizes and validates movement records */
 function normalizeEntries(list){
  if(!Array.isArray(list)) return [];
  return list.map(function(e){
@@ -1030,43 +988,45 @@ function normalizeEntries(list){
  }).filter(function(e){ return Number.isFinite(e.amount) && e.amount > 0; });
 }
 
-/* Normalizes goals array (supports both goals[] and legacy single goal object) */
-function normalizeGoals(raw){
- var list = [];
- if(Array.isArray(raw)){
-  list = raw.map(function(g){ return createGoal(g); });
- }else if(raw && typeof raw === "object"){
-  list = [createGoal(raw)];
- }
- if(!list.length){
-  list = [createGoal()];
- }
- return list;
+/* Normalizes free-contribution savings goal object */
+function normalizeGoal(rawGoal){
+ var base = defaultGoal();
+ if(!rawGoal || typeof rawGoal !== "object") return base;
+ var unit = rawGoal.termUnit === "years" ? "years" : "months";
+ var termVal = Math.max(1, Math.min(120, Math.round(Number(rawGoal.termValue) || 12)));
+ var target = Math.max(0, Math.round((Number(rawGoal.target) || 0) * 100) / 100);
+ var saved = Math.max(0, Math.round((Number(rawGoal.saved) || 0) * 100) / 100);
+ var contribs = Array.isArray(rawGoal.contributions) ? rawGoal.contributions.map(function(c){
+  return {
+   id: String(c.id || (Date.now() + "_" + Math.random().toString(36).slice(2, 8))),
+   kind: c.kind === "withdraw" ? "withdraw" : "deposit",
+   amount: Math.round((Number(c.amount) || 0) * 100) / 100,
+   note: String(c.note || ""),
+   date: String(c.date || today)
+  };
+ }).filter(function(c){ return Number.isFinite(c.amount) && c.amount > 0; }) : [];
+
+ return {
+  name: String(rawGoal.name || "").slice(0, 50),
+  target: target,
+  termValue: termVal,
+  termUnit: unit,
+  startDate: /^\d{4}-\d{2}-\d{2}$/.test(String(rawGoal.startDate || "")) ? String(rawGoal.startDate) : today,
+  saved: saved,
+  contributions: contribs
+ };
 }
 
-function findGoalIndex(goalId){
- var idx = data.goals.findIndex(function(g){ return String(g.id) === String(goalId); });
- return idx !== -1 ? idx : 0;
-}
-
-function getActiveGoal(){
- return data.goals[findGoalIndex(data.activeGoalId)] || data.goals[0];
-}
-
+/* Parses serialized or object state safely */
 function parseState(raw){
  if(!raw) return null;
  try{
   var obj = typeof raw === "string" ? JSON.parse(raw) : raw;
   if(obj && Array.isArray(obj.entries)){
-   var goalsList = normalizeGoals(Array.isArray(obj.goals) && obj.goals.length ? obj.goals : obj.goal);
-   var activeId = obj.activeGoalId && goalsList.some(function(g){ return String(g.id) === String(obj.activeGoalId); })
-    ? String(obj.activeGoalId)
-    : goalsList[0].id;
    return {
     entries: normalizeEntries(obj.entries),
     selectedMonth: typeof obj.selectedMonth === "string" && /^\d{4}-\d{2}$/.test(obj.selectedMonth) ? obj.selectedMonth : "",
-    goals: goalsList,
-    activeGoalId: activeId,
+    goal: normalizeGoal(obj.goal),
     updatedAt: Number(obj.updatedAt) || 0
    };
   }
@@ -1074,6 +1034,7 @@ function parseState(raw){
  return null;
 }
 
+/* Synchronously loads state from localStorage, sessionStorage, window.name, or legacy keys */
 function loadSync(){
  var candidates = [];
  try{
@@ -1112,12 +1073,12 @@ function loadSync(){
   });
   var best = candidates[0];
   data.entries = best.entries;
-  data.goals = normalizeGoals(best.goals);
-  data.activeGoalId = best.activeGoalId || data.goals[0].id;
+  data.goal = best.goal || defaultGoal();
   if(best.selectedMonth) data.selectedMonth = best.selectedMonth;
  }
 }
 
+/* Opens IndexedDB database for asynchronous persistence */
 function openIDB(callback){
  if(typeof indexedDB === "undefined") return;
  try{
@@ -1134,6 +1095,7 @@ function openIDB(callback){
  }catch(err){}
 }
 
+/* Saves state payload into IndexedDB */
 function saveIDB(payload){
  openIDB(function(db){
   try{
@@ -1143,6 +1105,7 @@ function saveIDB(payload){
  });
 }
 
+/* Loads state from IndexedDB and reconciles newer entries if present */
 function loadIDB(){
  openIDB(function(db){
   try{
@@ -1151,15 +1114,14 @@ function loadIDB(){
    req.onsuccess = function(){
     var idbState = parseState(req.result);
     if(!idbState) return;
-    var hasGoalsData = idbState.goals && idbState.goals.some(function(g){ return g.target > 0 || g.saved > 0 || g.name; });
-    if((idbState.entries.length > 0 || hasGoalsData) && (data.entries.length === 0 || idbState.updatedAt > (data.updatedAt || 0))){
+    if((idbState.entries.length > 0 || (idbState.goal && idbState.goal.target > 0)) && (data.entries.length === 0 || idbState.updatedAt > (data.updatedAt || 0))){
      data.entries = idbState.entries;
-     data.goals = normalizeGoals(idbState.goals);
-     data.activeGoalId = idbState.activeGoalId || data.goals[0].id;
+     data.goal = normalizeGoal(idbState.goal);
      if(idbState.selectedMonth){
       data.selectedMonth = idbState.selectedMonth;
       $("month").value = data.selectedMonth;
      }
+     syncGoalInputs();
      render();
      persist(true);
     }
@@ -1168,14 +1130,14 @@ function loadIDB(){
  });
 }
 
+/* Persists current state across localStorage, sessionStorage, window.name, and IndexedDB */
 function persist(skipIDB){
  data.selectedMonth = activeMonth();
  data.updatedAt = Date.now();
  var serialized = JSON.stringify({
   entries: data.entries,
   selectedMonth: data.selectedMonth,
-  goals: data.goals,
-  activeGoalId: data.activeGoalId,
+  goal: data.goal,
   updatedAt: data.updatedAt
  });
 
@@ -1200,8 +1162,7 @@ function persist(skipIDB){
   saveIDB({
    entries: data.entries,
    selectedMonth: data.selectedMonth,
-   goals: data.goals,
-   activeGoalId: data.activeGoalId,
+   goal: data.goal,
    updatedAt: data.updatedAt
   });
  }
@@ -1209,10 +1170,12 @@ function persist(skipIDB){
  return savedAny;
 }
 
+/* Formats numeric currency in Peruvian Soles */
 function money(n){
  return "S/ " + Number(n || 0).toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+/* Escapes HTML special characters for safe rendering */
 function safe(s){
  return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
   return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -1228,6 +1191,7 @@ function monthEntries(){
  return data.entries.filter(function(e){ return String(e.date).slice(0, 7) === m; });
 }
 
+/* Filters month entries by active search query and movement type */
 function filteredMonthEntries(){
  var q = ($("searchFilter") ? $("searchFilter").value : "").trim().toLowerCase();
  var tf = $("typeFilter") ? $("typeFilter").value : "all";
@@ -1241,6 +1205,7 @@ function filteredMonthEntries(){
  });
 }
 
+/* Computes monthly income, expense, and available balance */
 function calculate(){
  var a = monthEntries(), income = 0, expense = 0;
  a.forEach(function(e){
@@ -1250,6 +1215,7 @@ function calculate(){
  return { income: income, expense: expense, balance: income - expense };
 }
 
+/* Renders breakdown totals by consumption type for expenses in the active period */
 function renderNeedSummary(entries){
  var box = $("needSummary");
  if(!box) return;
@@ -1265,6 +1231,16 @@ function renderNeedSummary(entries){
  }).join("");
 }
 
+/* Populates goal configuration inputs from stored goal */
+function syncGoalInputs(){
+ var g = data.goal || defaultGoal();
+ $("goalName").value = g.name || "";
+ $("goalTarget").value = g.target > 0 ? g.target : "";
+ $("goalTermValue").value = g.termValue || 12;
+ $("goalTermUnit").value = g.termUnit || "months";
+}
+
+/* Computes total months and remaining months from goal start date */
 function getGoalMonthsInfo(g){
  var totalMonths = g.termUnit === "years" ? (g.termValue * 12) : g.termValue;
  var startParts = String(g.startDate || today).split("-").map(Number);
@@ -1279,6 +1255,7 @@ function getGoalMonthsInfo(g){
  return { totalMonths: totalMonths, remainingMonths: remainingMonths };
 }
 
+/* Recomputes total goal saved balance from contribution entries */
 function recalculateGoalSaved(g){
  var sum = 0;
  g.contributions.forEach(function(c){
@@ -1288,122 +1265,54 @@ function recalculateGoalSaved(g){
  g.saved = Math.max(0, Math.round(sum * 100) / 100);
 }
 
-/* Scrolls carousel smoothly to the goal index */
-function scrollToGoalIndex(index, smooth){
- var carousel = $("goalsCarousel");
- if(!carousel) return;
- var clamped = Math.max(0, Math.min(data.goals.length - 1, index));
- var slideWidth = carousel.clientWidth;
- carousel.scrollTo({
-  left: clamped * slideWidth,
-  behavior: smooth ? "smooth" : "auto"
- });
-}
+/* Renders free-contribution savings goal progress, remaining time, and log */
+function renderGoal(){
+ var g = normalizeGoal(data.goal);
+ data.goal = g;
 
-/* Renders all goals inside a touch-scrollable carousel */
-function renderGoalsCarousel(){
- var carousel = $("goalsCarousel");
- var dotsBox = $("goalDots");
- var counterBadge = $("goalCounterBadge");
- if(!carousel || !dotsBox) return;
+ var hasTarget = g.target > 0;
+ var pct = hasTarget ? Math.min(100, (g.saved / g.target) * 100) : 0;
+ var remainingAmount = hasTarget ? Math.max(0, g.target - g.saved) : 0;
+ var termInfo = getGoalMonthsInfo(g);
+ var refMonthly = remainingAmount > 0 ? (remainingAmount / termInfo.remainingMonths) : 0;
 
- data.goals = normalizeGoals(data.goals);
- var activeIdx = findGoalIndex(data.activeGoalId);
- data.activeGoalId = data.goals[activeIdx].id;
+ $("goalBadge").textContent = hasTarget ? (g.termUnit === "years" ? "PLAZO EN AÑOS · APORTE LIBRE" : "PLAZO EN MESES · APORTE LIBRE") : "APORTE LIBRE";
+ $("goalTitleDisplay").textContent = g.name ? ("META: " + g.name.toUpperCase()) : (hasTarget ? "META ACTIVA" : "SIN META CONFIGURADA");
+ $("goalSavedDisplay").textContent = money(g.saved);
+ $("goalBar").style.width = pct + "%";
+ $("goalTargetLabel").textContent = "Objetivo: " + money(g.target);
+ $("goalPctLabel").textContent = Math.round(pct) + "%";
+ $("goalRemainingLabel").textContent = money(remainingAmount);
 
- if(counterBadge){
-  counterBadge.textContent = (activeIdx + 1) + " / " + data.goals.length + (data.goals.length === 1 ? " META" : " METAS");
- }
-
- carousel.innerHTML = data.goals.map(function(g, idx){
-  var hasTarget = g.target > 0;
-  var pct = hasTarget ? Math.min(100, (g.saved / g.target) * 100) : 0;
-  var remainingAmount = hasTarget ? Math.max(0, g.target - g.saved) : 0;
-  var termInfo = getGoalMonthsInfo(g);
-  var refMonthly = remainingAmount > 0 ? (remainingAmount / termInfo.remainingMonths) : 0;
-  var notice = goalNotices[g.id];
-
-  var logList = g.contributions.slice().sort(function(a, b){
-   return String(b.date).localeCompare(String(a.date)) || String(b.id).localeCompare(String(a.id));
-  });
-
-  var logHtml = !logList.length
-   ? '<div class="empty">Aún no registras aportes libres.</div>'
-   : logList.map(function(c){
-    var isDep = c.kind !== "withdraw";
-    var title = c.note || (isDep ? "Aporte libre" : "Retiro de meta");
-    return '<div class="goal-log-row">'
-     + '<div><strong>' + safe(title) + '</strong><small>' + safe(c.date) + ' · ' + (isDep ? "Aporte" : "Retiro") + '</small></div>'
-     + '<div class="entryright">'
-     + '<strong class="' + (isDep ? "green" : "pink") + '">' + (isDep ? "+" : "−") + ' ' + money(c.amount) + '</strong>'
-     + '<button type="button" class="btn-del" data-goal-contrib-del="' + safe(g.id) + '" data-contrib-id="' + safe(c.id) + '" title="Eliminar registro" aria-label="Eliminar registro">✕</button>'
-     + '</div></div>';
-   }).join("");
-
-  var timeLeftText = !hasTarget ? "—" : (termInfo.remainingMonths + (termInfo.remainingMonths === 1 ? " mes" : " meses"));
-  var totalTermText = !hasTarget ? "—" : (g.termValue + (g.termUnit === "years" ? (g.termValue === 1 ? " año" : " años") : (g.termValue === 1 ? " mes" : " meses")) + " (" + termInfo.totalMonths + " m)");
-
-  return '<article class="goal-slide' + (idx === activeIdx ? " is-active" : "") + '" data-goal-slide="' + safe(g.id) + '">'
-   + '<div class="goal-slide-head">'
-   + '<div><span class="mini">META ' + (idx + 1) + ' DE ' + data.goals.length + (data.goals.length > 1 ? " · DESLIZA" : "") + '</span>'
-   + '<div class="mini purple" style="margin-top:3px">' + (g.name ? safe(g.name.toUpperCase()) : (hasTarget ? "META ACTIVA" : "SIN CONFIGURAR")) + '</div></div>'
-   + '<div class="goal-slide-actions">'
-   + '<button type="button" class="btn-clear-min" data-goal-clear="' + safe(g.id) + '" title="Vaciar historial y saldo de esta meta">Limpiar</button>'
-   + '<button type="button" class="btn-clear-min" data-goal-delete="' + safe(g.id) + '" title="Eliminar meta">Eliminar meta</button>'
-   + '</div>'
-   + '</div>'
-   + '<div class="goal-split">'
-   + '<div>'
-   + '<div class="fields">'
-   + '<div class="field"><label for="goalName_' + safe(g.id) + '">Nombre de la meta</label><input id="goalName_' + safe(g.id) + '" data-goal-name="' + safe(g.id) + '" type="text" maxlength="50" placeholder="Ej. Moto, viaje, fondo" value="' + safe(g.name) + '"></div>'
-   + '<div class="field"><label for="goalTarget_' + safe(g.id) + '">Monto objetivo (S/)</label><input id="goalTarget_' + safe(g.id) + '" data-goal-target="' + safe(g.id) + '" type="number" min="1" step="0.01" inputmode="decimal" placeholder="5000.00" value="' + (g.target > 0 ? safe(g.target) : "") + '"></div>'
-   + '<div class="field span-full"><label for="goalTermVal_' + safe(g.id) + '">Plazo elegido</label><div class="goal-term-row">'
-   + '<input id="goalTermVal_' + safe(g.id) + '" data-goal-term-val="' + safe(g.id) + '" type="number" min="1" max="120" step="1" inputmode="numeric" placeholder="Cantidad (ej. 12)" value="' + safe(g.termValue) + '">'
-   + '<select data-goal-term-unit="' + safe(g.id) + '" aria-label="Unidad de plazo">'
-   + '<option value="months"' + (g.termUnit === "months" ? " selected" : "") + '>Meses</option>'
-   + '<option value="years"' + (g.termUnit === "years" ? " selected" : "") + '>Años</option>'
-   + '</select></div></div>'
-   + '</div>'
-   + '<div class="actions">'
-   + '<button type="button" class="secondary" data-goal-save="' + safe(g.id) + '">GUARDAR META</button>'
-   + (notice ? '<span class="feedback' + (notice.error ? " error" : "") + '">' + safe(notice.text) + '</span>' : '')
-   + '</div>'
-   + '<div class="fields" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">'
-   + '<div class="field"><label for="goalAmt_' + safe(g.id) + '">Aporte o retiro libre (S/)</label><input id="goalAmt_' + safe(g.id) + '" data-goal-amt="' + safe(g.id) + '" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="Ej. 100.00"></div>'
-   + '<div class="field"><label for="goalNote_' + safe(g.id) + '">Nota (opcional)</label><input id="goalNote_' + safe(g.id) + '" data-goal-note="' + safe(g.id) + '" type="text" maxlength="50" placeholder="Sobrante de la semana..."></div>'
-   + '</div>'
-   + '<div class="actions">'
-   + '<button type="button" class="primary" data-goal-contrib="' + safe(g.id) + '" data-kind="deposit">＋ APORTAR LIBREMENTE</button>'
-   + '<button type="button" class="secondary" data-goal-contrib="' + safe(g.id) + '" data-kind="withdraw">− RETIRAR</button>'
-   + '</div>'
-   + '</div>'
-   + '<div>'
-   + '<div class="mini">' + (g.name ? ("META: " + safe(g.name.toUpperCase())) : (hasTarget ? "META ACTIVA" : "SIN META CONFIGURADA")) + '</div>'
-   + '<div class="balance purple">' + money(g.saved) + '</div>'
-   + '<div class="progress"><div class="bar" style="width:' + pct + '%"></div></div>'
-   + '<div class="meta"><span>Objetivo: ' + money(g.target) + '</span><span>' + Math.round(pct) + '%</span></div>'
-   + '<div class="goal-stats">'
-   + '<div class="goal-stat-item"><span>Falta por reunir</span><strong>' + money(remainingAmount) + '</strong></div>'
-   + '<div class="goal-stat-item"><span>Tiempo restante</span><strong>' + safe(timeLeftText) + '</strong></div>'
-   + '<div class="goal-stat-item"><span>Ref. mensual restante</span><strong>' + money(refMonthly) + '</strong></div>'
-   + '<div class="goal-stat-item"><span>Plazo total</span><strong>' + safe(totalTermText) + '</strong></div>'
-   + '</div>'
-   + '<div class="goal-log">' + logHtml + '</div>'
-   + '</div>'
-   + '</div>'
-   + '</article>';
- }).join("");
-
- if(data.goals.length > 1){
-  dotsBox.innerHTML = data.goals.map(function(g, idx){
-   var label = g.name ? ("Ir a meta " + g.name) : ("Ir a meta " + (idx + 1));
-   return '<button type="button" class="goal-dot' + (idx === activeIdx ? " active" : "") + '" data-goal-dot="' + idx + '" aria-label="' + safe(label) + '"></button>';
-  }).join("");
+ if(!hasTarget){
+  $("goalTimeLeftLabel").textContent = "—";
+  $("goalRefMonthlyLabel").textContent = "S/ 0.00";
+  $("goalTotalTermLabel").textContent = "—";
  }else{
-  dotsBox.innerHTML = "";
+  $("goalTimeLeftLabel").textContent = termInfo.remainingMonths + (termInfo.remainingMonths === 1 ? " mes" : " meses");
+  $("goalRefMonthlyLabel").textContent = money(refMonthly);
+  $("goalTotalTermLabel").textContent = g.termValue + (g.termUnit === "years" ? (g.termValue === 1 ? " año" : " años") : (g.termValue === 1 ? " mes" : " meses")) + " (" + termInfo.totalMonths + " m)";
  }
 
- scrollToGoalIndex(activeIdx, false);
+ var list = g.contributions.slice().sort(function(a, b){
+  return String(b.date).localeCompare(String(a.date)) || String(b.id).localeCompare(String(a.id));
+ });
+
+ if(!list.length){
+  $("goalLog").innerHTML = '<div class="empty">Aún no registras aportes libres.</div>';
+  return;
+ }
+
+ $("goalLog").innerHTML = list.map(function(c){
+  var isDep = c.kind !== "withdraw";
+  var title = c.note || (isDep ? "Aporte libre" : "Retiro de meta");
+  return '<div class="goal-log-row">'
+   + '<div><strong>' + safe(title) + '</strong><small>' + safe(c.date) + ' · ' + (isDep ? "Aporte" : "Retiro") + '</small></div>'
+   + '<div class="entryright">'
+   + '<strong class="' + (isDep ? "green" : "pink") + '">' + (isDep ? "+" : "−") + ' ' + money(c.amount) + '</strong>'
+   + '<button type="button" class="btn-del" data-goal-remove="' + safe(c.id) + '" title="Eliminar registro" aria-label="Eliminar registro">✕</button>'
+   + '</div></div>';
+ }).join("");
 }
 
 /* Shows consumption type only for expenses and hides it for incomes */
@@ -1422,6 +1331,7 @@ function syncFormType(){
  }
 }
 
+/* Renders summary cards, balance progress bar, consumption breakdown, goal, and movement history */
 function render(){
  var allMonth = monthEntries();
  var t = calculate();
@@ -1441,7 +1351,7 @@ function render(){
   : (t.income > 0 ? "✓ Tu saldo está actualizado y bajo control." : "Agrega tus primeros movimientos.");
 
  renderNeedSummary(allMonth);
- renderGoalsCarousel();
+ renderGoal();
 
  var entries = filteredMonthEntries().slice().sort(function(a, b){
   return String(b.date).localeCompare(String(a.date)) || String(b.id).localeCompare(String(a.id));
@@ -1464,6 +1374,7 @@ function render(){
  $("list").innerHTML = html || '<div class="empty">' + (allMonth.length ? "No hay movimientos que coincidan con el filtro." : "No hay movimientos en este mes.") + '</div>';
 }
 
+/* Validates and saves a new movement */
 function addMovement(){
  var amountField = $("amount");
  var dateField = $("date");
@@ -1497,7 +1408,7 @@ function addMovement(){
  data.entries.push(entry);
 
  if(type === "expense" && need === "Meta"){
-  var g = getActiveGoal();
+  var g = normalizeGoal(data.goal);
   g.saved = Math.round((g.saved + roundedAmount) * 100) / 100;
   g.contributions.push({
    id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
@@ -1506,6 +1417,7 @@ function addMovement(){
    note: desc || "Aporte desde movimiento (Meta)",
    date: date
   });
+  data.goal = g;
  }
 
  $("month").value = date.slice(0, 7);
@@ -1516,64 +1428,59 @@ function addMovement(){
  notify("status", type === "expense" && need === "Meta" ? "✓ Movimiento guardado y sumado a la meta." : "✓ Movimiento guardado correctamente.");
 }
 
-function saveGoalById(goalId){
- var idx = findGoalIndex(goalId);
- var g = data.goals[idx];
- if(!g) return;
-
- var nameInput = document.querySelector('[data-goal-name="' + goalId + '"]');
- var targetInput = document.querySelector('[data-goal-target="' + goalId + '"]');
- var termValInput = document.querySelector('[data-goal-term-val="' + goalId + '"]');
- var termUnitInput = document.querySelector('[data-goal-term-unit="' + goalId + '"]');
-
- var target = parseFloat(targetInput ? targetInput.value : "");
- var termVal = parseInt(termValInput ? termValInput.value : "", 10);
- var termUnit = (termUnitInput && termUnitInput.value === "years") ? "years" : "months";
- var name = (nameInput ? nameInput.value : "").trim();
+/* Saves savings goal configuration without resetting accumulated savings */
+function saveGoalConfig(){
+ var target = parseFloat($("goalTarget").value);
+ var termVal = parseInt($("goalTermValue").value, 10);
+ var termUnit = $("goalTermUnit").value === "years" ? "years" : "months";
+ var name = $("goalName").value.trim();
 
  if(!Number.isFinite(target) || target <= 0){
-  setGoalNotice(g.id, "⚠ Ingresa un monto objetivo mayor que cero.", true);
-  if(targetInput) targetInput.focus();
+  notify("goalConfigStatus", "⚠ Ingresa un monto objetivo mayor que cero.", true);
+  $("goalTarget").focus();
   return;
  }
  if(!Number.isFinite(termVal) || termVal < 1 || termVal > 120){
-  setGoalNotice(g.id, "⚠ Ingresa un plazo válido (1 a 120).", true);
-  if(termValInput) termValInput.focus();
+  notify("goalConfigStatus", "⚠ Ingresa un plazo válido (1 a 120).", true);
+  $("goalTermValue").focus();
   return;
  }
 
- var termChanged = g.termValue !== termVal || g.termUnit !== termUnit;
- g.name = name.slice(0, 50);
- g.target = Math.round(target * 100) / 100;
- g.termValue = termVal;
- g.termUnit = termUnit;
- g.startDate = (g.target > 0 && !termChanged) ? g.startDate : today;
+ var prev = normalizeGoal(data.goal);
+ var termChanged = prev.termValue !== termVal || prev.termUnit !== termUnit;
+ data.goal = {
+  name: name,
+  target: Math.round(target * 100) / 100,
+  termValue: termVal,
+  termUnit: termUnit,
+  startDate: (prev.target > 0 && !termChanged) ? prev.startDate : today,
+  saved: prev.saved,
+  contributions: prev.contributions
+ };
 
- data.activeGoalId = g.id;
  persist();
- setGoalNotice(g.id, "✓ Meta guardada.", false);
+ renderGoal();
+ notify("goalConfigStatus", "✓ Meta guardada.");
 }
 
-function applyGoalContributionById(goalId, kind){
- var idx = findGoalIndex(goalId);
- var g = data.goals[idx];
- if(!g) return;
+/* Registers a voluntary deposit or withdrawal on the savings goal */
+function applyGoalContribution(kind){
+ var amtField = $("goalContribAmount");
+ var amt = parseFloat(amtField.value);
+ var note = $("goalContribNote").value.trim();
 
- var amtField = document.querySelector('[data-goal-amt="' + goalId + '"]');
- var noteField = document.querySelector('[data-goal-note="' + goalId + '"]');
- var amt = parseFloat(amtField ? amtField.value : "");
- var note = (noteField ? noteField.value : "").trim();
-
- if(!amtField || !amtField.value.trim() || !Number.isFinite(amt) || amt <= 0){
-  setGoalNotice(g.id, "⚠ Escribe un monto válido mayor que cero.", true);
-  if(amtField) amtField.focus();
+ if(!amtField.value.trim() || !Number.isFinite(amt) || amt <= 0){
+  notify("goalContribStatus", "⚠ Escribe un monto válido mayor que cero.", true);
+  amtField.focus();
   return;
  }
 
  var rounded = Math.round(amt * 100) / 100;
+ var g = normalizeGoal(data.goal);
+
  if(kind === "withdraw"){
   if(rounded > g.saved){
-   setGoalNotice(g.id, "⚠ El retiro supera lo ahorrado en la meta.", true);
+   notify("goalContribStatus", "⚠ El retiro supera lo ahorrado en la meta.", true);
    return;
   }
   g.saved = Math.round((g.saved - rounded) * 100) / 100;
@@ -1589,10 +1496,12 @@ function applyGoalContributionById(goalId, kind){
   date: today
  });
 
- data.activeGoalId = g.id;
+ data.goal = g;
  persist();
- renderGoalsCarousel();
- setGoalNotice(g.id, kind === "withdraw" ? "✓ Retiro registrado." : "✓ Aporte sumado a la meta.", false);
+ amtField.value = "";
+ $("goalContribNote").value = "";
+ renderGoal();
+ notify("goalContribStatus", kind === "withdraw" ? "✓ Retiro registrado." : "✓ Aporte sumado a la meta.");
 }
 
 /* Initial load and synchronization */
@@ -1600,174 +1509,21 @@ loadSync();
 $("month").value = data.selectedMonth || monthNow;
 $("date").value = today;
 syncFormType();
+syncGoalInputs();
 persist(true);
 loadIDB();
 
 /* Event listeners */
 $("type").addEventListener("change", syncFormType);
 $("add").addEventListener("click", addMovement);
+$("saveGoalConfig").addEventListener("click", saveGoalConfig);
+$("depositGoal").addEventListener("click", function(){ applyGoalContribution("deposit"); });
+$("withdrawGoal").addEventListener("click", function(){ applyGoalContribution("withdraw"); });
 
-$("addGoalBtn").addEventListener("click", function(){
- var newGoal = createGoal();
- data.goals.push(newGoal);
- data.activeGoalId = newGoal.id;
- persist();
- renderGoalsCarousel();
- scrollToGoalIndex(data.goals.length - 1, true);
- var nameEl = document.querySelector('[data-goal-name="' + newGoal.id + '"]');
- if(nameEl) nameEl.focus();
-});
-
-$("goalsCarousel").addEventListener("scroll", function(){
- var carousel = $("goalsCarousel");
- if(!carousel || !carousel.clientWidth || !data.goals.length) return;
- clearTimeout(scrollSnapTimer);
- scrollSnapTimer = setTimeout(function(){
-  var idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
-  idx = Math.max(0, Math.min(data.goals.length - 1, idx));
-  var g = data.goals[idx];
-  if(g && String(g.id) !== String(data.activeGoalId)){
-   data.activeGoalId = g.id;
-   persist(true);
-   var dots = document.querySelectorAll(".goal-dot");
-   dots.forEach(function(d, i){ d.classList.toggle("active", i === idx); });
-   var slides = document.querySelectorAll(".goal-slide");
-   slides.forEach(function(s, i){ s.classList.toggle("is-active", i === idx); });
-   var counterBadge = $("goalCounterBadge");
-   if(counterBadge){
-    counterBadge.textContent = (idx + 1) + " / " + data.goals.length + (data.goals.length === 1 ? " META" : " METAS");
-   }
-  }
- }, 90);
-}, { passive: true });
-
-$("goalDots").addEventListener("click", function(event){
- var dot = event.target.closest("[data-goal-dot]");
- if(!dot) return;
- var idx = parseInt(dot.getAttribute("data-goal-dot"), 10);
- if(!Number.isFinite(idx) || !data.goals[idx]) return;
- data.activeGoalId = data.goals[idx].id;
- persist(true);
- renderGoalsCarousel();
- scrollToGoalIndex(idx, true);
-});
-
-$("goalsCarousel").addEventListener("click", function(event){
- var saveBtn = event.target.closest("[data-goal-save]");
- if(saveBtn){
-  saveGoalById(saveBtn.getAttribute("data-goal-save"));
-  return;
- }
-
- var contribBtn = event.target.closest("[data-goal-contrib]");
- if(contribBtn){
-  applyGoalContributionById(contribBtn.getAttribute("data-goal-contrib"), contribBtn.getAttribute("data-kind"));
-  return;
- }
-
- var delContribBtn = event.target.closest("[data-goal-contrib-del]");
- if(delContribBtn){
-  var gId = delContribBtn.getAttribute("data-goal-contrib-del");
-  var cId = delContribBtn.getAttribute("data-contrib-id");
-  if(!delContribBtn.classList.contains("confirming")){
-   delContribBtn.classList.add("confirming");
-   delContribBtn.textContent = "¿Borrar?";
-   setTimeout(function(){
-    if(delContribBtn && delContribBtn.parentNode){
-     delContribBtn.classList.remove("confirming");
-     delContribBtn.textContent = "✕";
-    }
-   }, 3000);
-   return;
-  }
-  var gObj = data.goals[findGoalIndex(gId)];
-  if(!gObj) return;
-  gObj.contributions = gObj.contributions.filter(function(c){ return String(c.id) !== String(cId); });
-  recalculateGoalSaved(gObj);
-  data.activeGoalId = gObj.id;
-  persist();
-  renderGoalsCarousel();
-  setGoalNotice(gObj.id, "✓ Registro eliminado.", false);
-  return;
- }
-
- var clearBtn = event.target.closest("[data-goal-clear]");
- if(clearBtn){
-  var clId = clearBtn.getAttribute("data-goal-clear");
-  var clGoal = data.goals[findGoalIndex(clId)];
-  if(!clGoal) return;
-  if(!clGoal.contributions.length && clGoal.saved === 0){
-   setGoalNotice(clGoal.id, "⚠ El historial ya está vacío.", true);
-   return;
-  }
-  if(!clearBtn.classList.contains("confirming")){
-   clearBtn.classList.add("confirming");
-   clearBtn.textContent = "¿Confirmar?";
-   setTimeout(function(){
-    if(clearBtn && clearBtn.parentNode){
-     clearBtn.classList.remove("confirming");
-     clearBtn.textContent = "Limpiar";
-    }
-   }, 3000);
-   return;
-  }
-  clGoal.contributions = [];
-  clGoal.saved = 0;
-  data.activeGoalId = clGoal.id;
-  persist();
-  renderGoalsCarousel();
-  setGoalNotice(clGoal.id, "✓ Historial de meta limpiado.", false);
-  return;
- }
-
- var delGoalBtn = event.target.closest("[data-goal-delete]");
- if(delGoalBtn){
-  var rmId = delGoalBtn.getAttribute("data-goal-delete");
-  var rmIdx = findGoalIndex(rmId);
-  var rmGoal = data.goals[rmIdx];
-  if(!rmGoal) return;
-
-  if(data.goals.length === 1 && !rmGoal.name && !rmGoal.target && !rmGoal.saved && !rmGoal.contributions.length){
-   setGoalNotice(rmGoal.id, "⚠ No hay meta configurada para eliminar.", true);
-   return;
-  }
-
-  if(!delGoalBtn.classList.contains("confirming")){
-   delGoalBtn.classList.add("confirming");
-   delGoalBtn.textContent = "¿Eliminar?";
-   setTimeout(function(){
-    if(delGoalBtn && delGoalBtn.parentNode){
-     delGoalBtn.classList.remove("confirming");
-     delGoalBtn.textContent = "Eliminar meta";
-    }
-   }, 3000);
-   return;
-  }
-
-  if(data.goals.length === 1){
-   var fresh = createGoal();
-   data.goals = [fresh];
-   data.activeGoalId = fresh.id;
-   persist();
-   renderGoalsCarousel();
-   setGoalNotice(fresh.id, "✓ Meta eliminada.", false);
-  }else{
-   data.goals.splice(rmIdx, 1);
-   var nextGoal = data.goals[Math.min(rmIdx, data.goals.length - 1)];
-   data.activeGoalId = nextGoal.id;
-   persist();
-   renderGoalsCarousel();
-   setGoalNotice(nextGoal.id, "✓ Meta eliminada del carrusel.", false);
-  }
- }
-});
-
-$("goalsCarousel").addEventListener("keydown", function(event){
- if(event.key !== "Enter") return;
- var amtInput = event.target.closest("[data-goal-amt]");
- if(amtInput){
+$("goalContribAmount").addEventListener("keydown", function(event){
+ if(event.key === "Enter"){
   event.preventDefault();
-  applyGoalContributionById(amtInput.getAttribute("data-goal-amt"), "deposit");
+  applyGoalContribution("deposit");
  }
 });
 
@@ -1791,24 +1547,121 @@ $("typeFilter").addEventListener("change", render);
 window.addEventListener("pagehide", function(){ persist(true); });
 window.addEventListener("beforeunload", function(){ persist(true); });
 
+/* Resets any pending delete confirmation on Escape */
 document.addEventListener("keydown", function(event){
  if(event.key === "Escape"){
-  var pending = document.querySelectorAll(".btn-del.confirming, .btn-clear-min.confirming");
+  var pending = document.querySelectorAll(".btn-del.confirming");
   pending.forEach(function(b){
    b.classList.remove("confirming");
-   if(b.hasAttribute("data-remove") || b.hasAttribute("data-goal-contrib-del")){
-    b.textContent = "✕";
-   }else if(b.hasAttribute("data-goal-clear")){
-    b.textContent = "Limpiar";
-   }else if(b.hasAttribute("data-goal-delete")){
-    b.textContent = "Eliminar meta";
-   }else if(b.id === "clearMonthEntriesBtn"){
-    b.textContent = "Limpiar mes";
-   }
+   b.textContent = "✕";
   });
+  var clearGoalBtn = $("clearGoalLogBtn");
+  if(clearGoalBtn && clearGoalBtn.classList.contains("confirming")){
+   clearGoalBtn.classList.remove("confirming");
+   clearGoalBtn.textContent = "Limpiar";
+  }
+  var delGoalBtn = $("deleteGoalBtn");
+  if(delGoalBtn && delGoalBtn.classList.contains("confirming")){
+   delGoalBtn.classList.remove("confirming");
+   delGoalBtn.textContent = "Eliminar meta";
+  }
+  var clearMonthBtn = $("clearMonthEntriesBtn");
+  if(clearMonthBtn && clearMonthBtn.classList.contains("confirming")){
+   clearMonthBtn.classList.remove("confirming");
+   clearMonthBtn.textContent = "Limpiar mes";
+  }
  }
 });
 
+/* Two-step delete confirmation for individual goal contributions */
+$("goalLog").addEventListener("click", function(event){
+ var btn = event.target.closest("[data-goal-remove]");
+ if(!btn) return;
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Borrar?";
+  setTimeout(function(){
+   if(btn && btn.parentNode){
+    btn.classList.remove("confirming");
+    btn.textContent = "✕";
+   }
+  }, 3000);
+  return;
+ }
+
+ var id = btn.getAttribute("data-goal-remove");
+ var g = normalizeGoal(data.goal);
+ g.contributions = g.contributions.filter(function(c){ return String(c.id) !== String(id); });
+ recalculateGoalSaved(g);
+ data.goal = g;
+ persist();
+ renderGoal();
+ notify("goalContribStatus", "✓ Registro eliminado.");
+});
+
+/* Two-step clear all goal history */
+$("clearGoalLogBtn").addEventListener("click", function(){
+ var btn = $("clearGoalLogBtn");
+ var g = normalizeGoal(data.goal);
+ if(!g.contributions.length && g.saved === 0){
+  notify("goalContribStatus", "⚠ El historial ya está vacío.", true);
+  return;
+ }
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Confirmar?";
+  setTimeout(function(){
+   if(btn){
+    btn.classList.remove("confirming");
+    btn.textContent = "Limpiar";
+   }
+  }, 3000);
+  return;
+ }
+
+ btn.classList.remove("confirming");
+ btn.textContent = "Limpiar";
+ g.contributions = [];
+ g.saved = 0;
+ data.goal = g;
+ persist();
+ renderGoal();
+ notify("goalContribStatus", "✓ Historial de meta limpiado.");
+});
+
+/* Two-step complete deletion of the savings goal */
+$("deleteGoalBtn").addEventListener("click", function(){
+ var btn = $("deleteGoalBtn");
+ var g = normalizeGoal(data.goal);
+ if(!g.name && !g.target && !g.saved && !g.contributions.length){
+  notify("goalConfigStatus", "⚠ No hay ninguna meta activa para eliminar.", true);
+  return;
+ }
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Eliminar todo?";
+  setTimeout(function(){
+   if(btn){
+    btn.classList.remove("confirming");
+    btn.textContent = "Eliminar meta";
+   }
+  }, 3000);
+  return;
+ }
+
+ btn.classList.remove("confirming");
+ btn.textContent = "Eliminar meta";
+ data.goal = defaultGoal();
+ syncGoalInputs();
+ persist();
+ renderGoal();
+ notify("goalConfigStatus", "✓ Meta eliminada por completo.");
+});
+
+/* Two-step clear all movements in the active month */
 $("clearMonthEntriesBtn").addEventListener("click", function(){
  var btn = $("clearMonthEntriesBtn");
  var currentMonth = activeMonth();
@@ -1838,6 +1691,7 @@ $("clearMonthEntriesBtn").addEventListener("click", function(){
  notify("exportStatus", "✓ " + count + " movimientos eliminados.");
 });
 
+/* Two-step delete confirmation for individual movements */
 $("list").addEventListener("click", function(event){
  var btn = event.target.closest("[data-remove]");
  if(!btn) return;
@@ -1861,6 +1715,7 @@ $("list").addEventListener("click", function(event){
  notify("status", "✓ Movimiento eliminado.");
 });
 
+/* Exports filtered or active period movements to UTF-8 CSV */
 $("export").addEventListener("click", function(){
  var current = filteredMonthEntries();
  if(!current.length){
@@ -1895,9 +1750,9 @@ $("export").addEventListener("click", function(){
  notify("exportStatus", "✓ CSV descargado.");
 });
 
+/* Downloads full backup JSON */
 $("backupJson").addEventListener("click", function(){
- var hasGoalVal = data.goals.some(function(g){ return g.target > 0 || g.saved > 0; });
- if(!data.entries.length && !hasGoalVal){
+ if(!data.entries.length && (!data.goal || (!data.goal.target && !data.goal.saved))){
   notify("exportStatus", "⚠ No hay datos para respaldar.", true);
   return;
  }
@@ -1906,8 +1761,7 @@ $("backupJson").addEventListener("click", function(){
   exportedAt: new Date().toISOString(),
   selectedMonth: activeMonth(),
   entries: data.entries,
-  goals: data.goals,
-  activeGoalId: data.activeGoalId
+  goal: data.goal
  }, null, 2);
  var blob = new Blob([backupPayload], { type: "application/json;charset=utf-8" });
  var url = URL.createObjectURL(blob);
@@ -1921,6 +1775,7 @@ $("backupJson").addEventListener("click", function(){
  notify("exportStatus", "✓ Respaldo JSON guardado.");
 });
 
+/* Triggers file picker to restore from JSON backup */
 $("restoreJsonBtn").addEventListener("click", function(){
  $("restoreJsonFile").click();
 });
@@ -1931,8 +1786,7 @@ $("restoreJsonFile").addEventListener("change", function(event){
  var reader = new FileReader();
  reader.onload = function(e){
   var parsed = parseState(e.target.result);
-  var hasParsedGoals = parsed && Array.isArray(parsed.goals) && parsed.goals.some(function(g){ return g.target > 0 || g.saved > 0; });
-  if(!parsed || (!parsed.entries.length && !hasParsedGoals)){
+  if(!parsed || (!parsed.entries.length && (!parsed.goal || !parsed.goal.target))){
    notify("exportStatus", "⚠ El archivo JSON no contiene datos válidos.", true);
    $("restoreJsonFile").value = "";
    return;
@@ -1947,34 +1801,27 @@ $("restoreJsonFile").addEventListener("change", function(event){
     mergedCount++;
    }
   });
-
-  if(hasParsedGoals){
-   var existingById = {};
-   data.goals.forEach(function(g, i){ existingById[String(g.id)] = i; });
-   parsed.goals.forEach(function(incG){
-    if(existingById[String(incG.id)] !== undefined){
-     var targetGoal = data.goals[existingById[String(incG.id)]];
-     var seenC = {};
-     targetGoal.contributions.forEach(function(c){ seenC[String(c.id)] = true; });
-     incG.contributions.forEach(function(c){
-      if(!seenC[String(c.id)]){
-       targetGoal.contributions.push(c);
-       seenC[String(c.id)] = true;
-      }
-     });
-     recalculateGoalSaved(targetGoal);
-     if(incG.target > 0) targetGoal.target = incG.target;
-     if(incG.name) targetGoal.name = incG.name;
-    }else if(incG.target > 0 || incG.saved > 0 || incG.name){
-     data.goals.push(incG);
-    }
-   });
-   if(data.goals.length > 1 && !data.goals[0].target && !data.goals[0].saved && !data.goals[0].name){
-    data.goals.shift();
+  if(parsed.goal && (parsed.goal.target > 0 || parsed.goal.saved > 0)){
+   var curGoal = normalizeGoal(data.goal);
+   var incGoal = normalizeGoal(parsed.goal);
+   if(!curGoal.target && !curGoal.saved){
+    data.goal = incGoal;
+   }else{
+    var seenC = {};
+    curGoal.contributions.forEach(function(c){ seenC[String(c.id)] = true; });
+    incGoal.contributions.forEach(function(c){
+     if(!seenC[String(c.id)]){
+      curGoal.contributions.push(c);
+      seenC[String(c.id)] = true;
+      curGoal.saved = Math.max(0, Math.round((curGoal.saved + (c.kind === "withdraw" ? -c.amount : c.amount)) * 100) / 100);
+     }
+    });
+    if(incGoal.target > 0) curGoal.target = incGoal.target;
+    if(incGoal.name) curGoal.name = incGoal.name;
+    data.goal = curGoal;
    }
-   data.activeGoalId = data.goals[0].id;
+   syncGoalInputs();
   }
-
   if(parsed.selectedMonth){
    data.selectedMonth = parsed.selectedMonth;
    $("month").value = data.selectedMonth;
