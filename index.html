@@ -734,9 +734,9 @@ footer{
 
  <div class="card full">
   <div class="cardtop">
-   <h2>Meta de ahorro libre</h2>
+   <h2>Meta de ahorro</h2>
    <div class="cardtop-actions">
-    <span class="mini" id="goalBadge">APORTE LIBRE</span>
+    <span class="mini" id="goalBadge">APORTE</span>
     <button type="button" class="btn-clear-min" id="clearGoalLogBtn" title="Vaciar historial de la meta">Limpiar</button>
     <button type="button" class="btn-clear-min" id="deleteGoalBtn" title="Eliminar meta por completo">Eliminar meta</button>
    </div>
@@ -749,8 +749,8 @@ footer{
       <input id="goalName" type="text" maxlength="50" placeholder="Ej. Moto, viaje, fondo">
      </div>
      <div class="field">
-      <label for="goalTarget">Monto objetivo (S/)</label>
-      <input id="goalTarget" type="number" min="1" step="0.01" inputmode="decimal" placeholder="5000.00">
+      <label for="goalTarget">Monto objetivo</label>
+      <input id="goalTarget" type="number" min="1" step="0.01" inputmode="decimal" placeholder="S/5.000.00">
      </div>
      <div class="field span-full">
       <label for="goalTermValue">Plazo elegido</label>
@@ -770,22 +770,7 @@ footer{
 
     <div class="fields" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
      <div class="field">
-      <label for="goalContribAmount">Aporte o retiro libre (S/)</label>
-      <input id="goalContribAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="Ej. 100.00">
-     </div>
-     <div class="field">
-      <label for="goalContribNote">Nota (opcional)</label>
-      <input id="goalContribNote" type="text" maxlength="50" placeholder="Sobrante de la semana...">
-     </div>
-    </div>
-    <div class="actions">
-     <button type="button" class="primary" id="depositGoal">＋ APORTAR LIBREMENTE</button>
-     <button type="button" class="secondary" id="withdrawGoal">− RETIRAR</button>
-     <span id="goalContribStatus" class="feedback" role="status" aria-live="polite"></span>
-    </div>
-   </div>
-
-   <div>
+       <div>
     <div class="mini" id="goalTitleDisplay">SIN META CONFIGURADA</div>
     <div class="balance purple" id="goalSavedDisplay">S/ 0.00</div>
     <div class="progress"><div class="bar" id="goalBar"></div></div>
