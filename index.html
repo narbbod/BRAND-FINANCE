@@ -404,6 +404,11 @@ button:disabled{opacity:.5;cursor:not-allowed}
   background:rgba(255,120,158,0.18);
   border-color:rgba(255,120,158,0.6);
 }
+.month-clear-wrap{
+  display:flex;
+  justify-content:center;
+  margin-bottom:14px;
+}
 
 .actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
 .feedback{font-size:12px;color:var(--green);min-height:18px;font-weight:600}
@@ -456,7 +461,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   display:grid;
   grid-template-columns:1fr 190px;
   gap:12px;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 
 /* Free-contribution savings goal helpers */
@@ -685,18 +690,18 @@ footer{
     <label for="type">Tipo</label>
     <select id="type">
      <option value="income">Ingreso</option>
-      <option value="expense">Gasto</option>
+     <option value="expense">Gasto</option>
     </select>
    </div>
    <div class="field">
     <label for="amount">MONTO</label>
     <input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/150.00">
    </div>
-   <div class="field">
+   <div class="field" id="dateField">
     <label for="date">Fecha</label>
     <input id="date" type="date">
    </div>
-   <div class="field">
+   <div class="field" id="needField">
     <label for="need">Tipo de consumo</label>
     <select id="need">
      <option value="Necesario">Necesario</option>
@@ -733,6 +738,7 @@ footer{
    <div class="cardtop-actions">
     <span class="mini" id="goalBadge">APORTE LIBRE</span>
     <button type="button" class="btn-clear-min" id="clearGoalLogBtn" title="Vaciar historial de la meta">Limpiar</button>
+    <button type="button" class="btn-clear-min" id="deleteGoalBtn" title="Eliminar meta por completo">Eliminar meta</button>
    </div>
   </div>
   <div class="goal-split">
@@ -804,7 +810,6 @@ footer{
      <button type="button" class="btn-tool" id="backupJson" title="Descargar copia de seguridad JSON">↓ RESPALDO JSON</button>
      <button type="button" class="btn-tool" id="restoreJsonBtn" title="Restaurar desde archivo JSON">↑ RESTAURAR</button>
      <button type="button" class="btn-tool export-csv" id="export" title="Exportar movimientos del mes a CSV">↓ EXPORTAR CSV</button>
-     <button type="button" class="btn-clear-min" id="clearMonthEntriesBtn" title="Vaciar movimientos del mes">Limpiar mes</button>
     </div>
     <input type="file" id="restoreJsonFile" accept=".json,application/json" style="display:none">
    </div>
@@ -816,6 +821,9 @@ footer{
     <option value="income">Solo ingresos</option>
     <option value="expense">Solo gastos</option>
    </select>
+  </div>
+  <div class="month-clear-wrap">
+   <button type="button" class="btn-clear-min" id="clearMonthEntriesBtn" title="Vaciar movimientos del mes">Limpiar mes</button>
   </div>
   <div class="entries" id="list"><div class="empty">No hay movimientos en este mes.</div></div>
  </div>
@@ -968,13 +976,14 @@ function notify(id, message, isError){
 function normalizeEntries(list){
  if(!Array.isArray(list)) return [];
  return list.map(function(e){
+  var isInc = e.type === "income";
   return {
    id: String(e.id || (Date.now() + "_" + Math.random().toString(36).slice(2, 8))),
-   type: e.type === "income" ? "income" : "expense",
+   type: isInc ? "income" : "expense",
    amount: Math.round((Number(e.amount) || 0) * 100) / 100,
    description: String(e.description || ""),
    date: String(e.date || today),
-   need: String(e.need || e.necessity || e.kind || "Necesario")
+   need: isInc ? "" : String(e.need || e.necessity || e.kind || "Necesario")
   };
  }).filter(function(e){ return Number.isFinite(e.amount) && e.amount > 0; });
 }
@@ -1206,13 +1215,14 @@ function calculate(){
  return { income: income, expense: expense, balance: income - expense };
 }
 
-/* Renders breakdown totals by consumption type for the active period */
+/* Renders breakdown totals by consumption type for expenses in the active period */
 function renderNeedSummary(entries){
  var box = $("needSummary");
  if(!box) return;
  var categories = ["Necesario", "Deseo", "Planificado", "Imprevisto", "Meta"];
  var totals = { Necesario: 0, Deseo: 0, Planificado: 0, Imprevisto: 0, Meta: 0 };
  entries.forEach(function(e){
+  if(e.type !== "expense") return;
   var cat = categories.indexOf(e.need) !== -1 ? e.need : "Necesario";
   totals[cat] += Number(e.amount) || 0;
  });
@@ -1305,10 +1315,20 @@ function renderGoal(){
  }).join("");
 }
 
-/* Updates default consumption type when toggling between expense and income */
+/* Shows consumption type only for expenses and hides it for incomes */
 function syncFormType(){
  var isIncome = $("type").value === "income";
- $("need").value = isIncome ? "Planificado" : "Necesario";
+ var needField = $("needField");
+ var dateField = $("dateField");
+
+ if(isIncome){
+  needField.style.display = "none";
+  dateField.classList.add("span-full");
+ }else{
+  needField.style.display = "";
+  dateField.classList.remove("span-full");
+  if(!$("need").value) $("need").value = "Necesario";
+ }
 }
 
 /* Renders summary cards, balance progress bar, consumption breakdown, goal, and movement history */
@@ -1340,9 +1360,12 @@ function render(){
  var html = "";
  entries.forEach(function(e){
   var label = e.description || (e.type === "income" ? "Ingreso" : "Gasto");
+  var metaInfo = e.type === "income"
+   ? (safe(e.date) + ' · Ingreso')
+   : (safe(e.date) + ' · Gasto' + (e.need ? ' · ' + safe(e.need) : ''));
   html += '<div class="entry">'
    + '<div><strong>' + safe(label) + '</strong>'
-   + '<small>' + safe(e.date) + ' · ' + (e.type === "income" ? "Ingreso" : "Gasto") + ' · ' + safe(e.need || "") + '</small></div>'
+   + '<small>' + metaInfo + '</small></div>'
    + '<div class="entryright">'
    + '<strong class="' + (e.type === "income" ? "green" : "pink") + '">' + (e.type === "income" ? "+" : "−") + ' ' + money(e.amount) + '</strong>'
    + '<button type="button" class="btn-del" data-remove="' + safe(e.id) + '" title="Eliminar movimiento" aria-label="Eliminar movimiento">✕</button>'
@@ -1358,7 +1381,7 @@ function addMovement(){
  var amount = parseFloat(amountField.value);
  var date = dateField.value;
  var type = $("type").value;
- var need = $("need").value;
+ var need = type === "income" ? "" : $("need").value;
  var desc = $("description").value.trim();
 
  if(!amountField.value.trim() || !Number.isFinite(amount) || amount <= 0){
@@ -1537,6 +1560,11 @@ document.addEventListener("keydown", function(event){
    clearGoalBtn.classList.remove("confirming");
    clearGoalBtn.textContent = "Limpiar";
   }
+  var delGoalBtn = $("deleteGoalBtn");
+  if(delGoalBtn && delGoalBtn.classList.contains("confirming")){
+   delGoalBtn.classList.remove("confirming");
+   delGoalBtn.textContent = "Eliminar meta";
+  }
   var clearMonthBtn = $("clearMonthEntriesBtn");
   if(clearMonthBtn && clearMonthBtn.classList.contains("confirming")){
    clearMonthBtn.classList.remove("confirming");
@@ -1601,6 +1629,36 @@ $("clearGoalLogBtn").addEventListener("click", function(){
  persist();
  renderGoal();
  notify("goalContribStatus", "✓ Historial de meta limpiado.");
+});
+
+/* Two-step complete deletion of the savings goal */
+$("deleteGoalBtn").addEventListener("click", function(){
+ var btn = $("deleteGoalBtn");
+ var g = normalizeGoal(data.goal);
+ if(!g.name && !g.target && !g.saved && !g.contributions.length){
+  notify("goalConfigStatus", "⚠ No hay ninguna meta activa para eliminar.", true);
+  return;
+ }
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Eliminar todo?";
+  setTimeout(function(){
+   if(btn){
+    btn.classList.remove("confirming");
+    btn.textContent = "Eliminar meta";
+   }
+  }, 3000);
+  return;
+ }
+
+ btn.classList.remove("confirming");
+ btn.textContent = "Eliminar meta";
+ data.goal = defaultGoal();
+ syncGoalInputs();
+ persist();
+ renderGoal();
+ notify("goalConfigStatus", "✓ Meta eliminada por completo.");
 });
 
 /* Two-step clear all movements in the active month */
@@ -1670,7 +1728,7 @@ $("export").addEventListener("click", function(){
    e.date,
    e.type === "income" ? "Ingreso" : "Gasto",
    e.description || (e.type === "income" ? "Ingreso" : "Gasto"),
-   e.need,
+   e.type === "income" ? "" : e.need,
    e.amount.toFixed(2)
   ]);
  });
