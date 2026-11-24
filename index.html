@@ -324,6 +324,15 @@ button{
   border:1.5px solid var(--line);
 }
 .secondary:hover{background:#213857;border-color:#446594}
+.danger-soft{
+  background:rgba(255,120,158,0.12);
+  color:var(--red);
+  border:1.5px solid rgba(255,120,158,0.35);
+}
+.danger-soft:hover{
+  background:rgba(255,120,158,0.2);
+  border-color:var(--red);
+}
 .btn-install{
   height:48px;
   padding:0 16px;
@@ -382,35 +391,38 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 /* Minimalist clear / delete controls */
 .btn-clear-min{
-  padding:5px 10px;
+  padding:6px 12px;
   font-size:10px;
-  font-weight:600;
+  font-weight:700;
   letter-spacing:0.6px;
-  border-radius:7px;
-  background:rgba(255,255,255,0.03);
+  border-radius:8px;
+  background:rgba(255,255,255,0.04);
   color:var(--muted);
-  border:1px solid rgba(149,172,200,0.16);
+  border:1px solid rgba(149,172,200,0.22);
   line-height:1.2;
   white-space:nowrap;
   flex-shrink:0;
 }
 .btn-clear-min:hover{
   color:var(--red);
-  background:rgba(255,120,158,0.09);
-  border-color:rgba(255,120,158,0.28);
+  background:rgba(255,120,158,0.1);
+  border-color:rgba(255,120,158,0.35);
 }
 .btn-clear-min.confirming{
   color:var(--red);
-  background:rgba(255,120,158,0.18);
-  border-color:rgba(255,120,158,0.6);
+  background:rgba(255,120,158,0.2);
+  border-color:rgba(255,120,158,0.7);
 }
 .month-clear-wrap{
   display:flex;
   justify-content:center;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
   margin-bottom:14px;
 }
 
-.actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
 .feedback{font-size:12px;color:var(--green);min-height:18px;font-weight:600}
 .feedback.error{color:var(--red)}
 
@@ -573,32 +585,29 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 /* Minimalist row delete icon button */
 .btn-del{
-  padding:4px 7px;
-  min-width:24px;
-  background:transparent;
-  color:var(--muted);
-  border:1px solid transparent;
+  padding:6px 9px;
+  min-width:28px;
+  background:rgba(255,120,158,0.08);
+  color:var(--red);
+  border:1px solid rgba(255,120,158,0.22);
   font-size:11px;
-  font-weight:600;
+  font-weight:700;
   letter-spacing:0.3px;
-  border-radius:6px;
+  border-radius:7px;
   line-height:1;
-  opacity:.8;
   flex-shrink:0;
   white-space:nowrap;
 }
 .btn-del:hover{
-  opacity:1;
-  color:var(--red);
-  background:rgba(255,120,158,.1);
+  background:rgba(255,120,158,0.18);
+  border-color:rgba(255,120,158,0.5);
 }
 .btn-del.confirming{
-  opacity:1;
-  padding:5px 8px;
-  font-size:9.5px;
-  background:rgba(255,120,158,.16);
-  color:var(--red);
-  border-color:rgba(255,120,158,.5);
+  padding:6px 10px;
+  font-size:10px;
+  background:rgba(255,120,158,0.25);
+  color:#fff;
+  border-color:var(--red);
 }
 
 .empty{
@@ -617,14 +626,6 @@ footer{
   padding-top:22px;
   border-top:1px solid var(--line-soft);
   text-align:center;
-}
-.author{
-  margin-top:10px;
-  font-size:13px;
-  font-weight:900;
-  letter-spacing:3px;
-  color:var(--cyan);
-  text-transform:uppercase;
 }
 
 /* Responsive layout rules */
@@ -648,7 +649,7 @@ footer{
   .cardtop-actions{width:100%;justify-content:space-between}
   .data-actions{width:100%;justify-content:space-between;gap:4px}
   .btn-tool{flex:1 1 auto;padding:8px 6px;font-size:9px;letter-spacing:0.3px}
-  .btn-clear-min{padding:6px 9px;font-size:9.5px;letter-spacing:0.4px}
+  .btn-clear-min{padding:6px 10px;font-size:9.5px;letter-spacing:0.4px}
   .fields{grid-template-columns:1fr}
   .card{padding:15px}
   .balance{font-size:28px}
@@ -675,7 +676,7 @@ footer{
 </header>
 
 <div class="tag cyan">CONTROL FINANCIERO · PANEL PRINCIPAL</div>
-<h1>Tu dinero.<br><span class="cyan">Bajo tú control.</span></h1>
+<h1>Tu dinero.<br><span class="cyan">Bajo tu control.</span></h1>
 <p class="intro">Registra cada movimiento y toma mejores decisiones.</p>
 
 <section class="grid">
@@ -736,8 +737,8 @@ footer{
   <div class="cardtop">
    <h2>Meta de ahorro</h2>
    <div class="cardtop-actions">
-    <span class="mini" id="goalBadge">APORTE</span>
-    <button type="button" class="btn-clear-min" id="clearGoalLogBtn" title="Vaciar historial de la meta">Limpiar</button>
+    <span class="mini" id="goalBadge">APORTE LIBRE</span>
+    <button type="button" class="btn-clear-min" id="clearGoalLogBtn" title="Vaciar historial de la meta">Limpiar historial</button>
     <button type="button" class="btn-clear-min" id="deleteGoalBtn" title="Eliminar meta por completo">Eliminar meta</button>
    </div>
   </div>
@@ -770,7 +771,22 @@ footer{
 
     <div class="fields" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
      <div class="field">
-       <div>
+      <label for="goalContribAmount">Monto de aporte / retiro</label>
+      <input id="goalContribAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/100.00">
+     </div>
+     <div class="field">
+      <label for="goalContribNote">Nota (opcional)</label>
+      <input id="goalContribNote" type="text" maxlength="50" placeholder="Ej. Ahorro semanal">
+     </div>
+    </div>
+    <div class="actions">
+     <button type="button" class="primary" id="depositGoal">＋ APORTAR</button>
+     <button type="button" class="danger-soft" id="withdrawGoal">− RETIRAR</button>
+     <span id="goalContribStatus" class="feedback" role="status" aria-live="polite"></span>
+    </div>
+   </div>
+
+   <div>
     <div class="mini" id="goalTitleDisplay">SIN META CONFIGURADA</div>
     <div class="balance purple" id="goalSavedDisplay">S/ 0.00</div>
     <div class="progress"><div class="bar" id="goalBar"></div></div>
@@ -808,7 +824,8 @@ footer{
    </select>
   </div>
   <div class="month-clear-wrap">
-   <button type="button" class="btn-clear-min" id="clearMonthEntriesBtn" title="Vaciar movimientos del mes">Limpiar mes</button>
+   <button type="button" class="btn-clear-min" id="clearMonthEntriesBtn" title="Vaciar movimientos del mes seleccionado">🗑️ Limpiar mes actual</button>
+   <button type="button" class="btn-clear-min" id="clearAllEntriesBtn" title="Borrar todo el historial de todos los meses">🗑️ Borrar todo el historial</button>
   </div>
   <div class="entries" id="list"><div class="empty">No hay movimientos en este mes.</div></div>
  </div>
@@ -1502,23 +1519,28 @@ loadIDB();
 $("type").addEventListener("change", syncFormType);
 $("add").addEventListener("click", addMovement);
 $("saveGoalConfig").addEventListener("click", saveGoalConfig);
-$("depositGoal").addEventListener("click", function(){ applyGoalContribution("deposit"); });
-$("withdrawGoal").addEventListener("click", function(){ applyGoalContribution("withdraw"); });
+if($("depositGoal")) $("depositGoal").addEventListener("click", function(){ applyGoalContribution("deposit"); });
+if($("withdrawGoal")) $("withdrawGoal").addEventListener("click", function(){ applyGoalContribution("withdraw"); });
 
-$("goalContribAmount").addEventListener("keydown", function(event){
- if(event.key === "Enter"){
-  event.preventDefault();
-  applyGoalContribution("deposit");
- }
-});
-
-["amount", "date", "type", "description", "need"].forEach(function(id){
- $(id).addEventListener("keydown", function(event){
+if($("goalContribAmount")){
+ $("goalContribAmount").addEventListener("keydown", function(event){
   if(event.key === "Enter"){
    event.preventDefault();
-   addMovement();
+   applyGoalContribution("deposit");
   }
  });
+}
+
+["amount", "date", "type", "description", "need"].forEach(function(id){
+ var el = $(id);
+ if(el){
+  el.addEventListener("keydown", function(event){
+   if(event.key === "Enter"){
+    event.preventDefault();
+    addMovement();
+   }
+  });
+ }
 });
 
 $("month").addEventListener("change", function(){
@@ -1543,7 +1565,7 @@ document.addEventListener("keydown", function(event){
   var clearGoalBtn = $("clearGoalLogBtn");
   if(clearGoalBtn && clearGoalBtn.classList.contains("confirming")){
    clearGoalBtn.classList.remove("confirming");
-   clearGoalBtn.textContent = "Limpiar";
+   clearGoalBtn.textContent = "Limpiar historial";
   }
   var delGoalBtn = $("deleteGoalBtn");
   if(delGoalBtn && delGoalBtn.classList.contains("confirming")){
@@ -1553,7 +1575,12 @@ document.addEventListener("keydown", function(event){
   var clearMonthBtn = $("clearMonthEntriesBtn");
   if(clearMonthBtn && clearMonthBtn.classList.contains("confirming")){
    clearMonthBtn.classList.remove("confirming");
-   clearMonthBtn.textContent = "Limpiar mes";
+   clearMonthBtn.textContent = "🗑️ Limpiar mes actual";
+  }
+  var clearAllBtn = $("clearAllEntriesBtn");
+  if(clearAllBtn && clearAllBtn.classList.contains("confirming")){
+   clearAllBtn.classList.remove("confirming");
+   clearAllBtn.textContent = "🗑️ Borrar todo el historial";
   }
  }
 });
@@ -1600,14 +1627,14 @@ $("clearGoalLogBtn").addEventListener("click", function(){
   setTimeout(function(){
    if(btn){
     btn.classList.remove("confirming");
-    btn.textContent = "Limpiar";
+    btn.textContent = "Limpiar historial";
    }
   }, 3000);
   return;
  }
 
  btn.classList.remove("confirming");
- btn.textContent = "Limpiar";
+ btn.textContent = "Limpiar historial";
  g.contributions = [];
  g.saved = 0;
  data.goal = g;
@@ -1658,22 +1685,51 @@ $("clearMonthEntriesBtn").addEventListener("click", function(){
 
  if(!btn.classList.contains("confirming")){
   btn.classList.add("confirming");
-  btn.textContent = "¿Vaciar mes?";
+  btn.textContent = "¿Confirmar limpieza del mes?";
   setTimeout(function(){
    if(btn){
     btn.classList.remove("confirming");
-    btn.textContent = "Limpiar mes";
+    btn.textContent = "🗑️ Limpiar mes actual";
    }
   }, 3000);
   return;
  }
 
  btn.classList.remove("confirming");
- btn.textContent = "Limpiar mes";
+ btn.textContent = "🗑️ Limpiar mes actual";
  data.entries = data.entries.filter(function(e){ return String(e.date).slice(0, 7) !== currentMonth; });
  persist();
  render();
- notify("exportStatus", "✓ " + count + " movimientos eliminados.");
+ notify("exportStatus", "✓ " + count + " movimientos eliminados del mes.");
+});
+
+/* Two-step clear ALL movements across all months */
+$("clearAllEntriesBtn").addEventListener("click", function(){
+ var btn = $("clearAllEntriesBtn");
+ var totalCount = data.entries.length;
+ if(!totalCount){
+  notify("exportStatus", "⚠ El historial general ya está vacío.", true);
+  return;
+ }
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Borrar TODOS (" + totalCount + ")?";
+  setTimeout(function(){
+   if(btn){
+    btn.classList.remove("confirming");
+    btn.textContent = "🗑️ Borrar todo el historial";
+   }
+  }, 3000);
+  return;
+ }
+
+ btn.classList.remove("confirming");
+ btn.textContent = "🗑️ Borrar todo el historial";
+ data.entries = [];
+ persist();
+ render();
+ notify("exportStatus", "✓ Todo el historial (" + totalCount + " movimientos) fue eliminado.");
 });
 
 /* Two-step delete confirmation for individual movements */
