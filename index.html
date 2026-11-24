@@ -285,6 +285,13 @@ label{
   padding-bottom:12px;
   border-bottom:1px solid var(--line-soft);
 }
+.cardtop-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  max-width:100%;
+}
 h2{font-size:16px;margin:0;font-weight:800;letter-spacing:-0.01em}
 .mini{font-size:10px;color:var(--muted);letter-spacing:1.2px;font-weight:700;text-transform:uppercase}
 
@@ -303,7 +310,7 @@ button{
   letter-spacing:0.8px;
   text-transform:uppercase;
   cursor:pointer;
-  transition:transform .1s ease, filter .2s ease, background-color .2s ease, border-color .2s ease;
+  transition:transform .1s ease, filter .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
 }
 .primary{
   background:linear-gradient(100deg,var(--cyan),#a0ffe9);
@@ -345,6 +352,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   border:1px solid var(--line-soft);
   border-radius:12px;
   flex-wrap:wrap;
+  max-width:100%;
 }
 .btn-tool{
   padding:8px 12px;
@@ -372,6 +380,31 @@ button:disabled{opacity:.5;cursor:not-allowed}
   border-color:var(--cyan);
 }
 
+/* Minimalist clear / delete controls */
+.btn-clear-min{
+  padding:5px 10px;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.6px;
+  border-radius:7px;
+  background:rgba(255,255,255,0.03);
+  color:var(--muted);
+  border:1px solid rgba(149,172,200,0.16);
+  line-height:1.2;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.btn-clear-min:hover{
+  color:var(--red);
+  background:rgba(255,120,158,0.09);
+  border-color:rgba(255,120,158,0.28);
+}
+.btn-clear-min.confirming{
+  color:var(--red);
+  background:rgba(255,120,158,0.18);
+  border-color:rgba(255,120,158,0.6);
+}
+
 .actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
 .feedback{font-size:12px;color:var(--green);min-height:18px;font-weight:600}
 .feedback.error{color:var(--red)}
@@ -395,8 +428,114 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;font-weight:600}
 .balance{font-size:34px;font-weight:900;margin:12px 0;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
 
+/* Compact breakdown by consumption type */
+.need-summary{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid var(--line-soft);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px 14px;
+}
+.need-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  color:var(--muted);
+  font-weight:600;
+}
+.need-item strong{
+  color:var(--txt);
+  font-variant-numeric:tabular-nums;
+}
+
+/* History filter bar */
+.filter-bar{
+  display:grid;
+  grid-template-columns:1fr 190px;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+/* Free-contribution savings goal helpers */
+.goal-split{
+  display:grid;
+  grid-template-columns:1.15fr 0.85fr;
+  gap:18px;
+  align-items:start;
+}
+.goal-split > div{
+  min-width:0;
+  max-width:100%;
+}
+.goal-term-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.goal-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 14px;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--line-soft);
+}
+.goal-stat-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  color:var(--muted);
+  font-weight:600;
+  min-width:0;
+}
+.goal-stat-item strong{
+  color:var(--txt);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.goal-log{
+  margin-top:14px;
+  max-height:210px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  border-top:1px solid var(--line-soft);
+  max-width:100%;
+}
+.goal-log-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  padding:9px 0;
+  border-bottom:1px solid var(--line-soft);
+  font-size:12px;
+  min-width:0;
+  max-width:100%;
+}
+.goal-log-row > div:first-child{
+  flex:1 1 auto;
+  min-width:0;
+}
+.goal-log-row > div:first-child strong{
+  display:block;
+  overflow-wrap:anywhere;
+  line-height:1.3;
+}
+.goal-log-row:last-child{border:0}
+.goal-log-row small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:2px;
+}
+
 /* Movement history list */
-.entries{display:flex;flex-direction:column}
+.entries{display:flex;flex-direction:column;max-width:100%}
 .entry{
   display:flex;
   align-items:center;
@@ -404,26 +543,59 @@ button:disabled{opacity:.5;cursor:not-allowed}
   gap:12px;
   padding:14px 0;
   border-bottom:1px solid var(--line-soft);
+  min-width:0;
+}
+.entry > div:first-child{
+  min-width:0;
+  flex:1 1 auto;
+}
+.entry > div:first-child strong{
+  overflow-wrap:anywhere;
 }
 .entry:last-child{border:0;padding-bottom:2px}
 .entry small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
 .entry strong{font-size:14px}
-.entryright{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.entryright strong{font-variant-numeric:tabular-nums}
+.entryright{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+.entryright strong{
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+/* Minimalist row delete icon button */
 .btn-del{
-  padding:8px 11px;
-  background:rgba(255,120,158,.1);
+  padding:4px 7px;
+  min-width:24px;
+  background:transparent;
+  color:var(--muted);
+  border:1px solid transparent;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.3px;
+  border-radius:6px;
+  line-height:1;
+  opacity:.8;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.btn-del:hover{
+  opacity:1;
   color:var(--red);
-  border:1px solid rgba(255,120,158,.35);
-  font-size:10px;
-  border-radius:8px;
+  background:rgba(255,120,158,.1);
 }
-.btn-del:hover{background:rgba(255,120,158,.22)}
 .btn-del.confirming{
-  background:var(--red);
-  color:#060b14;
-  border-color:var(--red);
+  opacity:1;
+  padding:5px 8px;
+  font-size:9.5px;
+  background:rgba(255,120,158,.16);
+  color:var(--red);
+  border-color:rgba(255,120,158,.5);
 }
+
 .empty{
   padding:26px 16px;
   text-align:center;
@@ -454,9 +626,12 @@ footer{
 @media(max-width:760px){
   .stat{grid-column:span 4}
   .main,.side{grid-column:1/-1}
+  .goal-split{grid-template-columns:1fr}
 }
 @media(max-width:560px){
   .stat{grid-column:1/-1}
+  .filter-bar{grid-template-columns:1fr}
+  .goal-stats{grid-template-columns:1fr}
 }
 @media(max-width:480px){
   .wrap{padding:18px 12px 36px}
@@ -465,12 +640,15 @@ footer{
   .head-controls > div{flex:1}
   .btn-install{width:100%}
   .cardtop{align-items:flex-start;flex-direction:column}
-  .data-actions{width:100%;justify-content:space-between}
-  .btn-tool{flex:1 1 auto;padding:8px 8px;font-size:9.5px;letter-spacing:0.4px}
+  .cardtop-actions{width:100%;justify-content:space-between}
+  .data-actions{width:100%;justify-content:space-between;gap:4px}
+  .btn-tool{flex:1 1 auto;padding:8px 6px;font-size:9px;letter-spacing:0.3px}
+  .btn-clear-min{padding:6px 9px;font-size:9.5px;letter-spacing:0.4px}
   .fields{grid-template-columns:1fr}
-  .card{padding:16px}
-  .entry{align-items:flex-start;flex-direction:column}
-  .entryright{width:100%;justify-content:space-between;margin-top:4px}
+  .card{padding:15px}
+  .balance{font-size:28px}
+  .entry{align-items:center;flex-direction:row;gap:8px}
+  .entryright{width:auto;justify-content:flex-end;margin-top:0;gap:6px}
   .stat{padding:15px}
 }
 </style>
@@ -525,6 +703,7 @@ footer{
      <option value="Deseo">Deseo</option>
      <option value="Planificado">Planificado</option>
      <option value="Imprevisto">Imprevisto</option>
+     <option value="Meta">Meta</option>
     </select>
    </div>
    <div class="field span-full">
@@ -545,20 +724,98 @@ footer{
   <div class="progress"><div class="bar" id="spendBar"></div></div>
   <div class="meta"><span>Gastos / ingresos</span><span id="spendPct">0%</span></div>
   <p class="mini" id="balanceMessage" style="margin-top:14px">Agrega tus primeros movimientos.</p>
+  <div class="need-summary" id="needSummary" aria-label="Resumen por tipo de consumo"></div>
+ </div>
+
+ <div class="card full">
+  <div class="cardtop">
+   <h2>Meta de ahorro libre</h2>
+   <div class="cardtop-actions">
+    <span class="mini" id="goalBadge">APORTE LIBRE</span>
+    <button type="button" class="btn-clear-min" id="clearGoalLogBtn" title="Vaciar historial de la meta">Limpiar</button>
+   </div>
+  </div>
+  <div class="goal-split">
+   <div>
+    <div class="fields">
+     <div class="field">
+      <label for="goalName">Nombre de la meta</label>
+      <input id="goalName" type="text" maxlength="50" placeholder="Ej. Moto, viaje, fondo">
+     </div>
+     <div class="field">
+      <label for="goalTarget">Monto objetivo (S/)</label>
+      <input id="goalTarget" type="number" min="1" step="0.01" inputmode="decimal" placeholder="5000.00">
+     </div>
+     <div class="field span-full">
+      <label for="goalTermValue">Plazo elegido</label>
+      <div class="goal-term-row">
+       <input id="goalTermValue" type="number" min="1" max="120" step="1" inputmode="numeric" placeholder="Cantidad (ej. 12)">
+       <select id="goalTermUnit" aria-label="Unidad de plazo">
+        <option value="months">Meses</option>
+        <option value="years">Años</option>
+       </select>
+      </div>
+     </div>
+    </div>
+    <div class="actions">
+     <button type="button" class="secondary" id="saveGoalConfig">GUARDAR META</button>
+     <span id="goalConfigStatus" class="feedback" role="status" aria-live="polite"></span>
+    </div>
+
+    <div class="fields" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
+     <div class="field">
+      <label for="goalContribAmount">Aporte o retiro libre (S/)</label>
+      <input id="goalContribAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="Ej. 100.00">
+     </div>
+     <div class="field">
+      <label for="goalContribNote">Nota (opcional)</label>
+      <input id="goalContribNote" type="text" maxlength="50" placeholder="Sobrante de la semana...">
+     </div>
+    </div>
+    <div class="actions">
+     <button type="button" class="primary" id="depositGoal">＋ APORTAR LIBREMENTE</button>
+     <button type="button" class="secondary" id="withdrawGoal">− RETIRAR</button>
+     <span id="goalContribStatus" class="feedback" role="status" aria-live="polite"></span>
+    </div>
+   </div>
+
+   <div>
+    <div class="mini" id="goalTitleDisplay">SIN META CONFIGURADA</div>
+    <div class="balance purple" id="goalSavedDisplay">S/ 0.00</div>
+    <div class="progress"><div class="bar" id="goalBar"></div></div>
+    <div class="meta"><span id="goalTargetLabel">Objetivo: S/ 0.00</span><span id="goalPctLabel">0%</span></div>
+    <div class="goal-stats">
+     <div class="goal-stat-item"><span>Falta por reunir</span><strong id="goalRemainingLabel">S/ 0.00</strong></div>
+     <div class="goal-stat-item"><span>Tiempo restante</span><strong id="goalTimeLeftLabel">—</strong></div>
+     <div class="goal-stat-item"><span>Ref. mensual restante</span><strong id="goalRefMonthlyLabel">S/ 0.00</strong></div>
+     <div class="goal-stat-item"><span>Plazo total</span><strong id="goalTotalTermLabel">—</strong></div>
+    </div>
+    <div class="goal-log" id="goalLog"><div class="empty">Aún no registras aportes libres.</div></div>
+   </div>
+  </div>
  </div>
 
  <div class="card full">
   <div class="cardtop">
    <h2>Historial de movimientos</h2>
-   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+   <div class="cardtop-actions">
     <span id="exportStatus" class="feedback" role="status" aria-live="polite"></span>
     <div class="data-actions" role="group" aria-label="Gestión de datos">
      <button type="button" class="btn-tool" id="backupJson" title="Descargar copia de seguridad JSON">↓ RESPALDO JSON</button>
      <button type="button" class="btn-tool" id="restoreJsonBtn" title="Restaurar desde archivo JSON">↑ RESTAURAR</button>
      <button type="button" class="btn-tool export-csv" id="export" title="Exportar movimientos del mes a CSV">↓ EXPORTAR CSV</button>
+     <button type="button" class="btn-clear-min" id="clearMonthEntriesBtn" title="Vaciar movimientos del mes">Limpiar mes</button>
     </div>
     <input type="file" id="restoreJsonFile" accept=".json,application/json" style="display:none">
    </div>
+  </div>
+  <div class="filter-bar">
+   <input id="searchFilter" type="search" placeholder="Buscar por descripción o tipo de consumo...">
+   <select id="typeFilter" aria-label="Filtrar por tipo de movimiento">
+    <option value="all">Todos los tipos</option>
+    <option value="income">Solo ingresos</option>
+    <option value="expense">Solo gastos</option>
+   </select>
   </div>
   <div class="entries" id="list"><div class="empty">No hay movimientos en este mes.</div></div>
  </div>
@@ -681,7 +938,20 @@ var monthNow = today.slice(0, 7);
 var storageKey = "sanchez_finance_v1";
 var dbName = "SanchezFinanceDB";
 var storeName = "appState";
-var data = { entries: [], selectedMonth: monthNow };
+
+function defaultGoal(){
+ return {
+  name: "",
+  target: 0,
+  termValue: 12,
+  termUnit: "months",
+  startDate: today,
+  saved: 0,
+  contributions: []
+ };
+}
+
+var data = { entries: [], selectedMonth: monthNow, goal: defaultGoal() };
 var timers = {};
 
 /* Displays temporary status feedback without using browser alert/confirm */
@@ -709,6 +979,35 @@ function normalizeEntries(list){
  }).filter(function(e){ return Number.isFinite(e.amount) && e.amount > 0; });
 }
 
+/* Normalizes free-contribution savings goal object */
+function normalizeGoal(rawGoal){
+ var base = defaultGoal();
+ if(!rawGoal || typeof rawGoal !== "object") return base;
+ var unit = rawGoal.termUnit === "years" ? "years" : "months";
+ var termVal = Math.max(1, Math.min(120, Math.round(Number(rawGoal.termValue) || 12)));
+ var target = Math.max(0, Math.round((Number(rawGoal.target) || 0) * 100) / 100);
+ var saved = Math.max(0, Math.round((Number(rawGoal.saved) || 0) * 100) / 100);
+ var contribs = Array.isArray(rawGoal.contributions) ? rawGoal.contributions.map(function(c){
+  return {
+   id: String(c.id || (Date.now() + "_" + Math.random().toString(36).slice(2, 8))),
+   kind: c.kind === "withdraw" ? "withdraw" : "deposit",
+   amount: Math.round((Number(c.amount) || 0) * 100) / 100,
+   note: String(c.note || ""),
+   date: String(c.date || today)
+  };
+ }).filter(function(c){ return Number.isFinite(c.amount) && c.amount > 0; }) : [];
+
+ return {
+  name: String(rawGoal.name || "").slice(0, 50),
+  target: target,
+  termValue: termVal,
+  termUnit: unit,
+  startDate: /^\d{4}-\d{2}-\d{2}$/.test(String(rawGoal.startDate || "")) ? String(rawGoal.startDate) : today,
+  saved: saved,
+  contributions: contribs
+ };
+}
+
 /* Parses serialized or object state safely */
 function parseState(raw){
  if(!raw) return null;
@@ -718,6 +1017,7 @@ function parseState(raw){
    return {
     entries: normalizeEntries(obj.entries),
     selectedMonth: typeof obj.selectedMonth === "string" && /^\d{4}-\d{2}$/.test(obj.selectedMonth) ? obj.selectedMonth : "",
+    goal: normalizeGoal(obj.goal),
     updatedAt: Number(obj.updatedAt) || 0
    };
   }
@@ -764,6 +1064,7 @@ function loadSync(){
   });
   var best = candidates[0];
   data.entries = best.entries;
+  data.goal = best.goal || defaultGoal();
   if(best.selectedMonth) data.selectedMonth = best.selectedMonth;
  }
 }
@@ -804,12 +1105,14 @@ function loadIDB(){
    req.onsuccess = function(){
     var idbState = parseState(req.result);
     if(!idbState) return;
-    if(idbState.entries.length > 0 && (data.entries.length === 0 || idbState.updatedAt > (data.updatedAt || 0))){
+    if((idbState.entries.length > 0 || (idbState.goal && idbState.goal.target > 0)) && (data.entries.length === 0 || idbState.updatedAt > (data.updatedAt || 0))){
      data.entries = idbState.entries;
+     data.goal = normalizeGoal(idbState.goal);
      if(idbState.selectedMonth){
       data.selectedMonth = idbState.selectedMonth;
       $("month").value = data.selectedMonth;
      }
+     syncGoalInputs();
      render();
      persist(true);
     }
@@ -825,6 +1128,7 @@ function persist(skipIDB){
  var serialized = JSON.stringify({
   entries: data.entries,
   selectedMonth: data.selectedMonth,
+  goal: data.goal,
   updatedAt: data.updatedAt
  });
 
@@ -849,6 +1153,7 @@ function persist(skipIDB){
   saveIDB({
    entries: data.entries,
    selectedMonth: data.selectedMonth,
+   goal: data.goal,
    updatedAt: data.updatedAt
   });
  }
@@ -877,6 +1182,20 @@ function monthEntries(){
  return data.entries.filter(function(e){ return String(e.date).slice(0, 7) === m; });
 }
 
+/* Filters month entries by active search query and movement type */
+function filteredMonthEntries(){
+ var q = ($("searchFilter") ? $("searchFilter").value : "").trim().toLowerCase();
+ var tf = $("typeFilter") ? $("typeFilter").value : "all";
+ return monthEntries().filter(function(e){
+  if(tf !== "all" && e.type !== tf) return false;
+  if(!q) return true;
+  var desc = String(e.description || "").toLowerCase();
+  var need = String(e.need || "").toLowerCase();
+  var kind = (e.type === "income" ? "ingreso" : "gasto");
+  return desc.indexOf(q) !== -1 || need.indexOf(q) !== -1 || kind.indexOf(q) !== -1;
+ });
+}
+
 /* Computes monthly income, expense, and available balance */
 function calculate(){
  var a = monthEntries(), income = 0, expense = 0;
@@ -887,14 +1206,114 @@ function calculate(){
  return { income: income, expense: expense, balance: income - expense };
 }
 
+/* Renders breakdown totals by consumption type for the active period */
+function renderNeedSummary(entries){
+ var box = $("needSummary");
+ if(!box) return;
+ var categories = ["Necesario", "Deseo", "Planificado", "Imprevisto", "Meta"];
+ var totals = { Necesario: 0, Deseo: 0, Planificado: 0, Imprevisto: 0, Meta: 0 };
+ entries.forEach(function(e){
+  var cat = categories.indexOf(e.need) !== -1 ? e.need : "Necesario";
+  totals[cat] += Number(e.amount) || 0;
+ });
+ box.innerHTML = categories.map(function(cat){
+  return '<div class="need-item"><span>' + safe(cat) + '</span><strong>' + money(totals[cat]) + '</strong></div>';
+ }).join("");
+}
+
+/* Populates goal configuration inputs from stored goal */
+function syncGoalInputs(){
+ var g = data.goal || defaultGoal();
+ $("goalName").value = g.name || "";
+ $("goalTarget").value = g.target > 0 ? g.target : "";
+ $("goalTermValue").value = g.termValue || 12;
+ $("goalTermUnit").value = g.termUnit || "months";
+}
+
+/* Computes total months and remaining months from goal start date */
+function getGoalMonthsInfo(g){
+ var totalMonths = g.termUnit === "years" ? (g.termValue * 12) : g.termValue;
+ var startParts = String(g.startDate || today).split("-").map(Number);
+ var nowParts = today.split("-").map(Number);
+ var elapsedMonths = 0;
+ if(startParts.length === 3 && nowParts.length === 3){
+  elapsedMonths = (nowParts[0] - startParts[0]) * 12 + (nowParts[1] - startParts[1]);
+  if(nowParts[2] < startParts[2]) elapsedMonths -= 1;
+ }
+ elapsedMonths = Math.max(0, elapsedMonths);
+ var remainingMonths = Math.max(1, totalMonths - elapsedMonths);
+ return { totalMonths: totalMonths, remainingMonths: remainingMonths };
+}
+
+/* Recomputes total goal saved balance from contribution entries */
+function recalculateGoalSaved(g){
+ var sum = 0;
+ g.contributions.forEach(function(c){
+  if(c.kind === "withdraw") sum -= Number(c.amount) || 0;
+  else sum += Number(c.amount) || 0;
+ });
+ g.saved = Math.max(0, Math.round(sum * 100) / 100);
+}
+
+/* Renders free-contribution savings goal progress, remaining time, and log */
+function renderGoal(){
+ var g = normalizeGoal(data.goal);
+ data.goal = g;
+
+ var hasTarget = g.target > 0;
+ var pct = hasTarget ? Math.min(100, (g.saved / g.target) * 100) : 0;
+ var remainingAmount = hasTarget ? Math.max(0, g.target - g.saved) : 0;
+ var termInfo = getGoalMonthsInfo(g);
+ var refMonthly = remainingAmount > 0 ? (remainingAmount / termInfo.remainingMonths) : 0;
+
+ $("goalBadge").textContent = hasTarget ? (g.termUnit === "years" ? "PLAZO EN AÑOS · APORTE LIBRE" : "PLAZO EN MESES · APORTE LIBRE") : "APORTE LIBRE";
+ $("goalTitleDisplay").textContent = g.name ? ("META: " + g.name.toUpperCase()) : (hasTarget ? "META ACTIVA" : "SIN META CONFIGURADA");
+ $("goalSavedDisplay").textContent = money(g.saved);
+ $("goalBar").style.width = pct + "%";
+ $("goalTargetLabel").textContent = "Objetivo: " + money(g.target);
+ $("goalPctLabel").textContent = Math.round(pct) + "%";
+ $("goalRemainingLabel").textContent = money(remainingAmount);
+
+ if(!hasTarget){
+  $("goalTimeLeftLabel").textContent = "—";
+  $("goalRefMonthlyLabel").textContent = "S/ 0.00";
+  $("goalTotalTermLabel").textContent = "—";
+ }else{
+  $("goalTimeLeftLabel").textContent = termInfo.remainingMonths + (termInfo.remainingMonths === 1 ? " mes" : " meses");
+  $("goalRefMonthlyLabel").textContent = money(refMonthly);
+  $("goalTotalTermLabel").textContent = g.termValue + (g.termUnit === "years" ? (g.termValue === 1 ? " año" : " años") : (g.termValue === 1 ? " mes" : " meses")) + " (" + termInfo.totalMonths + " m)";
+ }
+
+ var list = g.contributions.slice().sort(function(a, b){
+  return String(b.date).localeCompare(String(a.date)) || String(b.id).localeCompare(String(a.id));
+ });
+
+ if(!list.length){
+  $("goalLog").innerHTML = '<div class="empty">Aún no registras aportes libres.</div>';
+  return;
+ }
+
+ $("goalLog").innerHTML = list.map(function(c){
+  var isDep = c.kind !== "withdraw";
+  var title = c.note || (isDep ? "Aporte libre" : "Retiro de meta");
+  return '<div class="goal-log-row">'
+   + '<div><strong>' + safe(title) + '</strong><small>' + safe(c.date) + ' · ' + (isDep ? "Aporte" : "Retiro") + '</small></div>'
+   + '<div class="entryright">'
+   + '<strong class="' + (isDep ? "green" : "pink") + '">' + (isDep ? "+" : "−") + ' ' + money(c.amount) + '</strong>'
+   + '<button type="button" class="btn-del" data-goal-remove="' + safe(c.id) + '" title="Eliminar registro" aria-label="Eliminar registro">✕</button>'
+   + '</div></div>';
+ }).join("");
+}
+
 /* Updates default consumption type when toggling between expense and income */
 function syncFormType(){
  var isIncome = $("type").value === "income";
  $("need").value = isIncome ? "Planificado" : "Necesario";
 }
 
-/* Renders summary cards, balance progress bar, and movement history */
+/* Renders summary cards, balance progress bar, consumption breakdown, goal, and movement history */
 function render(){
+ var allMonth = monthEntries();
  var t = calculate();
 
  $("incomeTotal").textContent = money(t.income);
@@ -911,7 +1330,10 @@ function render(){
   ? "⚠ Tus gastos superan tus ingresos en este periodo."
   : (t.income > 0 ? "✓ Tu saldo está actualizado y bajo control." : "Agrega tus primeros movimientos.");
 
- var entries = monthEntries().slice().sort(function(a, b){
+ renderNeedSummary(allMonth);
+ renderGoal();
+
+ var entries = filteredMonthEntries().slice().sort(function(a, b){
   return String(b.date).localeCompare(String(a.date)) || String(b.id).localeCompare(String(a.id));
  });
 
@@ -923,10 +1345,10 @@ function render(){
    + '<small>' + safe(e.date) + ' · ' + (e.type === "income" ? "Ingreso" : "Gasto") + ' · ' + safe(e.need || "") + '</small></div>'
    + '<div class="entryright">'
    + '<strong class="' + (e.type === "income" ? "green" : "pink") + '">' + (e.type === "income" ? "+" : "−") + ' ' + money(e.amount) + '</strong>'
-   + '<button type="button" class="btn-del" data-remove="' + safe(e.id) + '">BORRAR</button>'
+   + '<button type="button" class="btn-del" data-remove="' + safe(e.id) + '" title="Eliminar movimiento" aria-label="Eliminar movimiento">✕</button>'
    + '</div></div>';
  });
- $("list").innerHTML = html || '<div class="empty">No hay movimientos en este mes.</div>';
+ $("list").innerHTML = html || '<div class="empty">' + (allMonth.length ? "No hay movimientos que coincidan con el filtro." : "No hay movimientos en este mes.") + '</div>';
 }
 
 /* Validates and saves a new movement */
@@ -936,6 +1358,8 @@ function addMovement(){
  var amount = parseFloat(amountField.value);
  var date = dateField.value;
  var type = $("type").value;
+ var need = $("need").value;
+ var desc = $("description").value.trim();
 
  if(!amountField.value.trim() || !Number.isFinite(amount) || amount <= 0){
   notify("status", "⚠ Escribe un importe válido mayor que cero.", true);
@@ -948,22 +1372,113 @@ function addMovement(){
   return;
  }
 
+ var roundedAmount = Math.round(amount * 100) / 100;
  var entry = {
   id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
   type: type,
-  amount: Math.round(amount * 100) / 100,
-  description: $("description").value.trim(),
+  amount: roundedAmount,
+  description: desc,
   date: date,
-  need: $("need").value
+  need: need
  };
 
  data.entries.push(entry);
+
+ if(type === "expense" && need === "Meta"){
+  var g = normalizeGoal(data.goal);
+  g.saved = Math.round((g.saved + roundedAmount) * 100) / 100;
+  g.contributions.push({
+   id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
+   kind: "deposit",
+   amount: roundedAmount,
+   note: desc || "Aporte desde movimiento (Meta)",
+   date: date
+  });
+  data.goal = g;
+ }
+
  $("month").value = date.slice(0, 7);
  persist();
  amountField.value = "";
  $("description").value = "";
  render();
- notify("status", "✓ Movimiento guardado correctamente.");
+ notify("status", type === "expense" && need === "Meta" ? "✓ Movimiento guardado y sumado a la meta." : "✓ Movimiento guardado correctamente.");
+}
+
+/* Saves savings goal configuration without resetting accumulated savings */
+function saveGoalConfig(){
+ var target = parseFloat($("goalTarget").value);
+ var termVal = parseInt($("goalTermValue").value, 10);
+ var termUnit = $("goalTermUnit").value === "years" ? "years" : "months";
+ var name = $("goalName").value.trim();
+
+ if(!Number.isFinite(target) || target <= 0){
+  notify("goalConfigStatus", "⚠ Ingresa un monto objetivo mayor que cero.", true);
+  $("goalTarget").focus();
+  return;
+ }
+ if(!Number.isFinite(termVal) || termVal < 1 || termVal > 120){
+  notify("goalConfigStatus", "⚠ Ingresa un plazo válido (1 a 120).", true);
+  $("goalTermValue").focus();
+  return;
+ }
+
+ var prev = normalizeGoal(data.goal);
+ var termChanged = prev.termValue !== termVal || prev.termUnit !== termUnit;
+ data.goal = {
+  name: name,
+  target: Math.round(target * 100) / 100,
+  termValue: termVal,
+  termUnit: termUnit,
+  startDate: (prev.target > 0 && !termChanged) ? prev.startDate : today,
+  saved: prev.saved,
+  contributions: prev.contributions
+ };
+
+ persist();
+ renderGoal();
+ notify("goalConfigStatus", "✓ Meta guardada.");
+}
+
+/* Registers a voluntary deposit or withdrawal on the savings goal */
+function applyGoalContribution(kind){
+ var amtField = $("goalContribAmount");
+ var amt = parseFloat(amtField.value);
+ var note = $("goalContribNote").value.trim();
+
+ if(!amtField.value.trim() || !Number.isFinite(amt) || amt <= 0){
+  notify("goalContribStatus", "⚠ Escribe un monto válido mayor que cero.", true);
+  amtField.focus();
+  return;
+ }
+
+ var rounded = Math.round(amt * 100) / 100;
+ var g = normalizeGoal(data.goal);
+
+ if(kind === "withdraw"){
+  if(rounded > g.saved){
+   notify("goalContribStatus", "⚠ El retiro supera lo ahorrado en la meta.", true);
+   return;
+  }
+  g.saved = Math.round((g.saved - rounded) * 100) / 100;
+ }else{
+  g.saved = Math.round((g.saved + rounded) * 100) / 100;
+ }
+
+ g.contributions.push({
+  id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
+  kind: kind,
+  amount: rounded,
+  note: note,
+  date: today
+ });
+
+ data.goal = g;
+ persist();
+ amtField.value = "";
+ $("goalContribNote").value = "";
+ renderGoal();
+ notify("goalContribStatus", kind === "withdraw" ? "✓ Retiro registrado." : "✓ Aporte sumado a la meta.");
 }
 
 /* Initial load and synchronization */
@@ -971,12 +1486,23 @@ loadSync();
 $("month").value = data.selectedMonth || monthNow;
 $("date").value = today;
 syncFormType();
+syncGoalInputs();
 persist(true);
 loadIDB();
 
 /* Event listeners */
 $("type").addEventListener("change", syncFormType);
 $("add").addEventListener("click", addMovement);
+$("saveGoalConfig").addEventListener("click", saveGoalConfig);
+$("depositGoal").addEventListener("click", function(){ applyGoalContribution("deposit"); });
+$("withdrawGoal").addEventListener("click", function(){ applyGoalContribution("withdraw"); });
+
+$("goalContribAmount").addEventListener("keydown", function(event){
+ if(event.key === "Enter"){
+  event.preventDefault();
+  applyGoalContribution("deposit");
+ }
+});
 
 ["amount", "date", "type", "description", "need"].forEach(function(id){
  $(id).addEventListener("keydown", function(event){
@@ -992,21 +1518,133 @@ $("month").addEventListener("change", function(){
  render();
 });
 
+$("searchFilter").addEventListener("input", render);
+$("typeFilter").addEventListener("change", render);
+
 window.addEventListener("pagehide", function(){ persist(true); });
 window.addEventListener("beforeunload", function(){ persist(true); });
 
-/* Two-step delete confirmation */
+/* Resets any pending delete confirmation on Escape */
+document.addEventListener("keydown", function(event){
+ if(event.key === "Escape"){
+  var pending = document.querySelectorAll(".btn-del.confirming");
+  pending.forEach(function(b){
+   b.classList.remove("confirming");
+   b.textContent = "✕";
+  });
+  var clearGoalBtn = $("clearGoalLogBtn");
+  if(clearGoalBtn && clearGoalBtn.classList.contains("confirming")){
+   clearGoalBtn.classList.remove("confirming");
+   clearGoalBtn.textContent = "Limpiar";
+  }
+  var clearMonthBtn = $("clearMonthEntriesBtn");
+  if(clearMonthBtn && clearMonthBtn.classList.contains("confirming")){
+   clearMonthBtn.classList.remove("confirming");
+   clearMonthBtn.textContent = "Limpiar mes";
+  }
+ }
+});
+
+/* Two-step delete confirmation for individual goal contributions */
+$("goalLog").addEventListener("click", function(event){
+ var btn = event.target.closest("[data-goal-remove]");
+ if(!btn) return;
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Borrar?";
+  setTimeout(function(){
+   if(btn && btn.parentNode){
+    btn.classList.remove("confirming");
+    btn.textContent = "✕";
+   }
+  }, 3000);
+  return;
+ }
+
+ var id = btn.getAttribute("data-goal-remove");
+ var g = normalizeGoal(data.goal);
+ g.contributions = g.contributions.filter(function(c){ return String(c.id) !== String(id); });
+ recalculateGoalSaved(g);
+ data.goal = g;
+ persist();
+ renderGoal();
+ notify("goalContribStatus", "✓ Registro eliminado.");
+});
+
+/* Two-step clear all goal history */
+$("clearGoalLogBtn").addEventListener("click", function(){
+ var btn = $("clearGoalLogBtn");
+ var g = normalizeGoal(data.goal);
+ if(!g.contributions.length && g.saved === 0){
+  notify("goalContribStatus", "⚠ El historial ya está vacío.", true);
+  return;
+ }
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Confirmar?";
+  setTimeout(function(){
+   if(btn){
+    btn.classList.remove("confirming");
+    btn.textContent = "Limpiar";
+   }
+  }, 3000);
+  return;
+ }
+
+ btn.classList.remove("confirming");
+ btn.textContent = "Limpiar";
+ g.contributions = [];
+ g.saved = 0;
+ data.goal = g;
+ persist();
+ renderGoal();
+ notify("goalContribStatus", "✓ Historial de meta limpiado.");
+});
+
+/* Two-step clear all movements in the active month */
+$("clearMonthEntriesBtn").addEventListener("click", function(){
+ var btn = $("clearMonthEntriesBtn");
+ var currentMonth = activeMonth();
+ var count = monthEntries().length;
+ if(!count){
+  notify("exportStatus", "⚠ No hay movimientos en este mes.", true);
+  return;
+ }
+
+ if(!btn.classList.contains("confirming")){
+  btn.classList.add("confirming");
+  btn.textContent = "¿Vaciar mes?";
+  setTimeout(function(){
+   if(btn){
+    btn.classList.remove("confirming");
+    btn.textContent = "Limpiar mes";
+   }
+  }, 3000);
+  return;
+ }
+
+ btn.classList.remove("confirming");
+ btn.textContent = "Limpiar mes";
+ data.entries = data.entries.filter(function(e){ return String(e.date).slice(0, 7) !== currentMonth; });
+ persist();
+ render();
+ notify("exportStatus", "✓ " + count + " movimientos eliminados.");
+});
+
+/* Two-step delete confirmation for individual movements */
 $("list").addEventListener("click", function(event){
  var btn = event.target.closest("[data-remove]");
  if(!btn) return;
 
  if(!btn.classList.contains("confirming")){
   btn.classList.add("confirming");
-  btn.textContent = "¿CONFIRMAR?";
+  btn.textContent = "¿Borrar?";
   setTimeout(function(){
    if(btn && btn.parentNode){
     btn.classList.remove("confirming");
-    btn.textContent = "BORRAR";
+    btn.textContent = "✕";
    }
   }, 3000);
   return;
@@ -1019,11 +1657,11 @@ $("list").addEventListener("click", function(event){
  notify("status", "✓ Movimiento eliminado.");
 });
 
-/* Exports active period movements to UTF-8 CSV */
+/* Exports filtered or active period movements to UTF-8 CSV */
 $("export").addEventListener("click", function(){
- var current = monthEntries();
+ var current = filteredMonthEntries();
  if(!current.length){
-  notify("exportStatus", "⚠ No hay datos en este mes para exportar.", true);
+  notify("exportStatus", "⚠ No hay datos para exportar con este filtro.", true);
   return;
  }
  var rows = [["Fecha", "Tipo", "Descripción", "Tipo de consumo", "Importe (S/)"]];
@@ -1046,7 +1684,7 @@ $("export").addEventListener("click", function(){
  var url = URL.createObjectURL(blob);
  var a = document.createElement("a");
  a.href = url;
- a.download = "sanchez-finance-" + activeMonth() + ".csv";
+ a.download = "brand-finance-" + activeMonth() + ".csv";
  document.body.appendChild(a);
  a.click();
  a.remove();
@@ -1056,15 +1694,16 @@ $("export").addEventListener("click", function(){
 
 /* Downloads full backup JSON */
 $("backupJson").addEventListener("click", function(){
- if(!data.entries.length){
-  notify("exportStatus", "⚠ No hay movimientos para respaldar.", true);
+ if(!data.entries.length && (!data.goal || (!data.goal.target && !data.goal.saved))){
+  notify("exportStatus", "⚠ No hay datos para respaldar.", true);
   return;
  }
  var backupPayload = JSON.stringify({
   app: "BRAND // FINANCE",
   exportedAt: new Date().toISOString(),
   selectedMonth: activeMonth(),
-  entries: data.entries
+  entries: data.entries,
+  goal: data.goal
  }, null, 2);
  var blob = new Blob([backupPayload], { type: "application/json;charset=utf-8" });
  var url = URL.createObjectURL(blob);
@@ -1089,12 +1728,42 @@ $("restoreJsonFile").addEventListener("change", function(event){
  var reader = new FileReader();
  reader.onload = function(e){
   var parsed = parseState(e.target.result);
-  if(!parsed || !parsed.entries.length){
-   notify("exportStatus", "⚠ El archivo JSON no contiene movimientos válidos.", true);
+  if(!parsed || (!parsed.entries.length && (!parsed.goal || !parsed.goal.target))){
+   notify("exportStatus", "⚠ El archivo JSON no contiene datos válidos.", true);
    $("restoreJsonFile").value = "";
    return;
   }
-  data.entries = parsed.entries;
+  var seenIds = {};
+  var mergedCount = 0;
+  data.entries.forEach(function(item){ seenIds[String(item.id)] = true; });
+  parsed.entries.forEach(function(item){
+   if(!seenIds[String(item.id)]){
+    data.entries.push(item);
+    seenIds[String(item.id)] = true;
+    mergedCount++;
+   }
+  });
+  if(parsed.goal && (parsed.goal.target > 0 || parsed.goal.saved > 0)){
+   var curGoal = normalizeGoal(data.goal);
+   var incGoal = normalizeGoal(parsed.goal);
+   if(!curGoal.target && !curGoal.saved){
+    data.goal = incGoal;
+   }else{
+    var seenC = {};
+    curGoal.contributions.forEach(function(c){ seenC[String(c.id)] = true; });
+    incGoal.contributions.forEach(function(c){
+     if(!seenC[String(c.id)]){
+      curGoal.contributions.push(c);
+      seenC[String(c.id)] = true;
+      curGoal.saved = Math.max(0, Math.round((curGoal.saved + (c.kind === "withdraw" ? -c.amount : c.amount)) * 100) / 100);
+     }
+    });
+    if(incGoal.target > 0) curGoal.target = incGoal.target;
+    if(incGoal.name) curGoal.name = incGoal.name;
+    data.goal = curGoal;
+   }
+   syncGoalInputs();
+  }
   if(parsed.selectedMonth){
    data.selectedMonth = parsed.selectedMonth;
    $("month").value = data.selectedMonth;
@@ -1102,7 +1771,7 @@ $("restoreJsonFile").addEventListener("change", function(event){
   persist();
   render();
   $("restoreJsonFile").value = "";
-  notify("exportStatus", "✓ " + data.entries.length + " movimientos restaurados.");
+  notify("exportStatus", "✓ " + mergedCount + " movimientos nuevos añadidos (" + data.entries.length + " en total).");
  };
  reader.onerror = function(){
   notify("exportStatus", "⚠ No se pudo leer el archivo.", true);
