@@ -9,8 +9,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sanchez Finance">
 <title>BRAND // FINANCE</title>
+<link id="pwa-manifest" rel="manifest">
 <link id="pwa-icon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23060b14'/><text x='50' y='67' font-family='sans-serif' font-weight='900' font-size='48' fill='%2355e6ff' text-anchor='middle'>B/F</text></svg>">
-<link id="apple-icon" rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23060b14'/><text x='50' y='67' font-family='sans-serif' font-weight='900' font-size='48' fill='%2355e6ff' text-anchor='middle'>B/F</text></svg>">
+<link id="apple-icon" rel="apple-touch-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -572,47 +573,70 @@ footer{
 (function(){
 "use strict";
 
-/* Configures SVG app icon, dynamic PWA web manifest, service worker, and install prompt */
+/* Generates PNG icons via Canvas, injects valid Chrome PWA Manifest, and handles install prompt */
 (function setupPWA(){
  try{
-  var svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
-   + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
-   + '<stop offset="0%" stop-color="#0e1828"/><stop offset="100%" stop-color="#060b14"/>'
-   + '</linearGradient></defs>'
-   + '<rect width="512" height="512" rx="112" fill="url(#g)"/>'
-   + '<rect x="16" y="16" width="480" height="480" rx="98" fill="none" stroke="#2b4162" stroke-width="12"/>'
-   + '<text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" '
-   + 'font-family="Inter,system-ui,sans-serif" font-weight="900" font-size="210" fill="#55e6ff">B/F</text>'
-   + '</svg>';
-  var iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgIcon);
+  function createPngIcon(size){
+   var c = document.createElement("canvas");
+   c.width = size;
+   c.height = size;
+   var ctx = c.getContext("2d");
 
-  var iconLink = document.getElementById("pwa-icon");
+   var grad = ctx.createLinearGradient(0, 0, size, size);
+   grad.addColorStop(0, "#0e1828");
+   grad.addColorStop(1, "#060b14");
+   ctx.fillStyle = grad;
+   ctx.fillRect(0, 0, size, size);
+
+   ctx.strokeStyle = "#2b4162";
+   ctx.lineWidth = Math.max(2, Math.round(size * 0.025));
+   var pad = ctx.lineWidth / 2;
+   ctx.strokeRect(pad, pad, size - ctx.lineWidth, size - ctx.lineWidth);
+
+   ctx.fillStyle = "#55e6ff";
+   ctx.font = "900 " + Math.round(size * 0.41) + "px Inter, system-ui, sans-serif";
+   ctx.textAlign = "center";
+   ctx.textBaseline = "middle";
+   ctx.fillText("B/F", size / 2, size * 0.53);
+
+   return c.toDataURL("image/png");
+  }
+
+  var icon192 = createPngIcon(192);
+  var icon512 = createPngIcon(512);
+
   var appleLink = document.getElementById("apple-icon");
-  if(iconLink) iconLink.href = iconUrl;
-  if(appleLink) appleLink.href = iconUrl;
+  if(appleLink) appleLink.href = icon192;
+
+  var startUrl = location.href.split("#")[0];
+  var baseUrl = startUrl.substring(0, startUrl.lastIndexOf("/") + 1);
 
   var manifestObj = {
+   id: startUrl,
    name: "SANCHEZ // FINANCE",
    short_name: "Sanchez Finance",
    description: "Control financiero personal",
-   start_url: location.href,
-   scope: "./",
+   start_url: startUrl,
+   scope: baseUrl,
    display: "standalone",
    orientation: "portrait-primary",
    background_color: "#060b14",
    theme_color: "#060b14",
    icons: [
-    { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
-    { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+    { src: icon192, sizes: "192x192", type: "image/png", purpose: "any" },
+    { src: icon512, sizes: "512x512", type: "image/png", purpose: "any" },
+    { src: icon512, sizes: "512x512", type: "image/png", purpose: "maskable" }
    ]
   };
-  var manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: "application/manifest+json" });
+
   var manifestLink = document.getElementById("pwa-manifest");
-  if(manifestLink) manifestLink.href = URL.createObjectURL(manifestBlob);
+  if(manifestLink){
+   manifestLink.href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifestObj));
+  }
 
   if("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")){
    var swCode = [
-    "const CACHE='sanchez-finance-v1';",
+    "const CACHE='sanchez-finance-v2';",
     "self.addEventListener('install',e=>{self.skipWaiting();});",
     "self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());});",
     "self.addEventListener('fetch',e=>{",
@@ -623,8 +647,8 @@ footer{
     "  ));",
     "});"
    ].join("\n");
-   var swBlob = new Blob([swCode], { type: "application/javascript" });
-   navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(function(){});
+   var swDataUrl = "data:application/javascript;base64," + btoa(swCode);
+   navigator.serviceWorker.register(swDataUrl).catch(function(){});
   }
 
   var deferredPrompt = null;
