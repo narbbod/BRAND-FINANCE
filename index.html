@@ -30,14 +30,55 @@
   --green:#b7ff76;
   --red:#ff789e;
   --violet:#a99aff;
+  --bg-glow-1:rgba(22, 78, 114, 0.45);
+  --bg-glow-2:rgba(49, 36, 115, 0.35);
+  --card-top:rgba(20,36,58,0.94);
+  --card-bot:rgba(11,21,36,0.98);
+  --placeholder:#607796;
+  --label:#a8bed8;
+  --focus-bg:#0b1729;
+  --btn-sec:#182a43;
+  --btn-sec-hover:#213857;
+  --tool-track:rgba(7,14,25,0.65);
+  --bar-track:#070f1b;
+  --empty-bg:rgba(7,14,25,0.45);
+  --primary-txt:#05111c;
+}
+:root[data-theme="light"]{
+  --bg:#eef3f9;
+  --panel:#ffffff;
+  --panel2:#f5f8fc;
+  --field:#f4f7fb;
+  --field-hover:#eaf0f7;
+  --line:#c8d5e5;
+  --line-soft:#dde6f0;
+  --txt:#0d1829;
+  --muted:#586b82;
+  --cyan:#007a99;
+  --green:#1f7a1f;
+  --red:#c92a54;
+  --violet:#5c4ce0;
+  --bg-glow-1:rgba(0, 148, 184, 0.12);
+  --bg-glow-2:rgba(108, 92, 231, 0.10);
+  --card-top:rgba(255,255,255,0.96);
+  --card-bot:rgba(247,250,254,0.99);
+  --placeholder:#7f92a8;
+  --label:#465970;
+  --focus-bg:#ffffff;
+  --btn-sec:#e4ebf3;
+  --btn-sec-hover:#d6e0ec;
+  --tool-track:rgba(226,234,244,0.75);
+  --bar-track:#e1e9f2;
+  --empty-bg:rgba(235,241,248,0.65);
+  --primary-txt:#ffffff;
 }
 *{box-sizing:border-box}
 html,body{max-width:100%;overflow-x:hidden}
 body{
   margin:0;
   background:
-    radial-gradient(ellipse at 85% -5%, rgba(22, 78, 114, 0.45) 0, transparent 42%),
-    radial-gradient(ellipse at -5% 50%, rgba(49, 36, 115, 0.35) 0, transparent 38%),
+    radial-gradient(ellipse at 85% -5%, var(--bg-glow-1) 0, transparent 42%),
+    radial-gradient(ellipse at -5% 50%, var(--bg-glow-2) 0, transparent 38%),
     var(--bg);
   color:var(--txt);
   font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
@@ -45,6 +86,7 @@ body{
   line-height:1.45;
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
+  transition:background-color .2s ease, color .2s ease;
 }
 .wrap{max-width:1120px;margin:auto;padding:28px 18px 48px}
 header{
@@ -54,6 +96,7 @@ header{
   gap:16px;
   margin-bottom:32px;
   padding-bottom:20px;
+  padding-right:46px;
   border-bottom:1px solid var(--line-soft);
 }
 .head-controls{
@@ -61,6 +104,30 @@ header{
   align-items:flex-end;
   gap:12px;
   flex-wrap:wrap;
+}
+.theme-toggle{
+  position:fixed;
+  top:14px;
+  right:16px;
+  z-index:50;
+  width:34px;
+  height:34px;
+  padding:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--panel);
+  color:var(--muted);
+  border:1px solid var(--line);
+  border-radius:9px;
+  font-size:14px;
+  line-height:1;
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+}
+.theme-toggle:hover{
+  color:var(--cyan);
+  background:var(--field-hover);
+  border-color:var(--cyan);
 }
 .currency-box{min-width:118px}
 .currency-box select{
@@ -114,7 +181,7 @@ input,select,textarea{
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  box-shadow:inset 0 2px 4px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.03);
+  box-shadow:inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.03);
   transition:border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
 }
 input[type="month"],input[type="date"]{
@@ -148,20 +215,20 @@ input[type="month"]::-webkit-date-and-time-value{
 }
 input,select{height:48px}
 input::placeholder,textarea::placeholder{
-  color:#607796;
+  color:var(--placeholder);
   font-weight:400;
   text-align:center;
   opacity:1;
 }
 input:hover:not(:disabled),select:hover:not(:disabled),textarea:hover:not(:disabled){
   background:var(--field-hover);
-  border-color:#446594;
+  border-color:var(--cyan);
 }
 input:focus,select:focus,textarea:focus{
   outline:none;
-  background:#0b1729;
+  background:var(--focus-bg);
   border-color:var(--cyan);
-  box-shadow:0 0 0 3.5px rgba(85,230,255,0.18), inset 0 1px 3px rgba(0,0,0,0.3);
+  box-shadow:0 0 0 3.5px rgba(85,230,255,0.18), inset 0 1px 3px rgba(0,0,0,0.12);
 }
 select{
   appearance:none;
@@ -173,14 +240,14 @@ select{
 }
 select::-ms-expand{display:none}
 select option{
-  background:#0e1828;
+  background:var(--panel);
   color:var(--txt);
   text-align:center;
 }
 input[type=number]{font-variant-numeric:tabular-nums}
 label{
   display:block;
-  color:#a8bed8;
+  color:var(--label);
   font-size:11px;
   letter-spacing:.85px;
   margin-bottom:7px;
@@ -191,12 +258,12 @@ label{
 
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
 .card{
-  background:linear-gradient(155deg,rgba(20,36,58,0.94),rgba(11,21,36,0.98));
+  background:linear-gradient(155deg,var(--card-top),var(--card-bot));
   border:1px solid var(--line);
   border-radius:18px;
   padding:22px;
   min-width:0;
-  box-shadow:0 18px 42px rgba(0,0,0,0.36), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow:0 18px 42px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .stat{grid-column:span 4;padding:20px}
 .main{grid-column:span 7}
@@ -257,16 +324,19 @@ button{
 }
 .primary{
   background:linear-gradient(100deg,var(--cyan),#a0ffe9);
-  color:#05111c;
+  color:var(--primary-txt);
   box-shadow:0 6px 20px rgba(85,230,255,0.22);
+}
+:root[data-theme="light"] .primary{
+  background:linear-gradient(100deg,#007a99,#00a6c4);
 }
 .primary:hover{filter:brightness(1.06)}
 .secondary{
-  background:#182a43;
+  background:var(--btn-sec);
   color:var(--txt);
   border:1.5px solid var(--line);
 }
-.secondary:hover{background:#213857;border-color:#446594}
+.secondary:hover{background:var(--btn-sec-hover);border-color:var(--cyan)}
 .danger-soft{
   background:rgba(255,120,158,0.12);
   color:var(--red);
@@ -293,7 +363,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   align-items:center;
   gap:6px;
   padding:4px;
-  background:rgba(7,14,25,0.65);
+  background:var(--tool-track);
   border:1px solid var(--line-soft);
   border-radius:12px;
   flex-wrap:wrap;
@@ -310,13 +380,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   border:1px solid transparent;
   line-height:1.2;
 }
-.btn-tool:hover{color:var(--txt);background:#15253c;border-color:var(--line)}
-.btn-tool.export-csv{
-  color:var(--cyan);
-  background:rgba(85,230,255,0.08);
-  border-color:rgba(85,230,255,0.25);
-}
-.btn-tool.export-csv:hover{background:rgba(85,230,255,0.16);border-color:var(--cyan)}
+.btn-tool:hover{color:var(--txt);background:var(--btn-sec);border-color:var(--line)}
 
 .btn-clear-min{
   padding:6px 12px;
@@ -324,9 +388,9 @@ button:disabled{opacity:.5;cursor:not-allowed}
   font-weight:700;
   letter-spacing:0.6px;
   border-radius:8px;
-  background:rgba(255,255,255,0.04);
+  background:rgba(149,172,200,0.06);
   color:var(--muted);
-  border:1px solid rgba(149,172,200,0.22);
+  border:1px solid rgba(149,172,200,0.25);
   line-height:1.2;
   white-space:nowrap;
   flex-shrink:0;
@@ -349,7 +413,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .progress{
   height:10px;
   border-radius:20px;
-  background:#070f1b;
+  background:var(--bar-track);
   border:1px solid var(--line);
   overflow:hidden;
   margin:14px 0 8px;
@@ -487,7 +551,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   text-align:center;
   color:var(--muted);
   font-size:13px;
-  background:rgba(7,14,25,0.45);
+  background:var(--empty-bg);
   border:1px dashed var(--line);
   border-radius:12px;
 }
@@ -511,7 +575,7 @@ footer{
 }
 @media(max-width:480px){
   .wrap{padding:18px 12px 36px}
-  header{align-items:stretch;flex-direction:column}
+  header{align-items:stretch;flex-direction:column;padding-right:0}
   .head-controls{width:100%}
   .head-controls > div{flex:1}
   .currency-box{min-width:110px}
@@ -531,6 +595,7 @@ footer{
 </style>
 </head>
 <body>
+<button type="button" class="theme-toggle" id="themeToggle" title="Cambiar modo oscuro / claro" aria-label="Cambiar modo oscuro / claro">☀</button>
 <div class="wrap">
 <header>
  <div>
@@ -674,7 +739,6 @@ footer{
     <div class="data-actions" role="group" aria-label="Gestión de datos">
      <button type="button" class="btn-tool" id="backupJson" title="Descargar copia de seguridad JSON">↓ RESPALDO JSON</button>
      <button type="button" class="btn-tool" id="restoreJsonBtn" title="Restaurar desde archivo JSON">↑ RESTAURAR</button>
-     <button type="button" class="btn-tool export-csv" id="export" title="Exportar movimientos del mes a CSV">↓ EXPORTAR CSV</button>
     </div>
     <input type="file" id="restoreJsonFile" accept=".json,application/json" style="display:none">
    </div>
@@ -875,11 +939,30 @@ var data = {
  entries: [],
  selectedMonth: monthNow,
  currency: "PEN",
+ theme: "dark",
  usdPerUnit: Object.assign({}, DEFAULT_USD_PER_UNIT),
  goal: defaultGoal()
 };
 var timers = {};
 var fxFetchInFlight = false;
+
+function applyTheme(theme){
+ var mode = theme === "light" ? "light" : "dark";
+ data.theme = mode;
+ if(mode === "light"){
+  document.documentElement.setAttribute("data-theme", "light");
+ }else{
+  document.documentElement.removeAttribute("data-theme");
+ }
+ var btn = $("themeToggle");
+ if(btn){
+  btn.textContent = mode === "light" ? "☾" : "☀";
+ }
+ var metaTheme = document.querySelector('meta[name="theme-color"]');
+ if(metaTheme){
+  metaTheme.setAttribute("content", mode === "light" ? "#eef3f9" : "#060b14");
+ }
+}
 
 function normalizeRates(raw){
  var out = Object.assign({}, DEFAULT_USD_PER_UNIT);
@@ -976,11 +1059,6 @@ function syncCurrencyUI(){
   $("goalTarget").placeholder = cur.placeholders.target;
   $("goalTarget").step = cur.step;
  }
- if($("goalContribAmount")){
-  $("goalContribAmount").placeholder = cur.placeholders.contrib;
-  $("goalContribAmount").step = cur.step;
-  $("goalContribAmount").min = cur.min;
- }
 }
 
 function notify(id, message, isError){
@@ -1044,6 +1122,7 @@ function parseState(raw){
     entries: normalizeEntries(obj.entries),
     selectedMonth: typeof obj.selectedMonth === "string" && /^\d{4}-\d{2}$/.test(obj.selectedMonth) ? obj.selectedMonth : "",
     currency: CURRENCIES[obj.currency] ? obj.currency : "PEN",
+    theme: obj.theme === "light" ? "light" : "dark",
     usdPerUnit: normalizeRates(obj.usdPerUnit),
     goal: normalizeGoal(obj.goal),
     updatedAt: Number(obj.updatedAt) || 0
@@ -1094,6 +1173,7 @@ function loadSync(){
   data.goal = best.goal || defaultGoal();
   data.usdPerUnit = normalizeRates(best.usdPerUnit);
   if(best.currency && CURRENCIES[best.currency]) data.currency = best.currency;
+  if(best.theme) data.theme = best.theme;
   if(best.selectedMonth) data.selectedMonth = best.selectedMonth;
  }
 }
@@ -1138,6 +1218,9 @@ function loadIDB(){
      if(idbState.currency && CURRENCIES[idbState.currency]){
       data.currency = idbState.currency;
      }
+     if(idbState.theme){
+      applyTheme(idbState.theme);
+     }
      if(idbState.selectedMonth){
       data.selectedMonth = idbState.selectedMonth;
       $("month").value = data.selectedMonth;
@@ -1155,12 +1238,14 @@ function loadIDB(){
 function persist(skipIDB){
  data.selectedMonth = activeMonth();
  data.currency = activeCurrency().code;
+ data.theme = data.theme === "light" ? "light" : "dark";
  data.usdPerUnit = normalizeRates(data.usdPerUnit);
  data.updatedAt = Date.now();
  var serialized = JSON.stringify({
   entries: data.entries,
   selectedMonth: data.selectedMonth,
   currency: data.currency,
+  theme: data.theme,
   usdPerUnit: data.usdPerUnit,
   goal: data.goal,
   updatedAt: data.updatedAt
@@ -1188,6 +1273,7 @@ function persist(skipIDB){
    entries: data.entries,
    selectedMonth: data.selectedMonth,
    currency: data.currency,
+   theme: data.theme,
    usdPerUnit: data.usdPerUnit,
    goal: data.goal,
    updatedAt: data.updatedAt
@@ -1483,6 +1569,7 @@ function saveGoalConfig(){
 }
 
 loadSync();
+applyTheme(data.theme);
 $("currency").value = data.currency || "PEN";
 $("month").value = data.selectedMonth || monthNow;
 $("date").value = today;
@@ -1492,6 +1579,13 @@ syncGoalInputs();
 persist(true);
 loadIDB();
 refreshLiveRates(function(){ render(); });
+
+if($("themeToggle")){
+ $("themeToggle").addEventListener("click", function(){
+  applyTheme(data.theme === "light" ? "dark" : "light");
+  persist();
+ });
+}
 
 /* Al cambiar de moneda, obtiene tasas actualizadas y convierte todos los montos al instante */
 $("currency").addEventListener("change", function(){
@@ -1733,41 +1827,6 @@ $("list").addEventListener("click", function(event){
  notify("status", "✓ Movimiento eliminado.");
 });
 
-$("export").addEventListener("click", function(){
- var current = filteredMonthEntries();
- if(!current.length){
-  notify("exportStatus", "⚠ No hay datos para exportar con este filtro.", true);
-  return;
- }
- var cur = activeCurrency();
- var rows = [["Fecha", "Tipo", "Descripción", "Tipo de consumo", "Importe (" + cur.code + ")"]];
- current.forEach(function(e){
-  rows.push([
-   e.date,
-   e.type === "income" ? "Ingreso" : "Gasto",
-   e.description || (e.type === "income" ? "Ingreso" : "Gasto"),
-   e.type === "income" ? "" : e.need,
-   Number(e.amount || 0).toFixed(cur.decimals)
-  ]);
- });
- var csv = rows.map(function(row){
-  return row.map(function(v){
-   return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
-  }).join(";");
- }).join("\r\n");
-
- var blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
- var url = URL.createObjectURL(blob);
- var a = document.createElement("a");
- a.href = url;
- a.download = "brand-finance-" + activeMonth() + ".csv";
- document.body.appendChild(a);
- a.click();
- a.remove();
- setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
- notify("exportStatus", "✓ CSV descargado.");
-});
-
 $("backupJson").addEventListener("click", function(){
  if(!data.entries.length && (!data.goal || (!data.goal.target && !data.goal.saved))){
   notify("exportStatus", "⚠ No hay datos para respaldar.", true);
@@ -1778,6 +1837,7 @@ $("backupJson").addEventListener("click", function(){
   exportedAt: new Date().toISOString(),
   selectedMonth: activeMonth(),
   currency: activeCurrency().code,
+  theme: data.theme,
   usdPerUnit: data.usdPerUnit,
   entries: data.entries,
   goal: data.goal
@@ -1843,6 +1903,9 @@ $("restoreJsonFile").addEventListener("change", function(event){
   if(parsed.currency && CURRENCIES[parsed.currency]){
    data.currency = parsed.currency;
    $("currency").value = data.currency;
+  }
+  if(parsed.theme){
+   applyTheme(parsed.theme);
   }
   if(parsed.selectedMonth){
    data.selectedMonth = parsed.selectedMonth;
