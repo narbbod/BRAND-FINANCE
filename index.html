@@ -648,22 +648,6 @@ footer{
      <button type="button" class="secondary" id="saveGoalConfig">GUARDAR META</button>
      <span id="goalConfigStatus" class="feedback" role="status" aria-live="polite"></span>
     </div>
-
-    <div class="fields" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
-     <div class="field">
-      <label for="goalContribAmount">Monto de aporte / retiro</label>
-      <input id="goalContribAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="S/ 100.00">
-     </div>
-     <div class="field">
-      <label for="goalContribNote">Nota (opcional)</label>
-      <input id="goalContribNote" type="text" maxlength="50" placeholder="Ahorro">
-     </div>
-    </div>
-    <div class="actions">
-     <button type="button" class="primary" id="depositGoal">＋ APORTAR</button>
-     <button type="button" class="danger-soft" id="withdrawGoal">− RETIRAR</button>
-     <span id="goalContribStatus" class="feedback" role="status" aria-live="polite"></span>
-    </div>
    </div>
 
    <div>
@@ -1498,47 +1482,6 @@ function saveGoalConfig(){
  notify("goalConfigStatus", "✓ Meta guardada.");
 }
 
-function applyGoalContribution(kind){
- var amtField = $("goalContribAmount");
- var amt = parseFloat(amtField.value);
- var note = $("goalContribNote").value.trim();
-
- if(!amtField.value.trim() || !Number.isFinite(amt) || amt <= 0){
-  notify("goalContribStatus", "⚠ Escribe un monto válido mayor que cero.", true);
-  amtField.focus();
-  return;
- }
-
- var curCode = activeCurrency().code;
- var rounded = roundForCurrency(amt, curCode);
- var g = normalizeGoal(data.goal);
-
- if(kind === "withdraw"){
-  if(rounded > g.saved){
-   notify("goalContribStatus", "⚠ El retiro supera lo ahorrado en la meta.", true);
-   return;
-  }
-  g.saved = roundForCurrency(g.saved - rounded, curCode);
- }else{
-  g.saved = roundForCurrency(g.saved + rounded, curCode);
- }
-
- g.contributions.push({
-  id: String(Date.now()) + "_" + Math.random().toString(36).slice(2, 8),
-  kind: kind,
-  amount: rounded,
-  note: note,
-  date: today
- });
-
- data.goal = g;
- persist();
- amtField.value = "";
- $("goalContribNote").value = "";
- renderGoal();
- notify("goalContribStatus", kind === "withdraw" ? "✓ Retiro registrado." : "✓ Aporte sumado a la meta.");
-}
-
 loadSync();
 $("currency").value = data.currency || "PEN";
 $("month").value = data.selectedMonth || monthNow;
@@ -1571,17 +1514,6 @@ $("currency").addEventListener("change", function(){
 $("type").addEventListener("change", syncFormType);
 $("add").addEventListener("click", addMovement);
 $("saveGoalConfig").addEventListener("click", saveGoalConfig);
-if($("depositGoal")) $("depositGoal").addEventListener("click", function(){ applyGoalContribution("deposit"); });
-if($("withdrawGoal")) $("withdrawGoal").addEventListener("click", function(){ applyGoalContribution("withdraw"); });
-
-if($("goalContribAmount")){
- $("goalContribAmount").addEventListener("keydown", function(event){
-  if(event.key === "Enter"){
-   event.preventDefault();
-   applyGoalContribution("deposit");
-  }
- });
-}
 
 ["amount", "date", "type", "description", "need"].forEach(function(id){
  var el = $(id);
@@ -1933,3 +1865,4 @@ render();
 </script>
 </body>
 </html>
+```[cite: 1, 2]
